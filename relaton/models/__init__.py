@@ -16,7 +16,7 @@ They are mixed for a few reasons:
   is poor—so we use regular Pydantic models at higher levels.
 
 .. important:: Dumping a model as a dictionary using Pydantic
-               does not dump any members that are dataclass instances.
+               may not dump members that are dataclass instances.
                To obtain a full dictionary,
                use :func:`common.pydantic.unpack_dataclasses` utility.
 """
