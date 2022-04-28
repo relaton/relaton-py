@@ -1,4 +1,5 @@
 from typing import List
+
 from ...models.links import Link
 
 

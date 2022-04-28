@@ -1,7 +1,6 @@
 from typing import List, Tuple, Set, Optional, Union, cast
-from xml.etree.ElementTree import Element
 import datetime
-
+from xml.etree.ElementTree import Element
 from lxml import objectify
 
 from ...util import as_list

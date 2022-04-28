@@ -1,5 +1,4 @@
 from typing import List, Optional
-
 from xml.etree.ElementTree import Element
 from lxml import objectify
 
