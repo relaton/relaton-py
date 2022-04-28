@@ -1,4 +1,6 @@
-clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
+.PHONY: docs
+
+clean: clean-build clean-pyc clean-test clean-docs ## remove all build, test, coverage and Python artifacts
 
 clean-build: ## remove build artifacts
 	rm -fr build/
@@ -18,6 +20,12 @@ clean-test: ## remove test and coverage artifacts
 	rm -f .coverage
 	rm -fr htmlcov/
 	rm -fr .pytest_cache
+
+clean-docs:
+	rm -fr dist-docs
+
+docs:
+	sphinx-build -a -E -n -v -b html docs/ dist-docs
 
 release: dist ## packages and uploads new release
 	twine upload dist/*

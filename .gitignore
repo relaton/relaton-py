@@ -2,6 +2,7 @@
 *.egg-info
 /dist
 /build
+/dist-docs
 __pycache__
 http_cache.sqlite
 /env
