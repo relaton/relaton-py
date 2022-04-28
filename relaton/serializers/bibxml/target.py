@@ -9,7 +9,7 @@ __all__ = (
 
 
 def get_suitable_target(links: List[Link]):
-    """From a list of :class:`bib_models.models.links.Link` instances,
+    """From a list of :class:`~relaton.models.links.Link` instances,
     return a string suitable to be used as value of ``target`` attribute
     on root XML element.
 

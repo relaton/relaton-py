@@ -11,6 +11,7 @@ for interacting with Relaton bibliographic data in Python.
    :maxdepth: 2
 
    ref/index
+   glossary
 
 
 Indices and tables

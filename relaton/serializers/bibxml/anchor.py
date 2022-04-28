@@ -9,8 +9,8 @@ __all__ = (
 
 
 def get_suitable_anchor(docids: List[DocID]):
-    """From a list of ``DocID`` instances, get best anchor value
-    and return it as a string.
+    """From a list of :class:`~relaton.models.bibdata.DocID` instances,
+    get best anchor value and return it as a string.
 
     Ideally it’s a ``DocID`` with ``scope`` equal to “anchor”,
     otherwise primary identifier, otherwise any idnetifier.

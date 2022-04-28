@@ -16,7 +16,6 @@ import sys
 from typing import List
 
 sys.path.insert(0, os.path.abspath('..'))
-sys.path.insert(0, os.path.abspath('../relaton'))
 
 import relaton
 

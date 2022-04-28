@@ -2,7 +2,9 @@
 into BibXML (xml2rfc) format roughly per RFC 7991,
 with bias towards existing xml2rfc documents where differs.
 
-Primary API is :func:`.to_xml()` and :func:`.to_xml_string()`.
+Primary API is :func:`.serialize()`.
+
+.. seealso:: :mod:`~relaton.serializers.bibxml_string`
 """
 
 from typing import List

@@ -2,7 +2,7 @@
 ``models``: Bibliographic data classes
 ==========================================
 
-.. automodule:: models
+.. automodule:: relaton.models
 
 .. contents::
    :local:
@@ -10,7 +10,7 @@
 Bibliographic data
 ==================
 
-.. automodule:: models.bibdata
+.. automodule:: relaton.models.bibdata
    :members:
    :undoc-members:
    :exclude-members: __init__
@@ -19,7 +19,7 @@ Bibliographic data
 Copyrights
 ==========
 
-.. automodule:: models.copyrights
+.. automodule:: relaton.models.copyrights
    :members:
    :undoc-members:
    :exclude-members: __init__
@@ -28,7 +28,7 @@ Copyrights
 People
 ======
 
-.. automodule:: models.people
+.. automodule:: relaton.models.people
    :members:
    :undoc-members:
    :exclude-members: __init__
@@ -37,7 +37,7 @@ People
 Organizations
 =============
 
-.. automodule:: models.orgs
+.. automodule:: relaton.models.orgs
    :members:
    :undoc-members:
    :exclude-members: __init__
@@ -46,7 +46,7 @@ Organizations
 Contacts
 ========
 
-.. automodule:: models.contacts
+.. automodule:: relaton.models.contacts
    :members:
    :undoc-members:
    :exclude-members: __init__
@@ -55,7 +55,7 @@ Contacts
 Links
 =====
 
-.. automodule:: models.links
+.. automodule:: relaton.models.links
    :members:
    :undoc-members:
    :exclude-members: __init__
@@ -64,7 +64,7 @@ Links
 Dates
 =====
 
-.. automodule:: models.dates
+.. automodule:: relaton.models.dates
    :members:
    :undoc-members:
    :exclude-members: __init__
@@ -73,7 +73,7 @@ Dates
 Strings
 =======
 
-.. automodule:: models.strings
+.. automodule:: relaton.models.strings
    :members:
    :undoc-members:
    :exclude-members: __init__

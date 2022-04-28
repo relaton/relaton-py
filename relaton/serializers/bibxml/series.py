@@ -61,3 +61,8 @@ DOCID_SERIES_EXTRACTORS: List[
     extract_3gpp_tr_series,
     extract_ieee_series,
 ]
+"""A list of functions capable of extracting series information
+as 2-tuple (series name, document number)
+from a :class:`~relaton.models.bibdata.DocID`.
+Each function is expected to either return a tuple or ``None``,
+and not throw."""
