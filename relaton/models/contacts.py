@@ -11,7 +11,7 @@ class Contact:
     """Contact information
     for a person or organization."""
 
-    street: List[str] = None
+    street: Optional[List[str]] = None
     city: Optional[str] = None
     country: Optional[str] = None
     state: Optional[str] = None
