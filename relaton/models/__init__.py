@@ -10,7 +10,7 @@ They are mixed for a few reasons:
 - Where we encounter reserved words, we use ``TypedDict()``
   instantiations. They have a big drawback (no defaults on optionals),
   so their use is as limited as possible.
-- Dataclass instantiation causes ugly ``TypeError``s when given
+- Dataclass instantiation may cause a ``TypeError`` when given
   unexpected data, which is especially bad at root model level.
   That, and generally Pydantic’s support for dataclasses
   is poor—so we use regular Pydantic models at higher levels.
