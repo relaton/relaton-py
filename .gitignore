@@ -1,4 +1,7 @@
 *.pyc
+*.egg-info
+/dist
+/build
 __pycache__
 http_cache.sqlite
-env
+/env
