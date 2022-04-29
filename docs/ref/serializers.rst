@@ -3,7 +3,7 @@
 ===============================================
 
 .. automodule:: relaton.serializers
-XML2RFC
+
 .. contents::
    :local:
 
