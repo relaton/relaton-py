@@ -76,9 +76,3 @@ Targets
    :members:
    :undoc-members:
    :show-inheritance:
-
-
-YAML
-====
-
-TBD.
