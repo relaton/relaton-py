@@ -39,7 +39,7 @@ setup(
     version=version,
     description=desc,
     long_description=readme,
-    long_description_content_type="text/x-rst",
+    long_description_content_type='text/x-rst',
     author='Ribose Inc.',
     url='http://github.com/relaton/relaton-py/',
     author_email='open@ribose.com',
