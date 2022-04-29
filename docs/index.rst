@@ -10,6 +10,7 @@ for interacting with Relaton bibliographic data in Python.
 .. toctree::
    :maxdepth: 2
 
+   get-started
    ref/index
    glossary
 
