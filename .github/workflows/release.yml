@@ -23,7 +23,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements_dev.txt
 
-      - run: python3 -m build
+      - run: make dist
 
       - uses: pypa/gh-action-pypi-publish@release/v1.4
         with:
