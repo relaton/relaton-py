@@ -1,4 +1,4 @@
-include py.typed
+include relaton/py.typed
 include README.rst
 include LICENSE
 include requirements.txt
