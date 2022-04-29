@@ -35,7 +35,7 @@ desc = (
 version = relaton.__version__
 
 setup(
-    name='relaton_py',
+    name='relaton',
     version=version,
     description=desc,
     long_description=readme,
