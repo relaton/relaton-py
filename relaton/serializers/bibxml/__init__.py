@@ -9,6 +9,7 @@ Primary API is :func:`.serialize()`.
 
 from typing import List
 from xml.etree.ElementTree import Element
+from lxml import objectify, etree
 
 from ...util import as_list
 from ...models.bibdata import BibliographicItem, Relation
