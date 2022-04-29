@@ -16,4 +16,6 @@ def serialize(item: BibliographicItem, **kwargs) -> bytes:
     with pretty print.
     """
     # etree typings are wonky. This returns a byte array.
-    return etree.tostring(serialize(item, **kwargs), encoding='utf-8')
+    return etree.tostring(
+      _original_serialize(item, **kwargs),
+      encoding='utf-8')
