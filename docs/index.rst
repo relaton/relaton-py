@@ -13,6 +13,8 @@ for interacting with Relaton bibliographic data in Python.
    get-started
    ref/index
    glossary
+   development
+   changelog
 
 
 Indices and tables
