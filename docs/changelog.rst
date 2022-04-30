@@ -2,6 +2,11 @@
 Changelog
 =========
 
+v0.1.7
+======
+
+- Fixed re-imports.
+
 v0.1.6
 ======
 

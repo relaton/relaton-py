@@ -21,14 +21,14 @@ They are mixed for a few reasons:
                use :func:`common.pydantic.unpack_dataclasses` utility.
 """
 
-from .models.bibdata import *
-from .models.copyrights import *
-from .models.people import *
-from .models.orgs import *
-from .models.contacts import *
-from .models.links import *
-from .models.dates import *
-from .models.strings import *
+from .bibdata import *
+from .copyrights import *
+from .people import *
+from .orgs import *
+from .contacts import *
+from .links import *
+from .dates import *
+from .strings import *
 
 
 __all__ = (
