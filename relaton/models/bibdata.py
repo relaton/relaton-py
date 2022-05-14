@@ -113,6 +113,17 @@ class Edition:
     number: Optional[str] = None
 
 
+@dataclass
+class VersionInfo:
+    """Describes a version. Could be used for drafts."""
+
+    draft: Optional[str] = None
+    """Draft version."""
+
+    # revdate: Optional[Union[str, datetime.date]] = None
+    # """Revision date (format not clear)"""
+
+
 class BibliographicItem(BaseModel, extra=Extra.allow):
     """
     Relaton’s primary entity, bibliographic item.
@@ -147,6 +158,8 @@ class BibliographicItem(BaseModel, extra=Extra.allow):
     link: Optional[Union[List[Link], Link]] = None
 
     relation: 'Optional[List[Relation]]' = None
+
+    version: Optional[VersionInfo] = None
 
     title: Optional[Union[List[Title], Title]] = None
     edition: Optional[Edition] = None
