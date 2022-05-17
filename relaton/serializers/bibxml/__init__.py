@@ -62,7 +62,7 @@ def serialize(item: BibliographicItem, anchor: str = None) -> Element:
     # Fill in default root element anchor, unless specified
     if anchor is None:
         try:
-            anchor = get_suitable_anchor(as_list(item.docid or []))
+            anchor = get_suitable_anchor(item)
         except ValueError:
             pass
     if anchor:

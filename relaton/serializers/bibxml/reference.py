@@ -119,7 +119,7 @@ def create_reference(item: BibliographicItem) -> Element:
 
     # Anchor, may be overwritten by callers
     try:
-        anchor = get_suitable_anchor(docids)
+        anchor = get_suitable_anchor(item)
     except ValueError:
         pass
     else:
