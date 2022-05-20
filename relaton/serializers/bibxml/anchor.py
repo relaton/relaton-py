@@ -1,8 +1,5 @@
-from typing import List
-
-from ...util import as_list
 from ...models.bibdata import BibliographicItem, DocID
-
+from ...util import as_list
 
 __all__ = (
     'get_suitable_anchor',
@@ -34,7 +31,6 @@ def get_suitable_anchor(item: BibliographicItem) -> str:
     :rtype: str
     :raises ValueError: unable to obtain an anchor
     """
-
     docids = as_list(item.docid or [])
 
     for docid in docids:
