@@ -12,6 +12,7 @@ from relaton.serializers.bibxml import (
     get_suitable_target,
     serialize,
 )
+from relaton.serializers.bibxml.anchor import format_internet_draft_anchor
 from relaton.serializers.bibxml.authors import create_author
 from relaton.serializers.bibxml.series import (
     extract_doi_series,
@@ -300,36 +301,81 @@ class SerializerTestCase(TestCase):
         """
         get_suitable_anchor should return the correct anchor value
         """
-        id = "RFC1918"
-        docids = [DocID(id=id, type="RFC", scope="anchor")]
-        anchor = get_suitable_anchor(docids)
+        anchor = get_suitable_anchor(self.bibitem_reference)
         self.assertIsInstance(anchor, str)
-        self.assertEqual(anchor, id)
+        self.assertEqual(
+            anchor,
+            next(
+                docid.id
+                for docid in self.bibitem_reference.docid
+                if docid.scope == "anchor"
+            ),
+        )
 
     def test_get_suitable_anchor_without_scope_with_primary(self):
         """
         get_suitable_anchor should return DocID.id if primary=True and
         DocID.scope is not provided or DocID.scope != "anchor"
         """
-        id = "RFC1918"
-        docids = [DocID(id=id, type="RFC", primary=True)]
-        anchor = get_suitable_anchor(docids)
-        self.assertIsInstance(anchor, str)
-        self.assertEqual(anchor, id)
+        bibitem_with_primary_docid = copy(self.bibitem_reference)
+        bibitem_with_primary_docid.docid[0].primary = True
+        bibitem_with_primary_docid.docid[0].scope = None
 
-        docids = [DocID(id=id, type="RFC", scope="no_anchor")]
-        anchor = get_suitable_anchor(docids)
+        anchor = get_suitable_anchor(bibitem_with_primary_docid)
         self.assertIsInstance(anchor, str)
-        self.assertEqual(anchor, id)
+        self.assertEqual(
+            anchor,
+            next(
+                docid.id for docid in bibitem_with_primary_docid.docid if docid.primary
+            ),
+        )
+
+        bibitem_with_no_scope = copy(self.bibitem_reference)
+        bibitem_with_no_scope.docid[0].scope = "no_scope"
+        anchor = get_suitable_anchor(bibitem_with_no_scope)
+        self.assertIsInstance(anchor, str)
+        self.assertEqual(
+            anchor,
+            next(
+                docid.id
+                for docid in bibitem_with_no_scope.docid
+                if docid.scope == "no_scope"
+            ),
+        )
+
+    def test_get_suitable_anchor_for_internet_draft(self):
+        """
+        get_suitable_anchor should return the correct anchor value
+        if BibliographicItem.docid.type == "internet-draft"
+        """
+        versioned_id = "draft-xxx-non"
+        bibitem_versioned_id = copy(self.bibitem_reference)
+        bibitem_versioned_id.docid[0].type = "internet-draft"
+        bibitem_versioned_id.docid[0].id = versioned_id
+        anchor_versioned = get_suitable_anchor(bibitem_versioned_id)
+        self.assertEqual(
+            anchor_versioned, format_internet_draft_anchor(versioned_id, versioned=True)
+        )
+        self.assertEqual(anchor_versioned, versioned_id)
+
+        unversioned_id = "draft-xxx"
+        bibitem_unversioned_id = copy(self.bibitem_reference)
+        bibitem_unversioned_id.docid[0].type = "internet-draft"
+        bibitem_unversioned_id.docid[0].id = unversioned_id
+        anchor_unversioned = get_suitable_anchor(bibitem_unversioned_id)
+        self.assertEqual(
+            "I-D." + anchor_unversioned,
+            format_internet_draft_anchor(unversioned_id, versioned=False),
+        )
+        self.assertEqual(anchor_unversioned, unversioned_id)
 
     def test_fail_get_suitable_anchor(self):
         """
-        get_suitable_anchor should fail if called with
-        an empty list
+        get_suitable_anchor should fail if BibliographicItem.docid == []
         """
-        docids = []
+        self.bibitem_reference.docid = []
         with self.assertRaises(ValueError):
-            get_suitable_anchor(docids)
+            get_suitable_anchor(self.bibitem_reference)
 
     def test_get_suitable_target(self):
         """
