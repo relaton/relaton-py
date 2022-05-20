@@ -31,6 +31,7 @@ def get_suitable_anchor(item: BibliographicItem) -> str:
     :rtype: str
     :raises ValueError: unable to obtain an anchor
     """
+
     docids = as_list(item.docid or [])
 
     for docid in docids:
