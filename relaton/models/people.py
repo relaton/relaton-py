@@ -14,7 +14,9 @@ class PersonName:
     """Describes a person’s name."""
 
     completename: Optional[GenericStringValue] = None
-    """Full name."""
+    """Full name.
+    Expected to be mutually exclusive with other properties.
+    """
 
     surname: Optional[GenericStringValue] = None
     """Also known as last name or family name."""
