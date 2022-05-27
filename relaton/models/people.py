@@ -18,17 +18,23 @@ class PersonName:
     Expected to be mutually exclusive with other properties.
     """
 
-    surname: Optional[GenericStringValue] = None
-    """Also known as last name or family name."""
-
-    initial: Optional[List[GenericStringValue]] = None
-    """Initials, if any."""
+    prefix: Optional[GenericStringValue] = None
+    """Name prefix."""
 
     forename: Optional[Union[
         List[GenericStringValue],
         GenericStringValue,
     ]] = None
     """Also known as givne name or first name."""
+
+    initial: Optional[List[GenericStringValue]] = None
+    """Initials, if any."""
+
+    surname: Optional[GenericStringValue] = None
+    """Also known as last name or family name."""
+
+    addition: Optional[GenericStringValue] = None
+    """Addition to the name."""
 
 
 @dataclass
