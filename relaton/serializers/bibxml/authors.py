@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import cast, List, Optional
 from xml.etree.ElementTree import Element
 from lxml import objectify
 
@@ -94,16 +94,40 @@ def create_author(contributor: Contributor) -> Element:
 
     if contributor.person:
         name = contributor.person.name
+
+        # Simplify initials
+        # from a list of formatted strings to a list of plain strings
+        initials: List[str] = [
+            # We don’t expect trailing full stops in initials
+            # Workaround for bad source data, in effect
+            i.content.replace('.', ' ').strip()
+            for i in cast(List[GenericStringValue], as_list(name.initial or []))
+        ]
+
         if name.completename:
             author_el.set('fullname', name.completename.content)
+        else:
+            # Craft a complete name based on what we have
+            # It’s clunky and error-prone,
+            # but the alternative is only having a surname
+            # in absence of ``completename``,
+            # and ``completename`` is optional in Relaton.
+            author_el.set('fullname', '%s%s%s%s%s' % (
+                f"{name.prefix.content} " if name.prefix else '',
+                f"{' '.join(f.content for f in as_list(name.forename))} "
+                    if name.forename
+                    else '',
+                f"{'. '.join(initials)}. " if len(initials) > 0 else '',
+                f"{name.surname.content} " if name.surname else '',
+                f"{name.addition.content}" if name.addition else '',
+            ))
+
+        # Even if completename is given, these can still be provided:
+
         if name.surname:
             author_el.set('surname', name.surname.content)
-        if name.initial:
-            initials: List[GenericStringValue] = \
-                as_list(name.initial or [])
-            author_el.set('initials', ' '.join([
-                i.content.replace('.', ' ').strip()
-                for i in initials
-            ]))
+
+        if len(initials) > 0:
+            author_el.set('initials', ' '.join(initials))
 
     return author_el
