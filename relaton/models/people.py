@@ -28,7 +28,9 @@ class PersonName:
     """Also known as givne name or first name."""
 
     initial: Optional[List[GenericStringValue]] = None
-    """Initials, if any."""
+    """Initials, if any.
+    An initial is not expected to contain a trailing full stop.
+    """
 
     surname: Optional[GenericStringValue] = None
     """Also known as last name or family name."""
