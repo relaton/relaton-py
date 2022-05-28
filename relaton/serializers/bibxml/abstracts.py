@@ -13,6 +13,9 @@ __all__ = (
 E = objectify.E
 
 
+JATS_XMLNS = "http://www.ncbi.nlm.nih.gov/JATS1"
+
+
 def create_abstract(abstracts: List[GenericStringValue]) -> Element:
     """
     Formats an ``<abstract>`` element.
@@ -62,7 +65,7 @@ def get_paragraphs_html(val: str) -> List[str]:
 
 
 def get_paragraphs_jats(val: str) -> List[str]:
-    tree = etree.fromstring(f'<main>{val}</main>')
+    tree = etree.fromstring(f'<main xmlns:jats="{JATS_XMLNS}">{val}</main>')
     ps = cast(List[str], [
         p.text for p in tree.findall('jats:p')
         if (getattr(p, 'text', '') or '').strip() != ''
