@@ -51,26 +51,24 @@ def get_paragraphs(val: GenericStringValue) -> List[str]:
 
 def get_paragraphs_html(val: str) -> List[str]:
     tree = etree.fromstring(f'<main>{val}</main>')
-    ps = [
+    ps = cast(List[str], [
         p.text for p in tree.findall('p')
         if (getattr(p, 'text', '') or '').strip() != ''
-    ]
+    ])
     if len(ps) > 0:
-        # We can cast because we excluded falsey p.text
-        return cast(List[str], ps)
+        return ps
     else:
         raise ValueError("No HTML paragraphs detected")
 
 
 def get_paragraphs_jats(val: str) -> List[str]:
     tree = etree.fromstring(f'<main>{val}</main>')
-    ps = [
+    ps = cast(List[str], [
         p.text for p in tree.findall('jats:p')
         if (getattr(p, 'text', '') or '').strip() != ''
-    ]
+    ])
     if len(ps) > 0:
-        # We can cast because we excluded falsey p.text
-        return cast(List[str], ps)
+        return ps
     else:
         raise ValueError("No JATS paragraphs detected")
 
