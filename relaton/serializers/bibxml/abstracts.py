@@ -21,7 +21,7 @@ def get_paragraphs_html(val: str) -> List[str]:
     tree = etree.fromstring(f'<main>{val}</main>')
     ps = [
         p.text for p in tree.findall('p')
-        if (getattr(p, 'text', '') or '') != ''
+        if (getattr(p, 'text', '') or '').strip() != ''
     ]
     if len(ps) > 0:
         # We can cast because we excluded falsey p.text
