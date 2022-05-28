@@ -2,6 +2,19 @@
 Changelog
 =========
 
+v0.1.11
+=======
+
+- Fixed CodeCov badge syntax in README/PyPI description.
+
+v0.1.10
+=======
+
+- Abstract’s ``format`` is now taken into account.
+  For abstracts with ``application/x-jats-xml`` format
+  (typically, coming from Crossref DOI data),
+  paragraphs are now extracted as ``<t>`` sub-elements.
+
 v0.1.9
 ======
 
