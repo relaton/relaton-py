@@ -59,7 +59,7 @@ def get_paragraphs_html(val: str) -> List[str]:
         # We can cast because we excluded falsey p.text
         return cast(List[str], ps)
     else:
-        raise ValueError("No HTML text detected")
+        raise ValueError("No HTML paragraphs detected")
 
 
 def get_paragraphs_jats(val: str) -> List[str]:
