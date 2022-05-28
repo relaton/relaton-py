@@ -67,7 +67,7 @@ def get_paragraphs_html(val: str) -> List[str]:
 def get_paragraphs_jats(val: str) -> List[str]:
     tree = etree.fromstring(f'<main xmlns:jats="{JATS_XMLNS}">{val}</main>')
     ps = cast(List[str], [
-        p.text for p in tree.findall('jats:p')
+        p.text for p in tree.findall('jats:p', {'jats': JATS_XMLNS})
         if (getattr(p, 'text', '') or '').strip() != ''
     ])
     if len(ps) > 0:
