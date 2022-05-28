@@ -10,7 +10,7 @@ from ...models.strings import Title, GenericStringValue
 
 from .series import DOCID_SERIES_EXTRACTORS
 from .authors import create_author, is_author
-from .abstracts import get_paragraphs
+from .abstracts import create_abstract
 from .target import get_suitable_target
 from .anchor import get_suitable_anchor
 
@@ -81,10 +81,7 @@ def create_reference(item: BibliographicItem) -> Element:
     # Abstract
     abstracts: List[GenericStringValue] = as_list(item.abstract or [])
     if len(abstracts) > 0:
-        front.append(E.abstract(*(
-            E.t(p)
-            for p in get_paragraphs(abstracts[0].content)
-        )))
+        front.append(create_abstract(abstracts))
 
     ref = E.reference(front)
 
