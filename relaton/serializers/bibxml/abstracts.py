@@ -34,8 +34,8 @@ def create_abstract(abstracts: List[GenericStringValue]) -> Element:
 
 
 def get_paragraphs(val: GenericStringValue) -> List[str]:
-    """Returns paragraphs as plain text,
-    stripping HTML if needed.
+    """Converts HTML or JATS to a list of strings representing
+    paragraphs.
     """
     try:
         if val.format == 'text/html':
