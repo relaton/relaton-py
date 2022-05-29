@@ -2,6 +2,11 @@
 Changelog
 =========
 
+v0.1.14
+=======
+
+- Corrected a problem with abstract conversion (``bibxml`` serializer)
+
 v0.1.11
 =======
 
@@ -10,7 +15,7 @@ v0.1.11
 v0.1.10
 =======
 
-- Abstract’s ``format`` is now taken into account.
+- ``bibxml`` serializer now takes abstract’s ``format`` into account.
   For abstracts with ``application/x-jats-xml`` format
   (typically, coming from Crossref DOI data),
   paragraphs are now extracted as ``<t>`` sub-elements.
