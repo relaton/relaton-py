@@ -25,7 +25,7 @@ def create_abstract(abstracts: List[GenericStringValue]) -> Element:
 
     # Try to pick an English abstract, or the first one available
     abstract = (
-        [a for a in abstracts if a.language == 'en'] or
+        [a for a in abstracts if a.language in ('en', 'eng')] or
         abstracts
     )[0]
 
