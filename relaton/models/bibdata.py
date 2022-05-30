@@ -140,11 +140,8 @@ class BibliographicItem(BaseModel, extra=Extra.allow):
     # are mandatory in absence of formattedref.
 
     formattedref: Optional[GenericStringValue] = None
-    """References a bibliographic item via a primary ID.
-    Exclusive with other properties.
-
-    Tends to be used, for example, when this bibliographic item
-    is used as :data:`.Relation.bibitem`.
+    """A human-readable string representing this bibliographic item
+    in a not strongly specified way.
     """
 
     docid: Optional[Union[List[DocID], DocID]] = None
