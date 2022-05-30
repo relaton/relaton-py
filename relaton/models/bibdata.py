@@ -145,6 +145,7 @@ class BibliographicItem(BaseModel, extra=Extra.allow):
     """
 
     docid: List[DocID]
+    """A list of identifiers. The only required property."""
 
     docnumber: Optional[str] = None
     language: Optional[Union[List[str], str]] = None
