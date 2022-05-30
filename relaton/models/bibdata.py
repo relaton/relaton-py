@@ -144,7 +144,7 @@ class BibliographicItem(BaseModel, extra=Extra.allow):
     in a not strongly specified way.
     """
 
-    docid: Optional[Union[List[DocID], DocID]] = None
+    docid: List[DocID]
 
     docnumber: Optional[str] = None
     language: Optional[Union[List[str], str]] = None
