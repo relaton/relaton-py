@@ -11,26 +11,28 @@ Glossary
    citation
        Sometimes not quite correctly used as a synonym for :term:`bibliographic item`.
 
-   docid
+   resource identifier
    document identifier
-       Identifier of a document.
+   docid
+       Identifier of a resource (a document, a registry, or otherwise).
 
-       A document can have multiple identifiers (e.g., a DOI, an ISBN, etc.),
-       and sometimes a single identifier can be shared by multiple documents
+       A resource can have multiple identifiers (e.g., a DOI, an ISBN, etc.),
+       and sometimes a single identifier can be shared by multiple resources
        (however, such an ambiguous identifier
-       should not be :term:`primary <primary document identifier>`,
-       or it should be reported as a data integrity issue).
+       should not be :term:`primary <primary resource identifier>`,
+       that would be a data integrity issue).
 
        Identifiers are listed
        under :data:`BibliographicItem.docid <relaton.models.bibdata.BibliographicItem.docid>`,
        and each identifier is a :class:`relaton.models.bibdata.DocID` instance in Python.
 
+   primary resource identifier
    primary document identifier
        Main characteristics of a primary identifier:
 
-       - Its ``id`` can be used to unambiguously reference the document.
+       - Its ``id`` can be used to unambiguously reference the document (resource).
        - A primary identifier is expected to be
-         universally unique to this document.
+         universally unique to this resource.
 
        This service displays primary identifiers without identifier types,
        as types tend to be self-explanatory.
@@ -43,9 +45,7 @@ Glossary
        In Python, such identifiers have their :data:`~relaton.models.bibdata.DocID.primary`
        attribute set to ``True``.
 
-   docid.id
-       Refers to :data:`relaton.models.bibdata.DocID.id`.
-
+   resource identifier type
    document identifier type
    docid.type
        The ``type`` component of :term:`document identifier`,
@@ -60,3 +60,9 @@ Glossary
        (e.g., IETF, IANA).
 
        Examples: ``IETF``, ``IEEE``, ``DOI``.
+
+   docid.id
+       A string that is used to identify a resource
+       within the domain (schema, namespace, etc.) designated by :term:`docid.type`.
+
+       Contained in :data:`relaton.models.bibdata.DocID.id`.
