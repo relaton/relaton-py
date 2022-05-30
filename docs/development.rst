@@ -8,6 +8,24 @@ Setup
 Create a virtual Python environment
 and ``pip install -r requirements_dev.txt`` within it.
 
+Expanding Relaton model coverage
+================================
+
+- Consult Relaton specs (LutaML models, RNC grammar),
+  and available Relaton YAML bibliographic data sources
+  for the kinds of data we deal with.
+
+  Any new information you want
+  to add to bibliographic item model must already exist in the LutaML spec.
+
+- For consistency, any fields and types you define must use field names
+  that correspond to those defined in LutaML.
+
+- If specifications conflict
+  (e.g., LutaML and RNC define different types of a property, which sometimes happens),
+  file a consolidation issue and confirm with maintainers
+  which specification should take precedence.
+
 Process
 =======
 
