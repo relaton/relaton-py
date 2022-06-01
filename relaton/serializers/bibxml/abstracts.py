@@ -6,7 +6,7 @@ from ...models.strings import GenericStringValue
 
 
 __all__ = (
-  'create_abstract',
+    'create_abstract',
 )
 
 
