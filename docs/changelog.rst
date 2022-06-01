@@ -2,6 +2,11 @@
 Changelog
 =========
 
+v0.1.15
+=======
+
+- Make ``BibliographicItem.docid`` a list (and required property)
+
 v0.1.14
 =======
 
