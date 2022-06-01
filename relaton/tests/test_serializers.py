@@ -4,7 +4,6 @@ from io import StringIO
 from typing import List
 from unittest import TestCase
 
-import invalid as invalid
 from lxml import etree
 
 from relaton.models import BibliographicItem, Contributor, DocID, Link, GenericStringValue
