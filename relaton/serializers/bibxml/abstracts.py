@@ -31,7 +31,7 @@ def create_abstract(abstracts: List[GenericStringValue]) -> Element:
 
     return E.abstract(*(
         E.t(p)
-        for p in get_paragraphs(abstracts[0])
+        for p in get_paragraphs(abstract)
     ))
 
 
