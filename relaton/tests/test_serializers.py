@@ -6,15 +6,25 @@ from unittest import TestCase
 
 from lxml import etree
 
-from relaton.models import BibliographicItem, Contributor, DocID, Link, GenericStringValue
+from relaton.models import (
+    BibliographicItem,
+    Contributor,
+    DocID,
+    Link,
+    GenericStringValue,
+)
 from relaton.serializers.bibxml import (
     create_reference,
     get_suitable_anchor,
     get_suitable_target,
     serialize,
 )
-from relaton.serializers.bibxml.abstracts import create_abstract, get_paragraphs, get_paragraphs_html, \
-    get_paragraphs_jats
+from relaton.serializers.bibxml.abstracts import (
+    create_abstract,
+    get_paragraphs,
+    get_paragraphs_html,
+    get_paragraphs_jats,
+)
 from relaton.serializers.bibxml.anchor import format_internet_draft_anchor
 from relaton.serializers.bibxml.authors import create_author
 from relaton.serializers.bibxml.series import (
@@ -564,7 +574,9 @@ class SerializerTestCase(TestCase):
         abstract = create_abstract(abstracts)
         self.assertEqual(
             abstract.getchildren()[0],
-            next(abstract.content for abstract in abstracts if abstract.language == "en")
+            next(
+                abstract.content for abstract in abstracts if abstract.language == "en"
+            ),
         )
         self.assertEqual(abstract.tag, "abstract")
 
@@ -575,25 +587,30 @@ class SerializerTestCase(TestCase):
 
     def test_get_paragraphs(self):
         html_content = "HTML"
-        html_paragraph = GenericStringValue(content=f"<p>{html_content}</p>", format="text/html")
-
-        jats_content = "JATS"
-        jats_paragraph = GenericStringValue(content=f"<jats:p>{jats_content}</jats:p>", format="application/x-jats+xml")
-
-        invalid_content = "invalid"
-        invalid_paragraph = GenericStringValue(content=invalid_content, format="invalid")
-
+        html_paragraph = GenericStringValue(
+            content=f"<p>{html_content}</p>", format="text/html"
+        )
         paragraph = get_paragraphs(html_paragraph)
         self.assertEqual(paragraph[0], html_content)
 
+        jats_content = "JATS"
+        jats_paragraph = GenericStringValue(
+            content=f"<jats:p>{jats_content}</jats:p>", format="application/x-jats+xml"
+        )
         paragraph = get_paragraphs(jats_paragraph)
         self.assertEqual(paragraph[0], jats_content)
 
+        invalid_content = "invalid"
+        invalid_paragraph = GenericStringValue(
+            content=invalid_content, format="invalid"
+        )
         paragraph = get_paragraphs(invalid_paragraph)
         self.assertEqual(paragraph[0], invalid_content)
 
     def test_fail_get_html_paragraph(self):
-        paragraph = GenericStringValue(content="content", format="application/x-jats+xml")
+        paragraph = GenericStringValue(
+            content="content", format="application/x-jats+xml"
+        )
         with self.assertRaises(ValueError):
             get_paragraphs_html(paragraph)
 
