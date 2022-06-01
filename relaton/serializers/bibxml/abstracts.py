@@ -35,7 +35,6 @@ def create_abstract(abstracts: List[GenericStringValue]) -> Element:
     ))
 
 
-
 def get_paragraphs(val: GenericStringValue) -> List[str]:
     """Converts HTML or JATS to a list of strings representing
     paragraphs.
