@@ -566,6 +566,11 @@ class SerializerTestCase(TestCase):
         self.assertIsNone(extract_ieee_series(docid))
 
     def test_create_abstract(self):
+        """
+        create_abstract should return the content in English (en or eng)
+        if present or any other content otherwise (normally the first
+        of the list)
+        """
         abstracts: List[GenericStringValue] = [
             GenericStringValue(content="content", format="text/html", language="en"),
             GenericStringValue(content="contenuto", format="text/html", language="it"),
@@ -581,11 +586,19 @@ class SerializerTestCase(TestCase):
         self.assertEqual(abstract.tag, "abstract")
 
     def test_fail_create_abstract(self):
+        """
+        create_abstract should fail if called with a list
+        of empty abstracts
+        """
         abstracts: List[GenericStringValue] = []
         with self.assertRaises(ValueError):
             create_abstract(abstracts)
 
     def test_get_paragraphs(self):
+        """
+        get_paragraphs should return the right content based on
+        the paragraph format (HTML, JATS or plain text)
+        """
         html_content = "HTML"
         html_paragraph = GenericStringValue(
             content=f"<p>{html_content}</p>", format="text/html"
@@ -608,6 +621,10 @@ class SerializerTestCase(TestCase):
         self.assertEqual(paragraph[0], invalid_content)
 
     def test_fail_get_html_paragraph(self):
+        """
+        get_paragraphs_html should fail if called with the
+        wrong paragraph format
+        """
         paragraph = GenericStringValue(
             content="content", format="application/x-jats+xml"
         )
@@ -615,6 +632,10 @@ class SerializerTestCase(TestCase):
             get_paragraphs_html(paragraph)
 
     def test_fail_get_jats_paragraph(self):
+        """
+        get_paragraphs_jats should fail if called with the
+        wrong paragraph format
+        """
         paragraph = GenericStringValue(content="content", format="text/html")
         with self.assertRaises(ValueError):
             get_paragraphs_jats(paragraph)
