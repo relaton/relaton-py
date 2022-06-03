@@ -183,11 +183,15 @@ class BibliographicItem(BaseModel, extra=Extra.allow):
 
     extent: Optional[Union[LocalityStack, Locality]] = None
 
-    @validator("revdate", pre=True)
+    @validator('revdate', pre=True)
     def validate_revdate(cls, v, **kwargs):
         """Validates ``revdate``, allowing it to be unspecific."""
         if isinstance(v, list):
-            return [validate_relaxed_date(i) for i in v if i]
+            return [
+                validate_relaxed_date(i)
+                for i in v
+                if i
+            ]
         return validate_relaxed_date(v, optional=True)
 
 
