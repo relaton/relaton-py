@@ -2,8 +2,6 @@ from typing import Optional, List
 
 from pydantic.dataclasses import dataclass
 
-from relaton.models import GenericStringValue
-
 
 @dataclass
 class BibItemLocality:
