@@ -21,8 +21,8 @@ class BibItemLocality:
     """
 
     type: str
-    reference_from: GenericStringValue
-    reference_to: Optional[GenericStringValue] = None
+    reference_from: str
+    reference_to: Optional[str] = None
 
 
 @dataclass
