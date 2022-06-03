@@ -8,6 +8,7 @@ Some of Relaton models implemented as Pydantic models.
 # supported. Stick to plain text.
 
 from __future__ import annotations
+
 # Required for circular dependency
 # between BibliographicItem and Relation.
 
@@ -17,6 +18,7 @@ import datetime
 from pydantic import BaseModel, Extra, validator
 from pydantic.dataclasses import dataclass
 
+from .bibitemlocality import LocalityStack, Locality
 from .copyrights import Copyright
 from .strings import Title, GenericStringValue
 from .people import Person
@@ -179,15 +181,13 @@ class BibliographicItem(BaseModel, extra=Extra.allow):
 
     copyright: Optional[Union[List[Copyright], Copyright]] = None
 
-    @validator('revdate', pre=True)
+    extent: Optional[Union[LocalityStack, Locality]] = None
+
+    @validator("revdate", pre=True)
     def validate_revdate(cls, v, **kwargs):
         """Validates ``revdate``, allowing it to be unspecific."""
         if isinstance(v, list):
-            return [
-                validate_relaxed_date(i)
-                for i in v
-                if i
-            ]
+            return [validate_relaxed_date(i) for i in v if i]
         return validate_relaxed_date(v, optional=True)
 
 
