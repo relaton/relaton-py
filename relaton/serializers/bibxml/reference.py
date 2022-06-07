@@ -4,7 +4,7 @@ from xml.etree.ElementTree import Element
 from lxml import objectify
 
 from ...util import as_list
-from ...models.bibdata import BibliographicItem, DocID, Contributor, Series
+from ...models.bibdata import BibliographicItem, DocID, Contributor, Series, LocalityStack
 from ...models.dates import Date, parse_relaxed_date
 from ...models.strings import Title, GenericStringValue
 
@@ -121,5 +121,30 @@ def create_reference(item: BibliographicItem) -> Element:
         pass
     else:
         ref.set('anchor', anchor)
+
+    # BibItemLocality
+    extent: LocalityStack = item.extent or []
+    info = []
+    container_title = ""
+    for locality in extent.locality:
+        if locality.type == "container-title":
+            container_title = locality.reference_from
+        if locality.type == "volume":
+            info.append("vol. %s" % locality.reference_from)
+        elif locality.type == "issue":
+            info.append("no. %s" % locality.reference_from)
+        elif locality.type == "page":
+            info.append("pp. %s" % locality.reference_from)
+    if info:
+        ref.append(E.seriesInfo(
+            name=container_title,
+            value=", ".join(info),
+        ))
+    else:
+        spl = container_title.split(" ")
+        ref.append(E.seriesInfo(
+            name=" ".join(spl[0:-1]),
+            value=spl[-1],
+        ))
 
     return ref
