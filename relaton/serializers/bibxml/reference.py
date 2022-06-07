@@ -121,24 +121,6 @@ def create_reference(item: BibliographicItem) -> Element:
     except ValueError:
         pass
     else:
-        ref.set('anchor', anchor)
-
-    # BibItemLocality
-    extent: LocalityStack = item.extent or []
-    info = []
-    name = ""
-    for locality in extent.locality:
-        if locality.type == "container-title":
-            name = locality.reference_from
-        if locality.type == "volume":
-            info.append("vol. %s" % locality.reference_from)
-        elif locality.type == "issue":
-            info.append("no. %s" % locality.reference_from)
-        elif locality.type == "page":
-            info.append("pp. %s" % locality.reference_from)
-    ref.append(E.seriesInfo(
-        name=name,
-        value=", ".join(info),
-    ))
+        ref.set("anchor", anchor)
 
     return ref
