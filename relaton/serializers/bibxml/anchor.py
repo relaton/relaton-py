@@ -39,7 +39,7 @@ def get_suitable_anchor(item: BibliographicItem) -> str:
             return format_internet_draft_anchor(
                 docid.id,
                 versioned=True
-                    if (item.version and item.version.draft)
+                    if any((v and v.draft) for v in item.version)
                     else False)
         elif docid.scope == 'anchor':
             return docid.id
