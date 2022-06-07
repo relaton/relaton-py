@@ -159,7 +159,7 @@ class BibliographicItem(BaseModel, extra=Extra.allow):
 
     relation: 'Optional[List[Relation]]' = None
 
-    version: Optional[VersionInfo] = None
+    version: Optional[List[VersionInfo]] = None
 
     title: Optional[Union[List[Title], Title]] = None
     edition: Optional[Edition] = None

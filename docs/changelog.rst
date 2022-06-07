@@ -2,6 +2,11 @@
 Changelog
 =========
 
+v0.1.16
+=======
+
+- Allow multiple ``BibliographicItem.version`` entries
+
 v0.1.15
 =======
 

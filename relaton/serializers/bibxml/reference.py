@@ -35,7 +35,7 @@ def create_referencegroup(items: List[BibliographicItem]) -> Element:
 def create_reference(item: BibliographicItem) -> Element:
     titles: List[Title] = as_list(item.title or [])
     if len(titles) < 1:
-        raise ValueError("Unable to create a <reference>: no titles")
+        raise ValueError("Unable to create a reference object: no titles")
 
     contributors: List[Contributor] = as_list(item.contributor or [])
     author_contributors: List[Contributor] = [
