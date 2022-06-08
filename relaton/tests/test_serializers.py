@@ -68,7 +68,7 @@ class SerializerTestCase(TestCase):
             "date": [{"type": "published", "value": "1996-02"}],
             "abstract": [{"content": "abstract_content"}],
             "series": [{"title": ["IEEE P2740/D-6.5 2020-08"], "type": "IEEE"}],
-            "version": {"draft": True},
+            "version": [{"draft": True}],
         }
         self.bibitem_reference = BibliographicItem(**self.bibitem_reference_data)
 
