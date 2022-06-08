@@ -3,7 +3,6 @@ import datetime
 from xml.etree.ElementTree import Element
 from lxml import objectify
 
-from ...models.bibitemlocality import Locality, LocalityStack, BibItemLocality
 from ...util import as_list
 from ...models.bibdata import BibliographicItem, DocID, Contributor, Series
 from ...models.dates import Date, parse_relaxed_date
@@ -121,6 +120,6 @@ def create_reference(item: BibliographicItem) -> Element:
     except ValueError:
         pass
     else:
-        ref.set("anchor", anchor)
+        ref.set('anchor', anchor)
 
     return ref
