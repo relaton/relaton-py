@@ -2,6 +2,16 @@
 Changelog
 =========
 
+v0.1.17
+=======
+
+Updates regarding the ``bibxml`` serializer:
+
+- When deciding whether to output ``<referencegroup>``
+  as root element, rely on presence of “includes”-type relations
+  alone, rather than also require absence of titles.
+- Fix an issue with serializing Internet Drafts to XML
+
 v0.1.16
 =======
 
