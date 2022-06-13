@@ -1,3 +1,5 @@
+from typing import List
+
 from ...models.bibdata import BibliographicItem, DocID
 from ...util import as_list
 
@@ -32,7 +34,7 @@ def get_suitable_anchor(item: BibliographicItem) -> str:
     :raises ValueError: unable to obtain an anchor
     """
 
-    docids = as_list(item.docid or [])
+    docids: List[DocID] = as_list(item.docid or [])
 
     for docid in docids:
         if docid.type.lower() == 'internet-draft':
