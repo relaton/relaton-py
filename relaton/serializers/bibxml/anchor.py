@@ -38,11 +38,14 @@ def get_suitable_anchor(item: BibliographicItem) -> str:
 
     for docid in docids:
         if docid.type.lower() == 'internet-draft':
+            is_versioned_draft = item.version and any([
+                (v and v.draft)
+                for v in as_list(item.version)
+                # mypy error here ^ suggests it doesn’t handle generics well
+            ])
             return format_internet_draft_anchor(
                 docid.id,
-                versioned=True
-                    if any((v and v.draft) for v in item.version)
-                    else False)
+                versioned=True if is_versioned_draft else False)
         elif docid.scope == 'anchor':
             return docid.id
 
