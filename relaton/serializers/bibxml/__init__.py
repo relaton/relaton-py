@@ -43,7 +43,7 @@ def serialize(item: BibliographicItem, anchor: str = None) -> Element:
 
     constituents = [rel for rel in relations if rel.type == 'includes']
 
-    is_referencegroup = len(titles) < 1 and len(constituents) > 0
+    is_referencegroup = len(constituents) > 0
     is_reference = len(titles) > 0
 
     if is_reference:
