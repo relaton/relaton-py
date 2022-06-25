@@ -35,7 +35,11 @@ def extract_w3c_series(docid: DocID) -> Union[Tuple[str, str], None]:
 def extract_3gpp_tr_series(docid: DocID) -> Union[Tuple[str, str], None]:
     if docid.type.lower() == '3gpp':
         ver = docid.id.split('/')[-1]
-        id = docid.id.split('3GPP TR ')[1].split(':')[0]
+        # TODO: This is insufficient
+        try:
+            id = docid.id.split('3GPP TR ')[1].split(':')[0]
+        except IndexError:
+            return None
         return '3GPP TR', f'{id} {ver}'
     return None
 
