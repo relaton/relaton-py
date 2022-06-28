@@ -2,6 +2,11 @@
 Changelog
 =========
 
+v0.2.1
+======
+
+Fixed an error caused by messed-up order in contact method type definition.
+
 v0.2.0
 ======
 
