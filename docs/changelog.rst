@@ -2,6 +2,11 @@
 Changelog
 =========
 
+v0.2.4
+======
+
+Fixed property definition order on ``contacts.Phone``.
+
 v0.2.3
 ======
 
