@@ -12,8 +12,8 @@ __all__ = (
 
 @dataclass
 class Phone:
-    type: Optional[str] = None
     content: str
+    type: Optional[str] = None
 
 
 @dataclass
