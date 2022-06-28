@@ -2,6 +2,22 @@
 Changelog
 =========
 
+v0.2.0
+======
+
+Breaking.
+
+Updates contact method types to conform to spec:
+
+- ``Contact`` becomes ``Address``
+- ``ContactMethod``, ``Phone`` are added
+
+v0.1.18
+=======
+
+Fixes a possible crash of ``bibxml`` serializer
+on some 3GPP documents.
+
 v0.1.17
 =======
 
