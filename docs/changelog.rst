@@ -2,6 +2,11 @@
 Changelog
 =========
 
+v0.2.2
+======
+
+Fix misplaced ``Person.contact`` property definition.
+
 v0.2.1
 ======
 
