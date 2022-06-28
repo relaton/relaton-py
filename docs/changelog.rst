@@ -2,6 +2,11 @@
 Changelog
 =========
 
+v0.2.3
+======
+
+A default ``None`` for ``contacts.Phone.type`` is now supplied.
+
 v0.2.2
 ======
 
