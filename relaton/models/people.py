@@ -4,6 +4,7 @@ from pydantic.dataclasses import dataclass
 
 from .strings import GenericStringValue
 from .orgs import Organization
+from .contacts import ContactMethod
 
 
 __all__ = ('Person', 'PersonName', 'PersonAffiliation', )
@@ -37,6 +38,9 @@ class PersonName:
 
     addition: Optional[GenericStringValue] = None
     """Addition to the name."""
+
+    contact: Optional[List[ContactMethod]] = None
+    """Contact information."""
 
 
 @dataclass

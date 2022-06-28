@@ -6,7 +6,7 @@ from ...util import as_list
 from ...models.bibdata import Contributor
 from ...models.orgs import Organization
 from ...models.people import PersonAffiliation
-from ...models.contacts import Contact
+from ...models.contacts import ContactMethod, Address
 from ...models.strings import GenericStringValue
 
 
@@ -70,10 +70,10 @@ def create_author(contributor: Contributor) -> Element:
         author_el.append(org_el)
 
         # Address & postal
-        contacts: List[Contact] = as_list(org.contact or [])
-        postal_contacts = [
-            c for c in contacts
-            if c.country
+        contacts: List[ContactMethod] = as_list(org.contact or [])
+        postal_contacts: List[Address] = [
+            c.address for c in contacts
+            if c.address and c.address.country
         ]
         if len(postal_contacts) > 0 or org.url:
             addr = E.address()
