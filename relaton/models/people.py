@@ -39,9 +39,6 @@ class PersonName:
     addition: Optional[GenericStringValue] = None
     """Addition to the name."""
 
-    contact: Optional[List[ContactMethod]] = None
-    """Contact information."""
-
 
 @dataclass
 class PersonAffiliation:
@@ -59,3 +56,6 @@ class Person:
         List[PersonAffiliation],
         PersonAffiliation,
     ]] = None
+
+    contact: Optional[List[ContactMethod]] = None
+    """Contact information."""
