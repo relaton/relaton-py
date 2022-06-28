@@ -32,6 +32,6 @@ class ContactMethod:
     """Address information for a person
     or organization."""
     address: Optional[Address] = None
-    phone: Optional[str] = None
+    phone: Optional[Phone] = None
     email: Optional[str] = None
     uri: Optional[str] = None
