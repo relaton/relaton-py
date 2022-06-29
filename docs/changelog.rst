@@ -2,6 +2,16 @@
 Changelog
 =========
 
+v0.2.5
+======
+
+The ``bibxml`` serializer:
+
+- Fixed an issue where ``<reference>`` would be output instead of ``<referencegroup>``.
+- Missing bibliographic item title no longer causes serializer to fail.
+  However, it has to supply a default title, since the xml2rfc spec
+  requires ``<title>`` to be provided.
+
 v0.2.4
 ======
 
