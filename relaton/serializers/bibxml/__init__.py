@@ -38,26 +38,19 @@ def serialize(item: BibliographicItem, anchor: str = None) -> Element:
                         that make it unrenderable per RFC 7991.
     """
 
-    titles = as_list(item.title or [])
     relations: List[Relation] = as_list(item.relation or [])
 
     constituents = [rel for rel in relations if rel.type == 'includes']
 
     is_referencegroup = len(constituents) > 0
-    is_reference = len(titles) > 0
 
-    if is_reference:
-        root = create_reference(item)
-
-    elif is_referencegroup:
+    if is_referencegroup:
         root = create_referencegroup([
             ref.bibitem
-            for ref in constituents])
-
+            for ref in constituents
+        ])
     else:
-        raise ValueError(
-            "Able to construct neither <reference> nor <referencegroup>: "
-            "impossible combination of titles and relations")
+        root = create_reference(item)
 
     # Fill in default root element anchor, unless specified
     if anchor is None:
