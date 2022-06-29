@@ -24,6 +24,9 @@ __all__ = (
 E = objectify.E
 
 
+default_title = "[title unavailable]"
+
+
 def create_referencegroup(items: List[BibliographicItem]) -> Element:
     return E.referencegroup(*(
         create_reference(item)
@@ -32,9 +35,11 @@ def create_referencegroup(items: List[BibliographicItem]) -> Element:
 
 
 def create_reference(item: BibliographicItem) -> Element:
-    titles: List[Title] = as_list(item.title or [])
-    if len(titles) < 1:
-        raise ValueError("Unable to create a reference object: no titles")
+    main_title: str
+    if item.title:
+        main_title = as_list(item.title)[0].content or default_title
+    else:
+        main_title = default_title
 
     contributors: List[Contributor] = as_list(item.contributor or [])
     author_contributors: List[Contributor] = [
@@ -44,7 +49,7 @@ def create_reference(item: BibliographicItem) -> Element:
     ]
 
     front = E.front(
-        E.title(titles[0].content),
+        E.title(main_title),
         *(create_author(contrib) for contrib in author_contributors),
     )
 
