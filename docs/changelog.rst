@@ -2,6 +2,12 @@
 Changelog
 =========
 
+v0.2.6
+======
+
+The ``bibxml`` serializer will now prioritize PDF links
+for ``<reference target>`` attribute value.
+
 v0.2.5
 ======
 
