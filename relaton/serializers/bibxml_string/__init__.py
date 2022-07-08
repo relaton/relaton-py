@@ -5,7 +5,7 @@ from ...models.bibdata import BibliographicItem
 
 
 __all__ = (
-  'serialize',
+    'serialize',
 )
 
 
