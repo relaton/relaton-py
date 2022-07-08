@@ -2,6 +2,12 @@
 Changelog
 =========
 
+v0.2.7
+======
+
+The ``bibxml_string`` serializer now complies with own documentation
+and pretty-prints the resulting XML string.
+
 v0.2.6
 ======
 
