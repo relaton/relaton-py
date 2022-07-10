@@ -34,9 +34,6 @@ Glossary
        - A primary identifier is expected to be
          universally unique to this resource.
 
-       This service displays primary identifiers without identifier types,
-       as types tend to be self-explanatory.
-
        The :data:`~relaton.models.bibdata.DocID.id` value of a primary identifier
        uses format more or less similar to NIST’s PubID
        (possibly the only strongly standardized identifier format).
