@@ -2,6 +2,15 @@
 Changelog
 =========
 
+v0.2.8
+======
+
+``bibxml`` serializer:
+
+- Ensures returned ``anchor`` attribute satisfies XML schema
+  (by replacing or dropping non-conforming characters).
+- No longer formats Internet Draft anchors in a special way.
+
 v0.2.7
 ======
 
