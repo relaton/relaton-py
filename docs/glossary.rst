@@ -30,12 +30,12 @@ Glossary
    primary document identifier
        Main characteristics of a primary identifier:
 
-       - Its ``id`` can be used to unambiguously reference the document (resource).
+       - Identifier value (in Python, the :data:`~relaton.models.bibdata.DocID.id` attribute)
+         can be used to unambiguously reference the document (resource).
        - A primary identifier is expected to be
          universally unique to this resource.
 
-       The :data:`~relaton.models.bibdata.DocID.id` value of a primary identifier
-       uses format more or less similar to NIST’s PubID
+       Primary identifier uses format more or less similar to NIST’s PubID
        (possibly the only strongly standardized identifier format).
        It always starts with a prefix that denotes schema/document family.
 
