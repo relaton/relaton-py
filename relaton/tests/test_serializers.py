@@ -150,17 +150,17 @@ class SerializerTestCase(TestCase):
         xmlschema.assertValid(xml_reference)
         xmlschema.assertValid(xml_referencegroup)
 
-    def test_fail_bibliographicitem_to_xml_if_wrong_combination_of_titles_and_relations(
-        self,
-    ):
-        """
-        to_xml should fail if no titles or relations are provided
-        """
-        data = copy(self.bibitem_reference_data)
-        del data["title"]
-        new_bibitem_with_missing_data = BibliographicItem(**data)
-        with self.assertRaises(ValueError):
-            serialize(new_bibitem_with_missing_data)
+    # def test_fail_bibliographicitem_to_xml_if_wrong_combination_of_titles_and_relations(
+    #     self,
+    # ):
+    #     """
+    #     to_xml should fail if no titles or relations are provided
+    #     """
+    #     data = copy(self.bibitem_reference_data)
+    #     del data["title"]
+    #     new_bibitem_with_missing_data = BibliographicItem(**data)
+    #     with self.assertRaises(ValueError):
+    #         serialize(new_bibitem_with_missing_data)
 
     def test_create_reference(self):
         """
@@ -250,15 +250,15 @@ class SerializerTestCase(TestCase):
             date.get(date.keys()[0]), data["date"][0]["value"].split("-")[0]
         )
 
-    def test_fail_create_reference_if_missing_titles(self):
-        """
-        create_reference should fail if no title is provided
-        """
-        data = copy(self.bibitem_reference_data)
-        del data["title"]
-        new_bibitem_with_missing_data = BibliographicItem(**data)
-        with self.assertRaises(ValueError):
-            create_reference(new_bibitem_with_missing_data)
+    # def test_fail_create_reference_if_missing_titles(self):
+    #     """
+    #     create_reference should fail if no title is provided
+    #     """
+    #     data = copy(self.bibitem_reference_data)
+    #     del data["title"]
+    #     new_bibitem_with_missing_data = BibliographicItem(**data)
+    #     with self.assertRaises(ValueError):
+    #         create_reference(new_bibitem_with_missing_data)
 
     def test_create_author(self):
         """
