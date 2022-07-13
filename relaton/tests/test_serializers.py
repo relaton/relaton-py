@@ -150,18 +150,6 @@ class SerializerTestCase(TestCase):
         xmlschema.assertValid(xml_reference)
         xmlschema.assertValid(xml_referencegroup)
 
-    # def test_fail_bibliographicitem_to_xml_if_wrong_combination_of_titles_and_relations(
-    #     self,
-    # ):
-    #     """
-    #     to_xml should fail if no titles or relations are provided
-    #     """
-    #     data = copy(self.bibitem_reference_data)
-    #     del data["title"]
-    #     new_bibitem_with_missing_data = BibliographicItem(**data)
-    #     with self.assertRaises(ValueError):
-    #         serialize(new_bibitem_with_missing_data)
-
     def test_create_reference(self):
         """
         Test create_reference returns a valid XML output.
@@ -249,16 +237,6 @@ class SerializerTestCase(TestCase):
         self.assertEqual(
             date.get(date.keys()[0]), data["date"][0]["value"].split("-")[0]
         )
-
-    # def test_fail_create_reference_if_missing_titles(self):
-    #     """
-    #     create_reference should fail if no title is provided
-    #     """
-    #     data = copy(self.bibitem_reference_data)
-    #     del data["title"]
-    #     new_bibitem_with_missing_data = BibliographicItem(**data)
-    #     with self.assertRaises(ValueError):
-    #         create_reference(new_bibitem_with_missing_data)
 
     def test_create_author(self):
         """
@@ -359,32 +337,6 @@ class SerializerTestCase(TestCase):
                 if docid.scope == "no_scope"
             ),
         )
-
-    # def test_get_suitable_anchor_for_internet_draft(self):
-    #     """
-    #     get_suitable_anchor should return the correct anchor value
-    #     if BibliographicItem.docid.type == "internet-draft"
-    #     """
-    #     versioned_id = "draft-xxx-non"
-    #     bibitem_versioned_id = copy(self.bibitem_reference)
-    #     bibitem_versioned_id.docid[0].type = "internet-draft"
-    #     bibitem_versioned_id.docid[0].id = versioned_id
-    #     anchor_versioned = get_suitable_anchor(bibitem_versioned_id)
-    #     self.assertEqual(
-    #         anchor_versioned, format_internet_draft_anchor(versioned_id, versioned=True)
-    #     )
-    #     self.assertEqual(anchor_versioned, versioned_id)
-    #
-    #     unversioned_id = "draft-xxx"
-    #     bibitem_unversioned_id = copy(self.bibitem_reference)
-    #     bibitem_unversioned_id.docid[0].type = "internet-draft"
-    #     bibitem_unversioned_id.docid[0].id = unversioned_id
-    #     anchor_unversioned = get_suitable_anchor(bibitem_unversioned_id)
-    #     self.assertEqual(
-    #         "I-D." + anchor_unversioned,
-    #         format_internet_draft_anchor(unversioned_id, versioned=False),
-    #     )
-    #     self.assertEqual(anchor_unversioned, unversioned_id)
 
     def test_fail_get_suitable_anchor(self):
         """
@@ -666,14 +618,30 @@ class SerializerTestCase(TestCase):
         self._validate_yaml_data(url)
 
     def test_validate_w3c_data(self):
+        # TODO FIX
+        """
+        lxml.etree.DocumentInvalid: Element 'front': Missing child element(s). Expected is one of ( seriesInfo, author ).
+        """
         url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-w3c/main/data/2dcontext.yaml"
         self._validate_yaml_data(url)
 
     def test_validate_threegpp_data(self):
+        # TODO FIX
+        """
+        pydantic.error_wrappers.ValidationError: 1 validation error for BibliographicItem
+        contributor -> 0 -> organization -> contact -> 0
+        __init__() got an unexpected keyword argument 'street' (type=type_error)
+        """
         url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-3gpp/main/data/TR_00.01U_UMTS_3.0.0.yaml"
         self._validate_yaml_data(url)
 
     def test_validate_ieee_data(self):
+        # TODO FIX
+        """
+        pydantic.error_wrappers.ValidationError: 1 validation error for BibliographicItem
+        contributor -> 0 -> organization -> contact -> 0
+        __init__() got an unexpected keyword argument 'city' (type=type_error)
+        """
         url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-ieee/main/data/AIEE_11-1937.yaml"
         self._validate_yaml_data(url)
 
@@ -682,9 +650,19 @@ class SerializerTestCase(TestCase):
         self._validate_yaml_data(url)
 
     def test_validate_rfcsubseries_data(self):
+        # TODO FIX
+        """
+        lxml.etree.DocumentInvalid: Element 'front': Missing child element(s). Expected is one of ( seriesInfo, author ).
+        """
         url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-rfcsubseries/main/data/BCP0003.yaml"
         self._validate_yaml_data(url)
 
     def test_validate_nist_data(self):
+        # TODO FIX
+        """
+        pydantic.error_wrappers.ValidationError: 1 validation error for BibliographicItem
+        contributor -> 8 -> organization -> contact -> 0
+        __init__() got an unexpected keyword argument 'city' (type=type_error)
+        """
         url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-nist/main/data/NBS_BH_1.yaml"
         self._validate_yaml_data(url)
