@@ -2,6 +2,11 @@
 Changelog
 =========
 
+v0.2.9
+======
+
+Adds ``BibitemLocality`` support.
+
 v0.2.8
 ======
 
