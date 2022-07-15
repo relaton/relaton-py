@@ -3,6 +3,7 @@ import datetime
 from xml.etree.ElementTree import Element
 from lxml import objectify
 
+from ...models.bibitemlocality import LocalityStack, Locality
 from ...util import as_list
 from ...models.bibdata import BibliographicItem, DocID, Contributor, Series
 from ...models.dates import Date, parse_relaxed_date
@@ -126,5 +127,24 @@ def create_reference(item: BibliographicItem) -> Element:
         pass
     else:
         ref.set('anchor', anchor)
+
+    # refcontent
+    if len(item.extent) == 1:
+        extent: Locality = item.extent
+    else:
+        extent: LocalityStack = item.extent or []
+    info = []
+    for locality in extent.locality:
+        if locality.type == "container-title":
+            info.append(locality.reference_from)
+        if locality.type == "volume":
+            info.append("vol. %s" % locality.reference_from)
+        elif locality.type == "issue":
+            info.append("no. %s" % locality.reference_from)
+        elif locality.type == "page":
+            info.append("pp. %s" % locality.reference_from)
+    if info:
+        refcontent = ", ".join(info)
+        ref.set("refcontent", f"{refcontent}")
 
     return ref
