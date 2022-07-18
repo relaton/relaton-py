@@ -129,7 +129,7 @@ def create_reference(item: BibliographicItem) -> Element:
         ref.set('anchor', anchor)
 
     # refcontent
-    if len(item.extent) == 1:
+    if len(item.extent.locality) == 1:
         extent: Locality = item.extent
     else:
         extent: LocalityStack = item.extent or []
