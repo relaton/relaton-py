@@ -129,10 +129,19 @@ def create_reference(item: BibliographicItem) -> Element:
         ref.set('anchor', anchor)
 
     # refcontent
-    if len(item.extent.locality) == 1:
-        extent: Locality = item.extent
+    refcontent = create_refcontent(item.extent)
+    if refcontent:
+        ref.set("refcontent", f"{refcontent}")
+
+    return ref
+
+
+def create_refcontent(extent: Union[LocalityStack, Locality]) -> Union[None, str]:
+    refcontent = None
+    if len(extent.locality) == 1:
+        extent: Locality = extent
     else:
-        extent: LocalityStack = item.extent or []
+        extent: LocalityStack = extent or []
     info = []
     for locality in extent.locality:
         if locality.type == "container-title":
@@ -145,6 +154,4 @@ def create_reference(item: BibliographicItem) -> Element:
             info.append("pp. %s" % locality.reference_from)
     if info:
         refcontent = ", ".join(info)
-        ref.set("refcontent", f"{refcontent}")
-
-    return ref
+    return refcontent
