@@ -3,6 +3,7 @@ import datetime
 from xml.etree.ElementTree import Element
 from lxml import objectify
 
+from ...models.bibitemlocality import LocalityStack, Locality
 from ...util import as_list
 from ...models.bibdata import BibliographicItem, DocID, Contributor, Series
 from ...models.dates import Date, parse_relaxed_date
@@ -50,7 +51,7 @@ def create_reference(item: BibliographicItem) -> Element:
 
     front = E.front(
         E.title(main_title),
-        *(create_author(contrib) for contrib in author_contributors),
+        *(create_author(contrib) for contrib in author_contributors) if author_contributors else E.author(),
     )
 
     # Publication date… Or at least any date
@@ -127,4 +128,32 @@ def create_reference(item: BibliographicItem) -> Element:
     else:
         ref.set('anchor', anchor)
 
+    # refcontent
+    refcontent = create_refcontent(item.extent)
+    if refcontent:
+        ref.set("refcontent", f"{refcontent}")
+
     return ref
+
+
+def create_refcontent(extent: Union[LocalityStack, Locality]) -> Union[None, str]:
+    refcontent = None
+    if not extent:
+        return None
+    if len(extent.locality) == 1:
+        extent: Locality = extent
+    else:
+        extent: LocalityStack = extent or []
+    info = []
+    for locality in extent.locality:
+        if locality.type == "container-title":
+            info.append(locality.reference_from)
+        if locality.type == "volume":
+            info.append("vol. %s" % locality.reference_from)
+        elif locality.type == "issue":
+            info.append("no. %s" % locality.reference_from)
+        elif locality.type == "page":
+            info.append("pp. %s" % locality.reference_from)
+    if info:
+        refcontent = ", ".join(info)
+    return refcontent
