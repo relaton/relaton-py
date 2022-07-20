@@ -138,6 +138,8 @@ def create_reference(item: BibliographicItem) -> Element:
 
 def create_refcontent(extent: Union[LocalityStack, Locality]) -> Union[None, str]:
     refcontent = None
+    if not extent:
+        return None
     if len(extent.locality) == 1:
         extent: Locality = extent
     else:
