@@ -63,7 +63,7 @@ def to_valid_xsid(val: str) -> str:
 
 
 XSID_REGEX = re.compile(r'^[a-zA-Z_][-.\w]*$')
-"""A regular expression matching a full valid xs:id values."""
+"""A regular expression matching a full valid xs:id value."""
 
 XSID_ILLEGAL = re.compile(r'[^-.\w]')
 """A regular expression matching xs:id characters that are invalid
