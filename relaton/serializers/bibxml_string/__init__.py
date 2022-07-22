@@ -19,5 +19,6 @@ def serialize(item: BibliographicItem, **kwargs) -> bytes:
     return etree.tostring(
         _original_serialize(item, **kwargs),
         encoding='utf-8',
+        xml_declaration=True,
         pretty_print=True,
     )
