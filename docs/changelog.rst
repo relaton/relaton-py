@@ -2,6 +2,11 @@
 Changelog
 =========
 
+v0.2.11
+=======
+
+``bibxml`` serializer now uses a consistent order of ``<seriesInfo>`` elements.
+
 v0.2.10
 =======
 
