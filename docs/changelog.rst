@@ -2,6 +2,12 @@
 Changelog
 =========
 
+v0.2.10
+=======
+
+``bibxml_string`` serializer now attempts to return a canonicalized representation
+with XML declaration and DOCTYPE.
+
 v0.2.9
 ======
 
