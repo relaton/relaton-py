@@ -15,10 +15,24 @@ def serialize(item: BibliographicItem, **kwargs) -> bytes:
     and renders the obtained XML element as an UTF8-encoded string
     with pretty print.
     """
-    # etree typings are wonky. This returns a byte array.
+
+    # get a tree
+    canonicalized_tree =  etree.fromstring(
+        # obtained from a canonicalized string representation
+        etree.tostring(
+            # of the original bibxml tree
+            _original_serialize(item, **kwargs),
+            method='c14n2',
+        )
+        # ^ this returns a unicode string
+    )
+
+    # pretty-print that tree in utf-8 with declaration and doctype
     return etree.tostring(
-        _original_serialize(item, **kwargs),
+        canonicalized_tree,
         encoding='utf-8',
         xml_declaration=True,
+        doctype='<!DOCTYPE reference SYSTEM "rfc2629.dtd">',
         pretty_print=True,
     )
+    # ^ this returns a byte array
