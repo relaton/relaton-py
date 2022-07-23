@@ -1,4 +1,4 @@
-from typing import List, Tuple, Set, Optional, Union, cast
+from typing import List, Tuple, Optional, Union, cast
 import datetime
 from xml.etree.ElementTree import Element
 from lxml import objectify
@@ -92,20 +92,19 @@ def create_reference(item: BibliographicItem) -> Element:
     ref = E.reference(front)
 
     # Series
-    docids: List[DocID] = as_list(item.docid or [])
-    series: Set[Union[None, Tuple[str, str]]] = set()
-    for docid in docids:
-        series = series | set([
+    series: List[Optional[Tuple[str, str]]] = []
+    actual_series: List[Series] = as_list(item.series or [])
+    series.extend([
+        (cast(List[Title], as_list(s.title or []))[0].content, s.number)
+        for s in actual_series
+        if s.number and s.title
+    ])
+    for docid in (item.docid or []):
+        series.extend([
             func(docid)
             for func in DOCID_SERIES_EXTRACTORS
         ])
-    series_: List[Series] = as_list(item.series or [])
-    series = series | set([
-        (cast(List[Title], as_list(s.title or []))[0].content, s.number)
-        for s in series_
-        if s.number and s.title
-    ])
-    for series_info in series:
+    for series_info in list(dict.fromkeys(series)):
         if series_info is not None:
             ref.append(E.seriesInfo(
                 name=series_info[0],
