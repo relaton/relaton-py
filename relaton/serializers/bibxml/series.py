@@ -58,12 +58,12 @@ def extract_ieee_series(docid: DocID) -> Union[Tuple[str, str], None]:
 DOCID_SERIES_EXTRACTORS: List[
     Callable[[DocID], Union[Tuple[str, str], None]]
 ] = [
-    extract_doi_series,
     extract_rfc_series,
     extract_id_series,
     extract_w3c_series,
     extract_3gpp_tr_series,
     extract_ieee_series,
+    extract_doi_series,
 ]
 """A list of functions capable of extracting series information
 as 2-tuple (series name, document number)
