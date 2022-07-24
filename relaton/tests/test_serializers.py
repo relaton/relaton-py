@@ -14,6 +14,7 @@ from relaton.models import (
     Link,
     GenericStringValue,
 )
+from relaton.models.bibitemlocality import LocalityStack, Locality
 from relaton.serializers.bibxml import (
     create_reference,
     get_suitable_anchor,
@@ -27,6 +28,7 @@ from relaton.serializers.bibxml.abstracts import (
     get_paragraphs_jats,
 )
 from relaton.serializers.bibxml.authors import create_author
+from relaton.serializers.bibxml.reference import create_refcontent
 from relaton.serializers.bibxml.series import (
     extract_doi_series,
     extract_rfc_series,
@@ -237,6 +239,33 @@ class SerializerTestCase(TestCase):
         self.assertEqual(
             date.get(date.keys()[0]), data["date"][0]["value"].split("-")[0]
         )
+
+    def test_create_refcontent_with_localitystack(self):
+        title = "Container Title"
+        volume = "1"
+        issue = "2"
+        page = "3"
+        extent = LocalityStack(locality=[
+            Locality(type="container-title", reference_from=title),
+            Locality(type="volume", reference_from=volume),
+            Locality(type="issue", reference_from=issue),
+            Locality(type="page", reference_from=page),
+
+        ])
+        refcontent = create_refcontent(extent)
+        self.assertEqual(refcontent, f"{title}, vol. {volume}, no. {issue}, pp. {page}")
+
+    def test_create_refcontent_with_locality(self):
+        title = "Container Title"
+        extent = Locality(type="container-title", reference_from=title)
+
+        refcontent = create_refcontent(extent)
+        self.assertEqual(refcontent, f"{title}")
+
+    def test_create_refcontent_with_empty_extent(self):
+        extent = None
+        refcontent = create_refcontent(extent)
+        self.assertIsNone(refcontent)
 
     def test_create_author(self):
         """
