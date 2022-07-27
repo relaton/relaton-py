@@ -84,6 +84,12 @@ class SerializerTestCase(TestCase):
             "abstract": [{"content": "abstract_content"}],
             "series": [{"title": ["IEEE P2740/D-6.5 2020-08"], "type": "IEEE"}],
             "version": [{"draft": True}],
+            "extent": {"locality": [
+                {"type": "container-title", "reference_from": "Container Title"},
+                {"type": "volume", "reference_from": "1"},
+                {"type": "issue", "reference_from": "2"},
+                {"type": "page", "reference_from": "3"}
+            ]}
         }
         self.bibitem_reference = BibliographicItem(**self.bibitem_reference_data)
 
@@ -223,6 +229,17 @@ class SerializerTestCase(TestCase):
         self.assertEqual(
             abstract.getchildren()[0],
             self.bibitem_reference_data["abstract"][0]["content"],
+        )
+
+        # <refcontent> element
+        refcontent = reference.items()[1]
+        self.assertEqual(refcontent[0], "refcontent")
+        self.assertEqual(
+            reference.get(reference.keys()[1]),
+            f"{self.bibitem_reference_data['extent']['locality'][0]['reference_from']}, "
+            f"vol. {self.bibitem_reference_data['extent']['locality'][1]['reference_from']}, "
+            f"no. {self.bibitem_reference_data['extent']['locality'][2]['reference_from']}, "
+            f"pp. {self.bibitem_reference_data['extent']['locality'][3]['reference_from']}"
         )
 
     def test_create_reference_with_date_type_different_than_published(self):
