@@ -127,6 +127,12 @@ class SerializerTestCase(TestCase):
                         "docid": [{"id": "RFC1918", "type": "RFC"}],
                         "docnumber": "RFC1918",
                         "date": [{"type": "published", "value": "1998-02"}],
+                        "extent": {"locality": [
+                            {"type": "container-title", "reference_from": "Container Title"},
+                            {"type": "volume", "reference_from": "1"},
+                            {"type": "issue", "reference_from": "2"},
+                            {"type": "page", "reference_from": "3"}
+                        ]}
                     },
                 }
             ],
@@ -174,6 +180,8 @@ class SerializerTestCase(TestCase):
                     <t>abstract_content</t>
                 </abstract>
             </front>
+            <refcontent>Ref Content</refcontent>
+            <seriesInfo name="IEEE" value="IEEE P2740/D-6.5 2020-08"/>
         </reference>
         """
         reference = create_reference(self.bibitem_reference)
@@ -232,10 +240,9 @@ class SerializerTestCase(TestCase):
         )
 
         # <refcontent> element
-        refcontent = reference.items()[1]
-        self.assertEqual(refcontent[0], "refcontent")
+        refcontent = reference.getchildren()[1]
         self.assertEqual(
-            reference.get(reference.keys()[1]),
+            refcontent,
             f"{self.bibitem_reference_data['extent']['locality'][0]['reference_from']}, "
             f"vol. {self.bibitem_reference_data['extent']['locality'][1]['reference_from']}, "
             f"no. {self.bibitem_reference_data['extent']['locality'][2]['reference_from']}, "
