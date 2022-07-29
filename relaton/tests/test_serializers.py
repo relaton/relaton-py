@@ -14,6 +14,7 @@ from relaton.models import (
     Link,
     GenericStringValue,
 )
+from relaton.models.bibitemlocality import LocalityStack, Locality
 from relaton.serializers.bibxml import (
     create_reference,
     get_suitable_anchor,
@@ -27,6 +28,7 @@ from relaton.serializers.bibxml.abstracts import (
     get_paragraphs_jats,
 )
 from relaton.serializers.bibxml.authors import create_author
+from relaton.serializers.bibxml.reference import create_refcontent
 from relaton.serializers.bibxml.series import (
     extract_doi_series,
     extract_rfc_series,
@@ -82,6 +84,12 @@ class SerializerTestCase(TestCase):
             "abstract": [{"content": "abstract_content"}],
             "series": [{"title": ["IEEE P2740/D-6.5 2020-08"], "type": "IEEE"}],
             "version": [{"draft": True}],
+            "extent": {"locality": [
+                {"type": "container-title", "reference_from": "Container Title"},
+                {"type": "volume", "reference_from": "1"},
+                {"type": "issue", "reference_from": "2"},
+                {"type": "page", "reference_from": "3"}
+            ]}
         }
         self.bibitem_reference = BibliographicItem(**self.bibitem_reference_data)
 
@@ -119,6 +127,12 @@ class SerializerTestCase(TestCase):
                         "docid": [{"id": "RFC1918", "type": "RFC"}],
                         "docnumber": "RFC1918",
                         "date": [{"type": "published", "value": "1998-02"}],
+                        "extent": {"locality": [
+                            {"type": "container-title", "reference_from": "Container Title"},
+                            {"type": "volume", "reference_from": "1"},
+                            {"type": "issue", "reference_from": "2"},
+                            {"type": "page", "reference_from": "3"}
+                        ]}
                     },
                 }
             ],
@@ -166,6 +180,8 @@ class SerializerTestCase(TestCase):
                     <t>abstract_content</t>
                 </abstract>
             </front>
+            <refcontent>Ref Content</refcontent>
+            <seriesInfo name="IEEE" value="IEEE P2740/D-6.5 2020-08"/>
         </reference>
         """
         reference = create_reference(self.bibitem_reference)
@@ -223,6 +239,16 @@ class SerializerTestCase(TestCase):
             self.bibitem_reference_data["abstract"][0]["content"],
         )
 
+        # <refcontent> element
+        refcontent = reference.getchildren()[1]
+        self.assertEqual(
+            refcontent,
+            f"{self.bibitem_reference_data['extent']['locality'][0]['reference_from']}, "
+            f"vol. {self.bibitem_reference_data['extent']['locality'][1]['reference_from']}, "
+            f"no. {self.bibitem_reference_data['extent']['locality'][2]['reference_from']}, "
+            f"pp. {self.bibitem_reference_data['extent']['locality'][3]['reference_from']}"
+        )
+
     def test_create_reference_with_date_type_different_than_published(self):
         """
         create_reference should create a <date> tag using the date with
@@ -237,6 +263,33 @@ class SerializerTestCase(TestCase):
         self.assertEqual(
             date.get(date.keys()[0]), data["date"][0]["value"].split("-")[0]
         )
+
+    def test_create_refcontent_with_localitystack(self):
+        title = "Container Title"
+        volume = "1"
+        issue = "2"
+        page = "3"
+        extent = LocalityStack(locality=[
+            Locality(type="container-title", reference_from=title),
+            Locality(type="volume", reference_from=volume),
+            Locality(type="issue", reference_from=issue),
+            Locality(type="page", reference_from=page),
+
+        ])
+        refcontent = create_refcontent(extent)
+        self.assertEqual(refcontent, f"{title}, vol. {volume}, no. {issue}, pp. {page}")
+
+    def test_create_refcontent_with_locality(self):
+        title = "Container Title"
+        extent = Locality(type="container-title", reference_from=title)
+
+        refcontent = create_refcontent(extent)
+        self.assertEqual(refcontent, f"{title}")
+
+    def test_create_refcontent_with_empty_extent(self):
+        extent = None
+        refcontent = create_refcontent(extent)
+        self.assertIsNone(refcontent)
 
     def test_create_author(self):
         """

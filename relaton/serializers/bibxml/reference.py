@@ -89,7 +89,12 @@ def create_reference(item: BibliographicItem) -> Element:
     if len(abstracts) > 0:
         front.append(create_abstract(abstracts))
 
-    ref = E.reference(front)
+    # refcontent
+    refcontent = create_refcontent(item.extent)
+    if refcontent:
+        ref = E.reference(front, E.refcontent(refcontent))
+    else:
+        ref = E.reference(front)
 
     # Series
     series: List[Optional[Tuple[str, str]]] = []
@@ -127,32 +132,26 @@ def create_reference(item: BibliographicItem) -> Element:
     else:
         ref.set('anchor', anchor)
 
-    # refcontent
-    refcontent = create_refcontent(item.extent)
-    if refcontent:
-        ref.set("refcontent", f"{refcontent}")
-
     return ref
 
 
-def create_refcontent(extent: Union[LocalityStack, Locality]) -> Union[None, str]:
-    refcontent = None
+def create_refcontent(extent: Union[LocalityStack, Locality, None]) -> Union[None, str]:
     if not extent:
         return None
-    if len(extent.locality) == 1:
-        extent: Locality = extent
-    else:
-        extent: LocalityStack = extent or []
     info = []
-    for locality in extent.locality:
-        if locality.type == "container-title":
-            info.append(locality.reference_from)
-        if locality.type == "volume":
-            info.append("vol. %s" % locality.reference_from)
-        elif locality.type == "issue":
-            info.append("no. %s" % locality.reference_from)
-        elif locality.type == "page":
-            info.append("pp. %s" % locality.reference_from)
+    refcontent = None
+    if isinstance(extent, LocalityStack):
+        for locality in extent.locality:
+            if locality.type == "container-title":
+                info.append(locality.reference_from)
+            if locality.type == "volume":
+                info.append("vol. %s" % locality.reference_from)
+            elif locality.type == "issue":
+                info.append("no. %s" % locality.reference_from)
+            elif locality.type == "page":
+                info.append("pp. %s" % locality.reference_from)
+    else:
+        info.append(extent.reference_from)
     if info:
         refcontent = ", ".join(info)
     return refcontent
