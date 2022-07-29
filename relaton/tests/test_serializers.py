@@ -299,15 +299,15 @@ class SerializerTestCase(TestCase):
         """
         author_xsd = StringIO(
             """
-            <xsd:schema attributeFormDefault="unqualified" elementFormDefault="qualified" 
-            xmlns:xsd="http://www.w3.org/2001/XMLSchema"> 
-                <xsd:element name="author" type="authorType"/> 
-                <xsd:complexType name="authorType"> 
-                    <xsd:sequence> 
-                        <xsd:element type="xsd:string" name="organization"/> 
-                    </xsd:sequence> 
-                </xsd:complexType> 
-            </xsd:schema> 
+            <xsd:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                <xsd:element name="author" type="authorType"/>
+                <xsd:complexType name="authorType">
+                    <xsd:sequence>
+                        <xsd:element type="xsd:string" name="organization"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:schema>
             """
         )
         xmlschema_doc = etree.parse(author_xsd)
