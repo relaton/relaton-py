@@ -89,7 +89,12 @@ def create_reference(item: BibliographicItem) -> Element:
     if len(abstracts) > 0:
         front.append(create_abstract(abstracts))
 
-    ref = E.reference(front)
+    # refcontent
+    refcontent = create_refcontent(item.extent)
+    if refcontent:
+        ref = E.reference(front, E.refcontent(refcontent))
+    else:
+        ref = E.reference(front)
 
     # Series
     series: List[Optional[Tuple[str, str]]] = []
@@ -126,11 +131,6 @@ def create_reference(item: BibliographicItem) -> Element:
         pass
     else:
         ref.set('anchor', anchor)
-
-    # refcontent
-    refcontent = create_refcontent(item.extent)
-    if refcontent:
-        ref.set("refcontent", f"{refcontent}")
 
     return ref
 
