@@ -1364,12 +1364,12 @@
       <xs:sequence>
         <xs:element minOccurs="0" ref="stream"/>
         <xs:element ref="front"/>
-        <xs:sequence minOccurs="0" maxOccurs="unbounded">
-          <xs:element ref="annotation" minOccurs="0"/>
-          <xs:element ref="format" minOccurs="0"/>
-          <xs:element ref="seriesInfo" minOccurs="0"/>
-          <xs:element ref="refcontent" minOccurs="0"/>
-        </xs:sequence>q
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="annotation"/>
+          <xs:element ref="format"/>
+          <xs:element ref="refcontent"/>
+          <xs:element ref="seriesInfo"/>
+        </xs:choice>
       </xs:sequence>
       
       <xs:attribute name="anchor" use="required" type="xs:ID"/>
