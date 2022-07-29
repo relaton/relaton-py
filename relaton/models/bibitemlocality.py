@@ -6,6 +6,8 @@ from pydantic.dataclasses import dataclass
 __all__ = (
     'BibItemLocality',
 )
+
+
 @dataclass
 class BibItemLocality:
     """
