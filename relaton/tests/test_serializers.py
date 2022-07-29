@@ -28,7 +28,7 @@ from relaton.serializers.bibxml.abstracts import (
     get_paragraphs_jats,
 )
 from relaton.serializers.bibxml.authors import create_author
-from relaton.serializers.bibxml.reference import create_refcontent
+from relaton.serializers.bibxml.reference import build_refcontent_string
 from relaton.serializers.bibxml.series import (
     extract_doi_series,
     extract_rfc_series,
@@ -164,9 +164,9 @@ class SerializerTestCase(TestCase):
         xmlschema.assertValid(xml_reference)
         xmlschema.assertValid(xml_referencegroup)
 
-    def test_create_reference(self):
+    def test_build_refcontent_string(self):
         """
-        Test create_reference returns a valid XML output.
+        Test build_refcontent_string returns a valid XML output.
         Test that schema is valid and that output content
         matches the input.
 
@@ -249,12 +249,14 @@ class SerializerTestCase(TestCase):
             f"pp. {self.bibitem_reference_data['extent']['locality'][3]['reference_from']}"
         )
 
-    def test_create_reference_with_date_type_different_than_published(self):
+    def test_build_refcontent_string_with_date_type_different_than_published(self):
         """
-        create_reference should create a <date> tag using the date with
+        build_refcontent_string should create a <date> tag using the date with
         type == 'published'. If no date is of this type, it should choose
         a random date between the ones provided.
         """
+        # TODO: Indirectly testing build_refcontent_string without calling it,
+        # not sure if a good idea
         data = copy(self.bibitem_reference_data)
         data["date"][0]["type"] = "random_type"
         new_bibitem = BibliographicItem(**data)
@@ -264,7 +266,7 @@ class SerializerTestCase(TestCase):
             date.get(date.keys()[0]), data["date"][0]["value"].split("-")[0]
         )
 
-    def test_create_refcontent_with_localitystack(self):
+    def test_build_refcontent_string_with_localitystack(self):
         title = "Container Title"
         volume = "1"
         issue = "2"
@@ -276,20 +278,15 @@ class SerializerTestCase(TestCase):
             Locality(type="page", reference_from=page),
 
         ])
-        refcontent = create_refcontent(extent)
+        refcontent = build_refcontent_string(extent)
         self.assertEqual(refcontent, f"{title}, vol. {volume}, no. {issue}, pp. {page}")
 
-    def test_create_refcontent_with_locality(self):
+    def test_build_refcontent_string_with_locality(self):
         title = "Container Title"
         extent = Locality(type="container-title", reference_from=title)
 
-        refcontent = create_refcontent(extent)
+        refcontent = build_refcontent_string(extent)
         self.assertEqual(refcontent, f"{title}")
-
-    def test_create_refcontent_with_empty_extent(self):
-        extent = None
-        refcontent = create_refcontent(extent)
-        self.assertIsNone(refcontent)
 
     def test_create_author(self):
         """
