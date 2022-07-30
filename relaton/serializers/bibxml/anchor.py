@@ -29,9 +29,13 @@ def get_suitable_anchor(item: BibliographicItem) -> str:
     try:
         anchor_docid: DocID = (
             # Prefer primary
-            [d for d in docids if d.primary]
+            [d for d in docids
+                if d.primary
+                and XSID_REGEX.match(d.id) is not None]
             # Fallback case (docid.scope may be going away)
-            or [d for d in docids if getattr(d, 'scope', '') == 'anchor']
+            or [d for d in docids
+                if getattr(d, 'scope', '') == 'anchor'
+                and XSID_REGEX.match(d.id) is not None]
             # Otherwise, take any docid
             or docids)[0]
     except IndexError:
