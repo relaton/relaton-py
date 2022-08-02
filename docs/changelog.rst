@@ -2,6 +2,11 @@
 Changelog
 =========
 
+v0.2.12
+=======
+
+``bibxml`` serializer now formats RFC anchors appropriately.
+
 v0.2.11
 =======
 
