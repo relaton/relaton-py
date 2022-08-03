@@ -2,6 +2,11 @@
 Changelog
 =========
 
+v0.2.16
+=======
+
+``bibxml`` serializer now omits DOCTYPE again.
+
 v0.2.15
 =======
 

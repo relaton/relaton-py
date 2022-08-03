@@ -32,7 +32,7 @@ def serialize(item: BibliographicItem, **kwargs) -> bytes:
         canonicalized_tree,
         encoding='utf-8',
         xml_declaration=True,
-        doctype='<!DOCTYPE reference SYSTEM "rfc2629.dtd">',
+        doctype=None,
         pretty_print=True,
     )
     # ^ this returns a byte array
