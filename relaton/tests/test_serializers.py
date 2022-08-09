@@ -7,20 +7,19 @@ from unittest import TestCase
 
 import yaml
 from lxml import etree
+from lxml.etree import Element
 
 from relaton.models import (
     BibliographicItem,
     Contributor,
     DocID,
     Link,
-    GenericStringValue,
+    GenericStringValue, Organization, Person, PersonName, Title, Date, Series,
 )
+from relaton.models.bibdata import VersionInfo, Relation
 from relaton.models.bibitemlocality import LocalityStack, Locality
 from relaton.serializers.bibxml import (
-    create_reference,
-    get_suitable_anchor,
-    get_suitable_target,
-    serialize,
+    serialize
 )
 from relaton.serializers.bibxml.abstracts import (
     create_abstract,
@@ -28,8 +27,10 @@ from relaton.serializers.bibxml.abstracts import (
     get_paragraphs_html,
     get_paragraphs_jats,
 )
+from relaton.serializers.bibxml.anchor import get_suitable_anchor
 from relaton.serializers.bibxml.authors import create_author
 from relaton.serializers.bibxml.reference import build_refcontent_string
+from relaton.serializers.bibxml.reference import create_reference
 from relaton.serializers.bibxml.series import (
     extract_doi_series,
     extract_rfc_series,
@@ -38,108 +39,57 @@ from relaton.serializers.bibxml.series import (
     extract_3gpp_tr_series,
     extract_ieee_series,
 )
+from relaton.serializers.bibxml.target import get_suitable_target
 
 
 class SerializerTestCase(TestCase):
     def setUp(self):
         # Data for a Contributor (AKA Author) of type Organization
-        contributor_organization_data = {
-            "organization": {
-                "name": "Internet Engineering Task Force",
-            },
-            "role": "publisher",
-        }
-        self.contributor_organization = Contributor(**contributor_organization_data)
+        self.contributor_organization = Contributor(
+            organization=Organization(
+                name="Internet Engineering Task Force"
+            ),
+            role="publisher"
+        )
 
         # Data for a Contributor (AKA Author) of type Person
-        self.contributor_person_data = {
-            "person": {
-                "name": {
-                    "initial": [{"content": "Mr", "language": "en"}],
-                    "surname": {"content": "Cerf", "language": "en"},
-                    "completename": {"content": "Mr Cerf", "language": "en"},
-                },
-            },
-            "role": "author",
-        }
-        self.contributor_person = Contributor(**self.contributor_person_data)
+        self.contributor_person = Contributor(
+            person=Person(
+                name=PersonName(
+                    initial=[GenericStringValue(content="Mr", language="en")],
+                    surname=GenericStringValue(content="Cerf", language="en"),
+                    completename=GenericStringValue(content="Mr Cerf", language="en"),
+                )
+            ),
+            role="author"
+        )
 
-        # Data for a BibliographicItem which will be converted
-        # to a <reference> root tag in the XML output
-        self.bibitem_reference_data = {
-            "id": "ref_01",
-            "title": [
-                {
-                    "content": "title",
-                    "language": "en",
-                    "script": "Latn",
-                    "format": "text / plain",
-                }
+        self.bibitem_reference = BibliographicItem(
+            title=Title(content="title", language="en", script="Latn", format="text / plain"),
+            docid=[
+                DocID(id="ref_01", scope="anchor", type="type"),
+                DocID(id="IEEE P2740/D-6.5 2020-08", type="IEEE")
             ],
-            "docid": [
-                {"id": "ref_01", "scope": "anchor", "type": "type"},
-                {"id": "IEEE P2740/D-6.5 2020-08", "type": "IEEE"},
-            ],
-            "contributor": [self.contributor_person_data],
-            "date": [{"type": "published", "value": "1996-02"}],
-            "abstract": [{"content": "abstract_content"}],
-            "series": [{"title": ["IEEE P2740/D-6.5 2020-08"], "type": "IEEE"}],
-            "version": [{"draft": True}],
-            "extent": {"locality": [
-                {"type": "container-title", "reference_from": "Container Title"},
-                {"type": "volume", "reference_from": "1"},
-                {"type": "issue", "reference_from": "2"},
-                {"type": "page", "reference_from": "3"}
-            ]}
-        }
-        self.bibitem_reference = BibliographicItem(**self.bibitem_reference_data)
+            contributor=[self.contributor_person],
+            date=[Date(type="published", value="1996-02")],
+            abstract=[GenericStringValue(content="abstract_content")],
+            series=[Series(title=[GenericStringValue(content="IEEE P2740/D-6.5 2020-08")], type="IEEE")],
+            version=[VersionInfo(draft="True")],
+            extent=LocalityStack(locality=[
+                Locality(type="container-title", reference_from="Container Title"),
+                Locality(type="volume", reference_from="1"),
+                Locality(type="issue", reference_from="2"),
+                Locality(type="page", reference_from="3")
+            ]),
+        )
 
         # Data for a BibliographicItem which will be converted
         # to a <referencegroup> root tag in the XML output
-        self.bibitem_referencegroup_data = {
-            "id": "ref_02",
-            "docid": [{"id": "ref_02", "type": "test_dataset_02"}],
-            "relation": [
-                {
-                    "type": "includes",
-                    "bibitem": {
-                        "id": "test_id",
-                        "title": [
-                            {
-                                "content": "title",
-                                "language": "en",
-                                "script": "Latn",
-                                "format": "text / plain",
-                            }
-                        ],
-                        "contributor": [
-                            contributor_organization_data,
-                            self.contributor_person_data,
-                        ],
-                        "link": [
-                            {
-                                "content": "https://raw.githubusercontent.com/relaton/relaton-data-ietf/master/data"
-                                "/reference.RFC"
-                                ".1918.xml",
-                                "type": "xml",
-                            }
-                        ],
-                        "type": "standard",
-                        "docid": [{"id": "RFC1918", "type": "RFC"}],
-                        "docnumber": "RFC1918",
-                        "date": [{"type": "published", "value": "1998-02"}],
-                        "extent": {"locality": [
-                            {"type": "container-title", "reference_from": "Container Title"},
-                            {"type": "volume", "reference_from": "1"},
-                            {"type": "issue", "reference_from": "2"},
-                            {"type": "page", "reference_from": "3"}
-                        ]}
-                    },
-                }
-            ],
-        }
         self.bibitem_referencegroup = BibliographicItem(
-            **self.bibitem_referencegroup_data
+            docid=[DocID(id="ref_02", type="test_dataset_02")],
+            relation=[
+                Relation(type="includes", bibitem=self.bibitem_reference)
+            ]
         )
 
         module_dir = os.path.dirname(__file__)
@@ -165,9 +115,9 @@ class SerializerTestCase(TestCase):
         xmlschema.assertValid(xml_reference)
         xmlschema.assertValid(xml_referencegroup)
 
-    def test_build_refcontent_string(self):
+    def test_create_reference(self):
         """
-        Test build_refcontent_string returns a valid XML output.
+        Test create_reference returns a valid XML output.
         Test that schema is valid and that output content
         matches the input.
 
@@ -187,10 +137,10 @@ class SerializerTestCase(TestCase):
         """
         reference = create_reference(self.bibitem_reference)
         self.assertEqual(reference.tag, "reference")
-        anchor = reference.keys()[0]
+        anchor = next(iter(reference.keys()))
         self.assertEqual(anchor, "anchor")
         self.assertEqual(
-            reference.get(anchor), self.bibitem_reference_data["docid"][0]["id"]
+            reference.get(anchor), self.bibitem_reference.docid[0].id
         )
 
         # <front> element
@@ -200,7 +150,9 @@ class SerializerTestCase(TestCase):
         # <title> element
         title = front.getchildren()[0]
         self.assertEqual(title.tag, "title")
-        self.assertEqual(title.text, self.bibitem_reference_data["title"][0]["content"])
+        # TODO find a better way to assert using both options of the Union
+        if isinstance(self.bibitem_reference.title, GenericStringValue):
+            self.assertEqual(title.text, self.bibitem_reference.title.content)
 
         # <author> element
         author = front.getchildren()[1]
@@ -208,18 +160,26 @@ class SerializerTestCase(TestCase):
         self.assertEqual(author.keys()[0], "fullname")
         self.assertEqual(author.keys()[1], "surname")
         self.assertEqual(author.keys()[2], "initials")
-        self.assertEqual(
-            author.get(author.keys()[0]),
-            self.contributor_person_data["person"]["name"]["completename"]["content"],
-        )
-        self.assertEqual(
-            author.get(author.keys()[1]),
-            self.contributor_person_data["person"]["name"]["surname"]["content"],
-        )
-        self.assertEqual(
-            author.get(author.keys()[2]),
-            self.contributor_person_data["person"]["name"]["initial"][0]["content"],
-        )
+        # TODO find a better way to assert using both options of the Union
+        if isinstance(self.contributor_person.person, Person) and \
+                isinstance(self.contributor_person.person.name.completename, GenericStringValue):
+            self.assertEqual(
+                author.get(author.keys()[0]),
+                self.contributor_person.person.name.completename.content
+            )
+        if isinstance(self.contributor_person.person, Person) and \
+                isinstance(self.contributor_person.person.name.surname, GenericStringValue):
+            self.assertEqual(
+                author.get(author.keys()[1]),
+                self.contributor_person.person.name.surname.content,
+            )
+        if isinstance(self.contributor_person.person, Person) and \
+                isinstance(self.contributor_person.person.name.initial, list) and \
+                isinstance(self.contributor_person.person.name.initial[0], GenericStringValue):
+            self.assertEqual(
+                author.get(author.keys()[2]),
+                self.contributor_person.person.name.initial[0].content,
+            )
 
         # <date> element
         date = front.getchildren()[2]
@@ -227,44 +187,49 @@ class SerializerTestCase(TestCase):
 
         self.assertEqual(date.keys()[0], "year")
         self.assertEqual(date.keys()[1], "month")
-        self.assertEqual(
-            date.get(date.keys()[0]),
-            self.bibitem_reference_data["date"][0]["value"].split("-")[0],
-        )
+        if isinstance(self.bibitem_reference.date, list) and \
+                isinstance(self.bibitem_reference.date[0].value, str):
+            self.assertEqual(
+                date.get(date.keys()[0]),
+                self.bibitem_reference.date[0].value.split(" ")[1],
+            )
 
         # <abstract> element
         abstract = front.getchildren()[3]
         self.assertEqual(abstract.tag, "abstract")
-        self.assertEqual(
-            abstract.getchildren()[0],
-            self.bibitem_reference_data["abstract"][0]["content"],
-        )
+        if isinstance(self.bibitem_reference.abstract, list) and \
+            isinstance(self.bibitem_reference.abstract[0], GenericStringValue):
+            self.assertEqual(
+                abstract.getchildren()[0],
+                self.bibitem_reference.abstract[0].content,
+            )
 
         # <refcontent> element
         refcontent = reference.getchildren()[1]
-        self.assertEqual(
-            refcontent,
-            f"{self.bibitem_reference_data['extent']['locality'][0]['reference_from']}, "
-            f"vol. {self.bibitem_reference_data['extent']['locality'][1]['reference_from']}, "
-            f"no. {self.bibitem_reference_data['extent']['locality'][2]['reference_from']}, "
-            f"pp. {self.bibitem_reference_data['extent']['locality'][3]['reference_from']}"
-        )
+        if isinstance(self.bibitem_reference.extent, LocalityStack) and \
+                isinstance(self.bibitem_reference.extent.locality, list) and \
+                isinstance(all(self.bibitem_reference.extent.locality), GenericStringValue):
+            self.assertEqual(
+                refcontent,
+                f"{self.bibitem_reference.extent.locality[0].reference_from}, "
+                f"vol. {self.bibitem_reference.extent.locality[1].reference_from}, "
+                f"no. {self.bibitem_reference.extent.locality[2].reference_from}, "
+                f"pp. {self.bibitem_reference.extent.locality[3].reference_from}"
+            )
 
-    def test_build_refcontent_string_with_date_type_different_than_published(self):
+    def test_create_reference_with_date_type_different_than_published(self):
         """
-        build_refcontent_string should create a <date> tag using the date with
+        create_reference should create a <date> tag using the date with
         type == 'published'. If no date is of this type, it should choose
         a random date between the ones provided.
         """
-        # TODO: Indirectly testing build_refcontent_string without calling it,
-        # not sure if a good idea
-        data = copy(self.bibitem_reference_data)
-        data["date"][0]["type"] = "random_type"
+        data = copy(self.bibitem_reference).__dict__
+        data["date"][0].type = "random_type"
         new_bibitem = BibliographicItem(**data)
         reference = create_reference(new_bibitem)
         date = reference.getchildren()[0].getchildren()[2]
         self.assertEqual(
-            date.get(date.keys()[0]), data["date"][0]["value"].split("-")[0]
+            f"{date.get(date.keys()[1])} {date.get(date.keys()[0])}", data["date"][0].value.split("-")[0]
         )
 
     def test_build_refcontent_string_with_localitystack(self):
@@ -325,8 +290,8 @@ class SerializerTestCase(TestCase):
         """
         contributor_organization = copy(self.contributor_organization)
         contributor_person = copy(self.contributor_person)
-        contributor_organization.role = None
-        contributor_person.role = None
+        contributor_organization.role = "role"
+        contributor_person.role = "role"
         with self.assertRaises(ValueError):
             create_author(contributor_organization)
             create_author(contributor_person)
@@ -460,7 +425,7 @@ class SerializerTestCase(TestCase):
         get_suitable_target should fail if called with
         a list of empty links
         """
-        links = []
+        links: List[Link] = []
         with self.assertRaises(ValueError):
             get_suitable_target(links)
 
@@ -471,7 +436,9 @@ class SerializerTestCase(TestCase):
         """
         id_value = "10.17487/RFC4036"
         docid = DocID(id=id_value, type="DOI")
-        type, id = extract_doi_series(docid)
+        result = extract_doi_series(docid)
+        if result:
+            type, id = result
         self.assertEqual(type, "DOI")
         self.assertEqual(id, id_value)
 
@@ -491,7 +458,9 @@ class SerializerTestCase(TestCase):
         """
         id_value = "RFC 4036"
         docid = DocID(id=id_value, type="IETF")
-        serie, id = extract_rfc_series(docid)
+        result = extract_rfc_series(docid)
+        if result:
+            serie, id = result
         self.assertEqual(serie, "RFC")
         self.assertEqual(id, id_value.split(" ")[-1])
 
@@ -512,7 +481,9 @@ class SerializerTestCase(TestCase):
         id_value = "draft-ietf-hip-rfc5201-bis-13"
         type_value = "Internet-Draft"
         docid = DocID(id=id_value, type=type_value)
-        serie, id = extract_id_series(docid)
+        result = extract_id_series(docid)
+        if result:
+            serie, id = result
         self.assertEqual(serie, type_value)
         self.assertEqual(id, id_value)
 
@@ -533,7 +504,9 @@ class SerializerTestCase(TestCase):
         id_value = "W3C.REC-owl2-syntax-20121211"
         type_value = "W3C"
         docid = DocID(id=id_value, type=type_value)
-        serie, id = extract_w3c_series(docid)
+        result = extract_w3c_series(docid)
+        if result:
+            serie, id = result
         self.assertEqual(serie, type_value)
         self.assertEqual(id, id_value.replace(".", " ").split("W3C ")[-1])
 
@@ -554,7 +527,9 @@ class SerializerTestCase(TestCase):
         id_value = "3GPP TR 25.321:Rel-8/8.3.0"
         type_value = "3GPP"
         docid = DocID(id=id_value, type=type_value)
-        serie, id = extract_3gpp_tr_series(docid)
+        result = extract_3gpp_tr_series(docid)
+        if result:
+            serie, id = result
         self.assertEqual(serie, f"{type_value} TR")
         self.assertEqual(
             id,
@@ -578,7 +553,9 @@ class SerializerTestCase(TestCase):
         id_value = "IEEE P2740/D-6.5.2020-08"
         type_value = "IEEE"
         docid = DocID(id=id_value, type=type_value)
-        serie, id = extract_ieee_series(docid)
+        result = extract_ieee_series(docid)
+        if result:
+            serie, id = result
         id_value_alternative, year, *_ = (
             docid.id.split(" ")[-1].lower().strip().split(".")
         )
@@ -593,7 +570,9 @@ class SerializerTestCase(TestCase):
         id_value = "IEEE P2740/D-6.5 2020-08"
         type_value = "IEEE"
         docid = DocID(id=id_value, type=type_value)
-        serie, id = extract_ieee_series(docid)
+        result = extract_ieee_series(docid)
+        if result:
+            serie, id = result
         self.assertEqual(serie, type_value)
         self.assertEqual(id, id_value)
 
@@ -666,20 +645,16 @@ class SerializerTestCase(TestCase):
         get_paragraphs_html should fail if called with the
         wrong paragraph format
         """
-        paragraph = GenericStringValue(
-            content="content", format="application/x-jats+xml"
-        )
         with self.assertRaises(ValueError):
-            get_paragraphs_html(paragraph)
+            get_paragraphs_html("content")
 
     def test_fail_get_jats_paragraph(self):
         """
         get_paragraphs_jats should fail if called with the
         wrong paragraph format
         """
-        paragraph = GenericStringValue(content="content", format="text/html")
         with self.assertRaises(ValueError):
-            get_paragraphs_jats(paragraph)
+            get_paragraphs_jats("content")
 
     def _validate_yaml_data(self, url):
         import requests
@@ -703,30 +678,14 @@ class SerializerTestCase(TestCase):
         self._validate_yaml_data(url)
 
     def test_validate_w3c_data(self):
-        # TODO FIX
-        """
-        lxml.etree.DocumentInvalid: Element 'front': Missing child element(s). Expected is one of ( seriesInfo, author ).
-        """
         url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-w3c/main/data/2dcontext.yaml"
         self._validate_yaml_data(url)
 
     def test_validate_threegpp_data(self):
-        # TODO FIX
-        """
-        pydantic.error_wrappers.ValidationError: 1 validation error for BibliographicItem
-        contributor -> 0 -> organization -> contact -> 0
-        __init__() got an unexpected keyword argument 'street' (type=type_error)
-        """
         url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-3gpp/main/data/TR_00.01U_UMTS_3.0.0.yaml"
         self._validate_yaml_data(url)
 
     def test_validate_ieee_data(self):
-        # TODO FIX
-        """
-        pydantic.error_wrappers.ValidationError: 1 validation error for BibliographicItem
-        contributor -> 0 -> organization -> contact -> 0
-        __init__() got an unexpected keyword argument 'city' (type=type_error)
-        """
         url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-ieee/main/data/AIEE_11-1937.yaml"
         self._validate_yaml_data(url)
 
@@ -735,19 +694,9 @@ class SerializerTestCase(TestCase):
         self._validate_yaml_data(url)
 
     def test_validate_rfcsubseries_data(self):
-        # TODO FIX
-        """
-        lxml.etree.DocumentInvalid: Element 'front': Missing child element(s). Expected is one of ( seriesInfo, author ).
-        """
         url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-rfcsubseries/main/data/BCP0003.yaml"
         self._validate_yaml_data(url)
 
     def test_validate_nist_data(self):
-        # TODO FIX
-        """
-        pydantic.error_wrappers.ValidationError: 1 validation error for BibliographicItem
-        contributor -> 8 -> organization -> contact -> 0
-        __init__() got an unexpected keyword argument 'city' (type=type_error)
-        """
         url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-nist/main/data/NBS_BH_1.yaml"
         self._validate_yaml_data(url)
