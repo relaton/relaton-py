@@ -100,7 +100,7 @@ def create_author(contributor: Contributor) -> Element:
         initials: List[str] = [
             # We don’t expect trailing full stops in initials
             # Workaround for bad source data, in effect
-            i.content.replace('.', ' ').strip()
+            i.content.strip()
             for i in cast(List[GenericStringValue], as_list(name.initial or []))
         ]
 
@@ -117,7 +117,7 @@ def create_author(contributor: Contributor) -> Element:
                 f"{' '.join(f.content for f in as_list(name.forename))} "
                     if name.forename
                     else '',
-                f"{'. '.join(initials)}. " if len(initials) > 0 else '',
+                ' '.join(initials) if len(initials) > 0 else '',
                 f"{name.surname.content} " if name.surname else '',
                 f"{name.addition.content} " if name.addition else '',
             )).strip())
