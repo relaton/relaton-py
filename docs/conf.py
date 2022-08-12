@@ -13,7 +13,7 @@
 
 import os
 import sys
-from typing import List
+from typing import List, Any
 
 sys.path.insert(0, os.path.abspath('..'))
 
@@ -49,7 +49,7 @@ todo_include_todos = True
 viewcode_follow_imported_members = True
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = []
+templates_path: List[Any] = []
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -70,7 +70,7 @@ extlinks = {
 html_css_files = [
     'custom-haiku.css',
 ]
-html_js_files = [
+html_js_files: List[Any] = [
 ]
 
 autodoc_member_order = 'bysource'

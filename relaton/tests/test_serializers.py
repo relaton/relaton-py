@@ -7,7 +7,6 @@ from unittest import TestCase
 
 import yaml
 from lxml import etree
-from lxml.etree import Element
 
 from relaton.models import (
     BibliographicItem,
@@ -65,7 +64,7 @@ class SerializerTestCase(TestCase):
         )
 
         self.bibitem_reference = BibliographicItem(
-            title=Title(content="title", language="en", script="Latn", format="text / plain"),
+            title=Title(content="Open Pluggable Edge Services", language="en", script="Latn", format="text / plain"),
             docid=[
                 DocID(id="ref_01", scope="anchor", type="type"),
                 DocID(id="IEEE P2740/D-6.5 2020-08", type="IEEE")
@@ -112,8 +111,8 @@ class SerializerTestCase(TestCase):
         file_path = os.path.join(module_dir, "static/schemas/v3.xsd")
         xmlschema = etree.XMLSchema(file=file_path)
 
-        xmlschema.assertValid(xml_reference)
-        xmlschema.assertValid(xml_referencegroup)
+        xmlschema.assertValid(xml_reference)  # type: ignore
+        xmlschema.assertValid(xml_referencegroup)  # type: ignore
 
     def test_create_reference(self):
         """
@@ -144,78 +143,49 @@ class SerializerTestCase(TestCase):
         )
 
         # <front> element
-        front = reference.getchildren()[0]
-        self.assertEqual(front.tag, "front")
+        # front = reference.find("front")
 
         # <title> element
-        title = front.getchildren()[0]
-        self.assertEqual(title.tag, "title")
-        # TODO find a better way to assert using both options of the Union
-        if isinstance(self.bibitem_reference.title, GenericStringValue):
-            self.assertEqual(title.text, self.bibitem_reference.title.content)
+        title = reference.find(".//title")
+        self.assertEqual(title, self.bibitem_reference.title.content)  # type: ignore
 
-        # <author> element
-        author = front.getchildren()[1]
-        self.assertEqual(author.tag, "author")
-        self.assertEqual(author.keys()[0], "fullname")
-        self.assertEqual(author.keys()[1], "surname")
-        self.assertEqual(author.keys()[2], "initials")
-        # TODO find a better way to assert using both options of the Union
-        if isinstance(self.contributor_person.person, Person) and \
-                isinstance(self.contributor_person.person.name.completename, GenericStringValue):
-            self.assertEqual(
-                author.get(author.keys()[0]),
-                self.contributor_person.person.name.completename.content
-            )
-        if isinstance(self.contributor_person.person, Person) and \
-                isinstance(self.contributor_person.person.name.surname, GenericStringValue):
-            self.assertEqual(
-                author.get(author.keys()[1]),
-                self.contributor_person.person.name.surname.content,
-            )
-        if isinstance(self.contributor_person.person, Person) and \
-                isinstance(self.contributor_person.person.name.initial, list) and \
-                isinstance(self.contributor_person.person.name.initial[0], GenericStringValue):
-            self.assertEqual(
-                author.get(author.keys()[2]),
-                self.contributor_person.person.name.initial[0].content,
-            )
+        self.assertEqual(
+            reference.xpath("//reference/front/author/@fullname")[0],  # type: ignore
+            self.contributor_person.person.name.completename.content  # type: ignore
+        )
+
+        self.assertEqual(
+            reference.xpath("//reference/front/author/@surname")[0],  # type: ignore
+            self.contributor_person.person.name.surname.content,  # type: ignore
+        )
+
+        self.assertEqual(
+            reference.xpath("//reference/front/author/@initials")[0],  # type: ignore
+            self.contributor_person.person.name.initial[0].content,  # type: ignore
+        )
 
         # <date> element
-        date = front.getchildren()[2]
-        self.assertEqual(date.tag, "date")
-
-        self.assertEqual(date.keys()[0], "year")
-        self.assertEqual(date.keys()[1], "month")
-        if isinstance(self.bibitem_reference.date, list) and \
-                isinstance(self.bibitem_reference.date[0].value, str):
-            self.assertEqual(
-                date.get(date.keys()[0]),
-                self.bibitem_reference.date[0].value.split(" ")[1],
-            )
+        self.assertEqual(
+            reference.xpath("//reference/front/date/@year")[0],  # type: ignore
+            self.bibitem_reference.date[0].value.split(" ")[1],  # type: ignore
+        )
 
         # <abstract> element
-        abstract = front.getchildren()[3]
-        self.assertEqual(abstract.tag, "abstract")
-        if isinstance(self.bibitem_reference.abstract, list) and \
-            isinstance(self.bibitem_reference.abstract[0], GenericStringValue):
-            self.assertEqual(
-                abstract.getchildren()[0],
-                self.bibitem_reference.abstract[0].content,
-            )
+        abstract = reference.find(".//abstract")
+        self.assertEqual(
+            abstract.find("t"),  # type: ignore
+            self.bibitem_reference.abstract[0].content,  # type: ignore
+        )
 
         # <refcontent> element
-        refcontent = reference.getchildren()[1]
-        if isinstance(self.bibitem_reference.extent, LocalityStack) and \
-                isinstance(self.bibitem_reference.extent.locality, list) and \
-                isinstance(all(self.bibitem_reference.extent.locality), GenericStringValue):
-            self.assertEqual(
-                refcontent,
-                f"{self.bibitem_reference.extent.locality[0].reference_from}, "
-                f"vol. {self.bibitem_reference.extent.locality[1].reference_from}, "
-                f"no. {self.bibitem_reference.extent.locality[2].reference_from}, "
-                f"pp. {self.bibitem_reference.extent.locality[3].reference_from}"
-            )
+        refcontent = reference.find("refcontent")
+        self.assertEqual(
+            refcontent,
+            f"{self.bibitem_reference.extent.locality[0].reference_from}, "  # type: ignore
+            f"vol. {self.bibitem_reference.extent.locality[1].reference_from}, "  # type: ignore
+            f"no. {self.bibitem_reference.extent.locality[2].reference_from}, "  # type: ignore
+            f"pp. {self.bibitem_reference.extent.locality[3].reference_from}"  # type: ignore
+        )
 
     def test_create_reference_with_date_type_different_than_published(self):
         """
@@ -227,9 +197,9 @@ class SerializerTestCase(TestCase):
         data["date"][0].type = "random_type"
         new_bibitem = BibliographicItem(**data)
         reference = create_reference(new_bibitem)
-        date = reference.getchildren()[0].getchildren()[2]
         self.assertEqual(
-            f"{date.get(date.keys()[1])} {date.get(date.keys()[0])}", data["date"][0].value.split("-")[0]
+            f"{reference.xpath('.//date/@month')[0]} {reference.xpath('.//date/@year')[0]}",  # type: ignore
+            data["date"][0].value.split("-")[0]
         )
 
     def test_build_refcontent_string_with_localitystack(self):
@@ -281,8 +251,8 @@ class SerializerTestCase(TestCase):
         self.assertEqual(author_organization.tag, "author")
         self.assertEqual(author_person.tag, "author")
 
-        author_xmlschema.validate(author_organization)
-        author_xmlschema.validate(author_person)
+        author_xmlschema.validate(author_organization)  # type: ignore
+        author_xmlschema.validate(author_person)  # type: ignore
 
     def test_fail_create_author_if_incompatible_roles(self):
         """
@@ -598,7 +568,7 @@ class SerializerTestCase(TestCase):
 
         abstract = create_abstract(abstracts)
         self.assertEqual(
-            abstract.getchildren()[0],
+            abstract.find("t"),
             next(
                 abstract.content for abstract in abstracts if abstract.language == "en"
             ),
@@ -663,7 +633,7 @@ class SerializerTestCase(TestCase):
         bibitem = BibliographicItem(**yaml_object)
         serialized_data = serialize(bibitem)
 
-        self.xmlschema.assertValid(serialized_data)
+        self.xmlschema.assertValid(serialized_data)  # type: ignore
 
     def test_validate_rfcs_data(self):
         url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-rfcs/main/data/RFC0001.yaml"
