@@ -13,12 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup Python
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v2
         with:
-          python-version: 3.7.4
-          architecture: x64
+          python-version: '3.x'
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: Install mypy
         run: pip install mypy
       - name: Run mypy
