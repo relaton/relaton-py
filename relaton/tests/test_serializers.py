@@ -111,8 +111,8 @@ class SerializerTestCase(TestCase):
         file_path = os.path.join(module_dir, "static/schemas/v3.xsd")
         xmlschema = etree.XMLSchema(file=file_path)
 
-        xmlschema.assertValid(xml_reference)  # type: ignore
-        xmlschema.assertValid(xml_referencegroup)  # type: ignore
+        xmlschema.assertValid(xml_reference)
+        xmlschema.assertValid(xml_referencegroup)
 
     def test_create_reference(self):
         """
@@ -147,44 +147,44 @@ class SerializerTestCase(TestCase):
 
         # <title> element
         title = reference.find(".//title")
-        self.assertEqual(title, self.bibitem_reference.title.content)  # type: ignore
+        self.assertEqual(title, self.bibitem_reference.title.content)
 
         self.assertEqual(
-            reference.xpath("//reference/front/author/@fullname")[0],  # type: ignore
-            self.contributor_person.person.name.completename.content  # type: ignore
+            reference.xpath("//reference/front/author/@fullname")[0],
+            self.contributor_person.person.name.completename.content
         )
 
         self.assertEqual(
-            reference.xpath("//reference/front/author/@surname")[0],  # type: ignore
-            self.contributor_person.person.name.surname.content,  # type: ignore
+            reference.xpath("//reference/front/author/@surname")[0],
+            self.contributor_person.person.name.surname.content,
         )
 
         self.assertEqual(
-            reference.xpath("//reference/front/author/@initials")[0],  # type: ignore
-            self.contributor_person.person.name.initial[0].content,  # type: ignore
+            reference.xpath("//reference/front/author/@initials")[0],
+            self.contributor_person.person.name.initial[0].content,
         )
 
         # <date> element
         self.assertEqual(
-            reference.xpath("//reference/front/date/@year")[0],  # type: ignore
-            self.bibitem_reference.date[0].value.split(" ")[1],  # type: ignore
+            reference.xpath("//reference/front/date/@year")[0],
+            self.bibitem_reference.date[0].value.split(" ")[1],
         )
 
         # <abstract> element
         abstract = reference.find(".//abstract")
         self.assertEqual(
-            abstract.find("t"),  # type: ignore
-            self.bibitem_reference.abstract[0].content,  # type: ignore
+            abstract.find("t"),
+            self.bibitem_reference.abstract[0].content,
         )
 
         # <refcontent> element
         refcontent = reference.find("refcontent")
         self.assertEqual(
             refcontent,
-            f"{self.bibitem_reference.extent.locality[0].reference_from}, "  # type: ignore
-            f"vol. {self.bibitem_reference.extent.locality[1].reference_from}, "  # type: ignore
-            f"no. {self.bibitem_reference.extent.locality[2].reference_from}, "  # type: ignore
-            f"pp. {self.bibitem_reference.extent.locality[3].reference_from}"  # type: ignore
+            f"{self.bibitem_reference.extent.locality[0].reference_from}, "
+            f"vol. {self.bibitem_reference.extent.locality[1].reference_from}, "
+            f"no. {self.bibitem_reference.extent.locality[2].reference_from}, "
+            f"pp. {self.bibitem_reference.extent.locality[3].reference_from}"
         )
 
     def test_create_reference_with_date_type_different_than_published(self):
@@ -198,7 +198,7 @@ class SerializerTestCase(TestCase):
         new_bibitem = BibliographicItem(**data)
         reference = create_reference(new_bibitem)
         self.assertEqual(
-            f"{reference.xpath('.//date/@month')[0]} {reference.xpath('.//date/@year')[0]}",  # type: ignore
+            f"{reference.xpath('.//date/@month')[0]} {reference.xpath('.//date/@year')[0]}",
             data["date"][0].value.split("-")[0]
         )
 
@@ -251,8 +251,8 @@ class SerializerTestCase(TestCase):
         self.assertEqual(author_organization.tag, "author")
         self.assertEqual(author_person.tag, "author")
 
-        author_xmlschema.validate(author_organization)  # type: ignore
-        author_xmlschema.validate(author_person)  # type: ignore
+        author_xmlschema.validate(author_organization)
+        author_xmlschema.validate(author_person)
 
     def test_fail_create_author_if_incompatible_roles(self):
         """
@@ -633,7 +633,7 @@ class SerializerTestCase(TestCase):
         bibitem = BibliographicItem(**yaml_object)
         serialized_data = serialize(bibitem)
 
-        self.xmlschema.assertValid(serialized_data)  # type: ignore
+        self.xmlschema.assertValid(serialized_data)
 
     def test_validate_rfcs_data(self):
         url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-rfcs/main/data/RFC0001.yaml"

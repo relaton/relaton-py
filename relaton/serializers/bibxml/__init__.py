@@ -70,6 +70,6 @@ def serialize(item: BibliographicItem, anchor: str = None) -> Element:
         root.set('target', target)
 
     objectify.deannotate(root)
-    etree.cleanup_namespaces(root)  # type: ignore
+    etree.cleanup_namespaces(root)
 
     return root
