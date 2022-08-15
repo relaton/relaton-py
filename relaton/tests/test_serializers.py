@@ -361,6 +361,22 @@ class SerializerTestCase(TestCase):
         self.assertEqual(author_organization.tag, "author")
         self.assertEqual(author_organization.xpath("//organization")[0], "IANA")
 
+    def test_create_author_non_IANA_entries(self):
+        """
+        create_author should return the full-length name
+        of the organization within the <organization> tag
+        """
+        organization_name = "Any Organization"
+        contributor_organization_data = {
+            "organization": {
+                "name": organization_name,
+            },
+            "role": "publisher",
+        }
+        author_organization = create_author(Contributor(**contributor_organization_data))
+        self.assertEqual(author_organization.tag, "author")
+        self.assertEqual(author_organization.xpath("//organization")[0], organization_name)
+
     def test_get_suitable_anchor(self):
         """
         get_suitable_anchor should return the correct anchor value
