@@ -1,3 +1,4 @@
+# type: ignore
 """Serialization of :class:`relaton.models.bibdata.BibliographicItem`
 into BibXML (xml2rfc) format roughly per RFC 7991,
 with bias towards existing xml2rfc documents where differs.
@@ -70,6 +71,6 @@ def serialize(item: BibliographicItem, anchor: str = None) -> Element:
         root.set('target', target)
 
     objectify.deannotate(root)
-    etree.cleanup_namespaces(root)  # type: ignore
+    etree.cleanup_namespaces(root)
 
     return root
