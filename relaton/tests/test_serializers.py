@@ -1,3 +1,4 @@
+# type: ignore
 import os
 from copy import copy
 from io import StringIO
@@ -341,6 +342,24 @@ class SerializerTestCase(TestCase):
         with self.assertRaises(ValueError):
             create_author(contributor_organization)
             create_author(contributor_person)
+
+    def test_create_author_IANA_entries(self):
+        """
+        create_author should remove the abbreviation
+        property for Internet Assigned Numbers Authority
+        entries and abbreviate its value to IANA.
+        <organization>IANA</organization>
+        """
+        contributor_organization_data = {
+            "organization": {
+                "name": "Internet Assigned Numbers Authority",
+                "abbreviation": "IANA",
+            },
+            "role": "publisher",
+        }
+        author_organization = create_author(Contributor(**contributor_organization_data))
+        self.assertEqual(author_organization.tag, "author")
+        self.assertEqual(author_organization.xpath("//organization")[0], "IANA")
 
     def test_get_suitable_anchor(self):
         """
