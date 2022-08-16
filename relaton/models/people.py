@@ -7,7 +7,13 @@ from .orgs import Organization
 from .contacts import ContactMethod
 
 
-__all__ = ('Person', 'PersonName', 'PersonAffiliation', )
+__all__ = ('Forename', 'Person', 'PersonName', 'PersonAffiliation', )
+
+
+@dataclass
+class Forename:
+    initial: str
+    content: GenericStringValue
 
 
 @dataclass
@@ -23,12 +29,12 @@ class PersonName:
     """Name prefix."""
 
     forename: Optional[Union[
-        List[GenericStringValue],
-        GenericStringValue,
+        List[Forename],
+        Forename,
     ]] = None
     """Also known as givne name or first name."""
 
-    initial: Optional[List[GenericStringValue]] = None
+    formatted_initials: Optional[GenericStringValue] = None
     """Initials, if any.
     An initial is not expected to contain a trailing full stop.
     """

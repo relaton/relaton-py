@@ -54,7 +54,7 @@ class SerializerTestCase(TestCase):
         self.contributor_person_data = {
             "person": {
                 "name": {
-                    "initial": [{"content": "Mr", "language": "en"}],
+                    "formatted_initials": [{"content": "Mr", "language": "en"}],
                     "surname": {"content": "Cerf", "language": "en"},
                     "completename": {"content": "Mr Cerf", "language": "en"},
                 },
