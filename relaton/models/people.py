@@ -12,8 +12,17 @@ __all__ = ('Forename', 'Person', 'PersonName', 'PersonAffiliation', )
 
 @dataclass
 class Forename:
-    initial: str
+    """A forename of a person"""
+
+    initial: Optional[str]
+
     content: GenericStringValue
+    """An individual initial of the person, corresponding to the given forename.
+       Does not include final punctuation, but can include hyphens.
+       Can be used instead of forenames,
+       if formatted-initials are not provided (in which case each initial will be punctuated
+       following local practice.).
+    """
 
 
 @dataclass
@@ -35,8 +44,10 @@ class PersonName:
     """Also known as givne name or first name."""
 
     formatted_initials: Optional[GenericStringValue] = None
-    """Initials, if any.
-    An initial is not expected to contain a trailing full stop.
+    """The initials of the person, as a formatted string, including punctuation, dropping
+       punctuation as desired, and including hyphens where necessary. For example,
+       the initial set for Jean-Paul would be J, P; the formatted initials would be "J.-P."
+       or "J-P.". Can be used instead of forenames.
     """
 
     surname: Optional[GenericStringValue] = None
