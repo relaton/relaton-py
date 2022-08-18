@@ -266,6 +266,36 @@ class SerializerTestCase(TestCase):
             date.get(date.keys()[0]), data["date"][0]["value"].split("-")[0]
         )
 
+    def test_create_reference_for_internet_drafts(self):
+        """
+        InternetDrafts entries require the reference target
+        attribute to be removed and placed within the <format>
+        tag instead.
+        Format:
+        <reference anchor="...">
+          <front>...</front>
+          <format type="TXT" target="https://www.ietf.org/archive/id/draft-ietf-bfd-mpls-mib-07.txt"/>
+        </reference>
+        """
+        data = {
+            "id": "I-D.ietf-bfd-mpls-mib",
+            "doctype": "internet-draft",
+            "docid": [
+                {"id": "draft-ietf-bfd-mpls-mib-07", "type": "Internet-Draft", "primary": True},
+                {"id": "I-D.ietf-bfd-mpls-mib", "type": "IETF", "scope": "anchor"},
+            ],
+            "link": {
+                "content": "https://www.ietf.org/archive/id/draft-ietf-bfd-mpls-mib-07.txt",
+                "type": "TXT"
+            }
+        }
+        # data = copy(self.bibitem_reference_data)
+        # data["doctype"] = "interne-draft"
+        new_bibitem = BibliographicItem(**data)
+        reference = create_reference(new_bibitem)
+        target = reference.xpath("//reference/format/@target")[0]
+        self.assertEqual(target, data["link"]["content"])
+
     def test_build_refcontent_string_with_localitystack(self):
         title = "Container Title"
         volume = "1"
