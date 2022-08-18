@@ -120,7 +120,13 @@ def create_reference(item: BibliographicItem) -> Element:
     except ValueError:
         pass
     else:
-        ref.set('target', target)
+        if item.doctype == 'internet-draft':
+            ref.append(E.format(
+                type="TXT",
+                target=target
+            ))
+        else:
+            ref.set('target', target)
 
     # Anchor, may be overwritten by callers
     try:
