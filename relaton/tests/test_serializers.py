@@ -289,8 +289,6 @@ class SerializerTestCase(TestCase):
                 "type": "TXT"
             }
         }
-        # data = copy(self.bibitem_reference_data)
-        # data["doctype"] = "interne-draft"
         new_bibitem = BibliographicItem(**data)
         reference = create_reference(new_bibitem)
         target = reference.xpath("//reference/format/@target")[0]
