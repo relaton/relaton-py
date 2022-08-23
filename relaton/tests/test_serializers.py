@@ -266,12 +266,15 @@ class SerializerTestCase(TestCase):
             date.get(date.keys()[0]), data["date"][0]["value"].split("-")[0]
         )
 
-    def test_create_reference_for_internet_drafts(self):
+    def test_create_reference_for_IETF_datasets(self):
         """
-        InternetDrafts entries require the reference target
-        attribute to be removed and placed within the <format>
+        'Internet-Drafts', 'RFC' and 'RFC subseries'
+        entries require the reference target attribute
+        to be removed and placed within the <format>
         tag instead.
+
         Format:
+
         <reference anchor="...">
           <front>...</front>
           <format type="TXT" target="https://www.ietf.org/archive/id/draft-ietf-bfd-mpls-mib-07.txt"/>
@@ -289,6 +292,21 @@ class SerializerTestCase(TestCase):
                 "type": "TXT"
             }
         }
+
+        # Internet-Draft
+        new_bibitem = BibliographicItem(**data)
+        reference = create_reference(new_bibitem)
+        target = reference.xpath("//reference/format/@target")[0]
+        self.assertEqual(target, data["link"]["content"])
+
+        # RFC
+        # new_bibitem = BibliographicItem(**data)
+        # reference = create_reference(new_bibitem)
+        # target = reference.xpath("//reference/format/@target")[0]
+        # self.assertEqual(target, data["link"]["content"])
+
+        # RFC subseries
+        data["doctype"] = "standard"
         new_bibitem = BibliographicItem(**data)
         reference = create_reference(new_bibitem)
         target = reference.xpath("//reference/format/@target")[0]
