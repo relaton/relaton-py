@@ -120,7 +120,8 @@ def create_reference(item: BibliographicItem) -> Element:
     except ValueError:
         pass
     else:
-        if item.doctype == 'internet-draft':
+        # TODO: fix RFC and RFC subseries entries do not have a doctype
+        if item.doctype.casefold() in ['internet-draft', "standard"]:
             ref.append(E.format(
                 type="TXT",
                 target=target
