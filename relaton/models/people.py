@@ -7,7 +7,7 @@ from .orgs import Organization
 from .contacts import ContactMethod
 
 
-__all__ = ('Forename', 'Person', 'PersonName', 'PersonAffiliation', )
+__all__ = ('Forename', 'Person', 'FullName', 'PersonAffiliation', )
 
 
 @dataclass
@@ -26,7 +26,7 @@ class Forename:
 
 
 @dataclass
-class PersonName:
+class FullName:
     """Describes a person’s name."""
 
     completename: Optional[GenericStringValue] = None
@@ -41,7 +41,7 @@ class PersonName:
         List[Forename],
         Forename,
     ]] = None
-    """Also known as givne name or first name."""
+    """Also known as given name or first name."""
 
     formatted_initials: Optional[GenericStringValue] = None
     """The initials of the person, as a formatted string, including punctuation, dropping
@@ -67,7 +67,7 @@ class PersonAffiliation:
 class Person:
     """Describes a person."""
 
-    name: PersonName
+    name: FullName
 
     affiliation: Optional[Union[
         List[PersonAffiliation],

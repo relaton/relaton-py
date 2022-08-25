@@ -28,6 +28,7 @@ from .orgs import *
 from .contacts import *
 from .links import *
 from .dates import *
+from .people import FullName
 from .strings import *
 
 
@@ -39,7 +40,7 @@ __all__ = (
   'Contributor',
   'Relation',
   'Person',
-  'PersonName',
+  'FullName',
   'PersonAffiliation',
   'Organization',
   'ContactMethod',
