@@ -54,9 +54,11 @@ class SerializerTestCase(TestCase):
         self.contributor_person_data = {
             "person": {
                 "name": {
-                    "formatted_initials": [{"content": "Mr", "language": "en"}],
-                    "surname": {"content": "Cerf", "language": "en"},
-                    "completename": {"content": "Mr Cerf", "language": "en"},
+                    "given": {
+                        "formatted_initials": {"content": "Mr", "language": "en"},
+                        "surname": {"content": "Cerf", "language": "en"},
+                        "completename": {"content": "Mr Cerf", "language": "en"},
+                    },
                 },
             },
             "role": "author",
@@ -209,15 +211,15 @@ class SerializerTestCase(TestCase):
         self.assertEqual(author.keys()[2], "initials")
         self.assertEqual(
             author.get(author.keys()[0]),
-            self.contributor_person_data["person"]["name"]["completename"]["content"],
+            self.contributor_person_data["person"]["name"]["given"]["completename"]["content"],
         )
         self.assertEqual(
             author.get(author.keys()[1]),
-            self.contributor_person_data["person"]["name"]["surname"]["content"],
+            self.contributor_person_data["person"]["name"]["given"]["surname"]["content"],
         )
         self.assertEqual(
             author.get(author.keys()[2]),
-            self.contributor_person_data["person"]["name"]["initial"][0]["content"],
+            self.contributor_person_data["person"]["name"]["given"]["formatted_initials"]["content"],
         )
 
         # <date> element

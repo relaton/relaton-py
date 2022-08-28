@@ -64,10 +64,15 @@ class PersonAffiliation:
 
 
 @dataclass
+class Given:
+    given: FullName
+
+
+@dataclass
 class Person:
     """Describes a person."""
 
-    name: FullName
+    name: Given
 
     affiliation: Optional[Union[
         List[PersonAffiliation],
