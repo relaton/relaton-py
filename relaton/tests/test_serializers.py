@@ -1,7 +1,7 @@
 import os
 from copy import copy
 from io import StringIO
-from typing import List
+from typing import List, Any
 from unittest import TestCase
 
 import yaml
@@ -280,12 +280,11 @@ class SerializerTestCase(TestCase):
           <format type="TXT" target="https://www.ietf.org/archive/id/draft-ietf-bfd-mpls-mib-07.txt"/>
         </reference>
         """
-        data = {
+        data: dict[str, Any] = {
             "id": "I-D.ietf-bfd-mpls-mib",
             "doctype": "internet-draft",
             "docid": [
                 {"id": "draft-ietf-bfd-mpls-mib-07", "type": "Internet-Draft", "primary": True},
-                {"id": "I-D.ietf-bfd-mpls-mib", "type": "IETF", "scope": "anchor"},
             ],
             "link": {
                 "content": "https://www.ietf.org/archive/id/draft-ietf-bfd-mpls-mib-07.txt",
@@ -299,14 +298,9 @@ class SerializerTestCase(TestCase):
         target = reference.xpath("//reference/format/@target")[0]
         self.assertEqual(target, data["link"]["content"])
 
-        # RFC
-        # new_bibitem = BibliographicItem(**data)
-        # reference = create_reference(new_bibitem)
-        # target = reference.xpath("//reference/format/@target")[0]
-        # self.assertEqual(target, data["link"]["content"])
-
-        # RFC subseries
-        data["doctype"] = "standard"
+        # RFC and RFC subseries entries have docid.type == "IETF" and do not have a doctype
+        data["docid"][0] = {"id": "I-D.ietf-bfd-mpls-mib", "type": "IETF", "scope": "anchor"}
+        del data["doctype"]
         new_bibitem = BibliographicItem(**data)
         reference = create_reference(new_bibitem)
         target = reference.xpath("//reference/format/@target")[0]
