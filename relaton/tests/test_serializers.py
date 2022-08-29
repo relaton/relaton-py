@@ -306,6 +306,25 @@ class SerializerTestCase(TestCase):
         target = reference.xpath("//reference/format/@target")[0]
         self.assertEqual(target, data["link"]["content"])
 
+    def test_create_reference_for_non_IETF_datasets(self):
+        data: dict[str, Any] = {
+            "id": "I-D.ietf-bfd-mpls-mib",
+            "doctype": "misc",
+            "docid": [
+                {"id": "draft-ietf-bfd-mpls-mib-07", "type": "FIPS", "primary": True},
+            ],
+            "link": {
+                "content": "https://www.ietf.org/archive/id/draft-ietf-bfd-mpls-mib-07.txt",
+                "type": "TXT"
+            }
+        }
+
+        new_bibitem = BibliographicItem(**data)
+        reference = create_reference(new_bibitem)
+        import ipdb; ipdb.set_trace()
+        target = reference.xpath("//reference/target")[0]
+        self.assertEqual(target, data["link"]["content"])
+
     def test_build_refcontent_string_with_localitystack(self):
         title = "Container Title"
         volume = "1"
