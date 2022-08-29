@@ -56,9 +56,9 @@ class SerializerTestCase(TestCase):
                 "name": {
                     "given": {
                         "formatted_initials": {"content": "Mr", "language": "en"},
-                        "surname": {"content": "Cerf", "language": "en"},
-                        "completename": {"content": "Mr Cerf", "language": "en"},
                     },
+                    "surname": {"content": "Cerf", "language": "en"},
+                    "completename": {"content": "Mr Cerf", "language": "en"},
                 },
             },
             "role": "author",
@@ -211,11 +211,11 @@ class SerializerTestCase(TestCase):
         self.assertEqual(author.keys()[2], "initials")
         self.assertEqual(
             author.get(author.keys()[0]),
-            self.contributor_person_data["person"]["name"]["given"]["completename"]["content"],
+            self.contributor_person_data["person"]["name"]["completename"]["content"],
         )
         self.assertEqual(
             author.get(author.keys()[1]),
-            self.contributor_person_data["person"]["name"]["given"]["surname"]["content"],
+            self.contributor_person_data["person"]["name"]["surname"]["content"],
         )
         self.assertEqual(
             author.get(author.keys()[2]),
@@ -662,59 +662,34 @@ class SerializerTestCase(TestCase):
         self._validate_yaml_data(url)
 
     def test_validate_misc_data(self):
-        url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-misc/main/data/reference.ANSI.T1-102.1987.yaml"
+        url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-misc/main/data/reference.W3C.soap11.yaml"
+        # url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-misc/main/data/reference.ANSI.T1-102.1987.yaml"
         self._validate_yaml_data(url)
 
     def test_validate_internet_drafts_data(self):
-        url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-ids/main/data/draft--pale-email-00.yaml"
+        url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-ids/main/data/draft-ayers-low-power-interop-02.yaml#L29"
         self._validate_yaml_data(url)
 
     def test_validate_w3c_data(self):
-        # TODO FIX
-        """
-        lxml.etree.DocumentInvalid: Element 'front': Missing child element(s). Expected is one of ( seriesInfo, author ).
-        """
         url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-w3c/main/data/2dcontext.yaml"
         self._validate_yaml_data(url)
 
     def test_validate_threegpp_data(self):
-        # TODO FIX
-        """
-        pydantic.error_wrappers.ValidationError: 1 validation error for BibliographicItem
-        contributor -> 0 -> organization -> contact -> 0
-        __init__() got an unexpected keyword argument 'street' (type=type_error)
-        """
-        url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-3gpp/main/data/TR_00.01U_UMTS_3.0.0.yaml"
+        url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-3gpp/main/data/TR_09.95_R98_7.4.0.yaml"
         self._validate_yaml_data(url)
 
     def test_validate_ieee_data(self):
-        # TODO FIX
-        """
-        pydantic.error_wrappers.ValidationError: 1 validation error for BibliographicItem
-        contributor -> 0 -> organization -> contact -> 0
-        __init__() got an unexpected keyword argument 'city' (type=type_error)
-        """
-        url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-ieee/main/data/AIEE_11-1937.yaml"
+        url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-ieee/main/data/ANSI_IEEE_991-1986.yaml"
         self._validate_yaml_data(url)
 
     def test_validate_iana_data(self):
-        url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-iana/main/data/_6lowpan-parameters.yaml"
+        url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-iana/main/data/bgp-extended-communities_arp-nd-extended-community-flags.yaml"
         self._validate_yaml_data(url)
 
     def test_validate_rfcsubseries_data(self):
-        # TODO FIX
-        """
-        lxml.etree.DocumentInvalid: Element 'front': Missing child element(s). Expected is one of ( seriesInfo, author ).
-        """
         url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-rfcsubseries/main/data/BCP0003.yaml"
         self._validate_yaml_data(url)
 
     def test_validate_nist_data(self):
-        # TODO FIX
-        """
-        pydantic.error_wrappers.ValidationError: 1 validation error for BibliographicItem
-        contributor -> 8 -> organization -> contact -> 0
-        __init__() got an unexpected keyword argument 'city' (type=type_error)
-        """
         url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-nist/main/data/NBS_BH_1.yaml"
         self._validate_yaml_data(url)

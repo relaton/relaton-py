@@ -5,14 +5,16 @@ from pydantic.dataclasses import dataclass
 
 __all__ = ('CopyrightOwner', 'Copyright', )
 
+from .strings import GenericStringValue
+
 
 @dataclass
 class CopyrightOwner:
     """Who or which organization holds the copyright.
     """
-    name: Union[List[str], str]
+    name: Union[List[GenericStringValue], GenericStringValue]
     url: Optional[str] = None
-    abbreviation: Optional[str] = None
+    abbreviation: Optional[GenericStringValue] = None
 
 
 # Pydantic dataclasses don’t actually support aliases, contrary to docs

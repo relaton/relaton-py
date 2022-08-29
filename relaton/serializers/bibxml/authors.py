@@ -65,7 +65,10 @@ def create_author(contributor: Contributor) -> Element:
         org_el = E.organization(as_list(org.name)[0])
 
         if org.abbreviation:
-            org_el.set('abbrev', org.abbreviation)
+            if isinstance(org.abbreviation, str):
+                org_el.set('abbrev', org.abbreviation)
+            else:
+                org_el.set('abbrev', org.abbreviation.content)
 
         author_el.append(org_el)
 
@@ -97,12 +100,14 @@ def create_author(contributor: Contributor) -> Element:
 
         # Simplify initials
         # from a list of formatted strings to a list of plain strings
-        initials: List[str] = [
-            # We don’t expect trailing full stops in initials
-            # Workaround for bad source data, in effect
-            i.content.strip()
-            for i in cast(List[GenericStringValue], as_list(name.given.formatted_initials or []))
-        ]
+        initials: List[str] = []
+        if name.given:
+            initials = [
+                # We don’t expect trailing full stops in initials
+                # Workaround for bad source data, in effect
+                i.content.strip()
+                for i in cast(List[GenericStringValue], as_list(name.given.formatted_initials or []))
+            ]
 
         if name.completename:
             author_el.set('fullname', name.completename.content)

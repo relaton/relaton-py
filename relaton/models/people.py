@@ -11,18 +11,10 @@ __all__ = ('Forename', 'Person', 'FullName', 'GivenName', 'PersonAffiliation', )
 
 
 @dataclass
-class Forename:
+class Forename(GenericStringValue):
     """A forename of a person"""
 
-    initial: Optional[str]
-
-    content: GenericStringValue
-    """An individual initial of the person, corresponding to the given forename.
-       Does not include final punctuation, but can include hyphens.
-       Can be used instead of forenames,
-       if formatted-initials are not provided (in which case each initial will be punctuated
-       following local practice.).
-    """
+    initial: Optional[str] = None
 
 
 @dataclass
