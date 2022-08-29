@@ -30,5 +30,5 @@ class Title(GenericStringValue):
     """
     Typed title.
     """
-
+Ï
     type: Optional[str] = None
