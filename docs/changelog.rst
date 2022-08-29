@@ -2,16 +2,6 @@
 Changelog
 =========
 
-v0.2.19
-=======
-
-``bibxml_string`` serializer is removed.
-
-v0.2.18
-=======
-
-Changed output format for ``IANA`` entries
-
 v0.2.16
 =======
 
