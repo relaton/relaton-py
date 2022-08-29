@@ -104,8 +104,8 @@ def create_author(contributor: Contributor) -> Element:
             for i in cast(List[GenericStringValue], as_list(name.given.formatted_initials or []))
         ]
 
-        if name.given.completename:
-            author_el.set('fullname', name.given.completename.content)
+        if name.completename:
+            author_el.set('fullname', name.completename.content)
         else:
             # Craft a complete name based on what we have
             # It’s clunky and error-prone,
@@ -113,19 +113,19 @@ def create_author(contributor: Contributor) -> Element:
             # in absence of ``completename``,
             # and ``completename`` is optional in Relaton.
             author_el.set('fullname', ('%s%s%s%s%s' % (
-                f"{name.given.prefix.content} " if name.given.prefix else '',
+                f"{name.given.prefix.content} " if name.prefix else '',
                 f"{' '.join(f.content for f in as_list(name.given.forename))} "
                     if name.given.forename
                     else '',
                 ' '.join(initials) if len(initials) > 0 else '',
-                f"{name.given.surname.content} " if name.given.surname else '',
-                f"{name.given.addition.content} " if name.given.addition else '',
+                f"{name.surname.content} " if name.surname else '',
+                f"{name.addition.content} " if name.addition else '',
             )).strip())
 
         # Even if completename is given, these can still be provided:
 
-        if name.given.surname:
-            author_el.set('surname', name.given.surname.content)
+        if name.surname:
+            author_el.set('surname', name.surname.content)
 
         if len(initials) > 0:
             author_el.set('initials', ' '.join(initials))

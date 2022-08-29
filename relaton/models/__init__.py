@@ -51,5 +51,6 @@ __all__ = (
   'Title',
   'GenericStringValue',
   'FormattedContent',
+  'GivenName'
 )
 

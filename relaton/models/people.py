@@ -7,7 +7,7 @@ from .orgs import Organization
 from .contacts import ContactMethod
 
 
-__all__ = ('Forename', 'Person', 'FullName', 'PersonAffiliation', )
+__all__ = ('Forename', 'Person', 'FullName', 'GivenName', 'PersonAffiliation', )
 
 
 @dataclass
@@ -26,17 +26,7 @@ class Forename:
 
 
 @dataclass
-class FullName:
-    """Describes a person’s name."""
-
-    completename: Optional[GenericStringValue] = None
-    """Full name.
-    Expected to be mutually exclusive with other properties.
-    """
-
-    prefix: Optional[GenericStringValue] = None
-    """Name prefix."""
-
+class GivenName:
     forename: Optional[Union[
         List[Forename],
         Forename,
@@ -50,8 +40,23 @@ class FullName:
        or "J-P.". Can be used instead of forenames.
     """
 
+
+@dataclass
+class FullName:
+    """Describes a person’s name."""
+
+    prefix: Optional[GenericStringValue] = None
+    """Name prefix."""
+
+    given: Optional[GivenName] = None
+
     surname: Optional[GenericStringValue] = None
     """Also known as last name or family name."""
+
+    completename: Optional[GenericStringValue] = None
+    """Full name.
+    Expected to be mutually exclusive with other properties.
+    """
 
     addition: Optional[GenericStringValue] = None
     """Addition to the name."""
@@ -64,15 +69,10 @@ class PersonAffiliation:
 
 
 @dataclass
-class Given:
-    given: FullName
-
-
-@dataclass
 class Person:
     """Describes a person."""
 
-    name: Given
+    name: FullName
 
     affiliation: Optional[Union[
         List[PersonAffiliation],
