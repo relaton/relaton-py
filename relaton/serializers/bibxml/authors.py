@@ -62,7 +62,10 @@ def create_author(contributor: Contributor) -> Element:
 
     if org is not None:
         # Organization
-        org_el = E.organization(as_list(org.name)[0])
+        if org.abbreviation == 'IANA' or org.name == 'Internet Assigned Numbers Authority':
+            org_el = E.organization('IANA')
+        else:
+            org_el = E.organization(as_list(org.name)[0])
 
         if org.abbreviation:
             if isinstance(org.abbreviation, str):
