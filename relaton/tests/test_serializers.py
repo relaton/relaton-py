@@ -698,7 +698,6 @@ class SerializerTestCase(TestCase):
 
     def test_validate_misc_data(self):
         url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-misc/main/data/reference.W3C.soap11.yaml"
-        # url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-misc/main/data/reference.ANSI.T1-102.1987.yaml"
         self._validate_yaml_data(url)
 
     def test_validate_internet_drafts_data(self):

@@ -13,7 +13,7 @@ __all__ = ('Organization', )
 class Organization:
     """Describes an organization."""
 
-    name: Union[List[GenericStringValue], GenericStringValue, str]
+    name: Union[List[str], str]
     contact: Optional[List[ContactMethod]] = None
     url: Optional[str] = None
     abbreviation: Optional[str] = None
