@@ -11,7 +11,7 @@ class FormattedContent:
     """
     Relaton’s formatted string.
     """
-    content: Optional[str] = None
+    content: str
     format: Optional[str] = None
 
 

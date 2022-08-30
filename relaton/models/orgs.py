@@ -16,4 +16,4 @@ class Organization:
     name: Union[List[GenericStringValue], GenericStringValue, str]
     contact: Optional[List[ContactMethod]] = None
     url: Optional[str] = None
-    abbreviation: Optional[Union[GenericStringValue, str]] = None
+    abbreviation: Optional[str] = None

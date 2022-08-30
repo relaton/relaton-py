@@ -177,7 +177,7 @@ class BibliographicItem(BaseModel, extra=Extra.allow):
 
     series: Optional[List[Series]] = None
 
-    keyword: Optional[Union[List[GenericStringValue], GenericStringValue, str]] = None
+    keyword: Optional[Union[List[str], str]] = None
 
     copyright: Optional[Union[List[Copyright], Copyright]] = None
 
