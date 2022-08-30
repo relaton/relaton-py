@@ -12,9 +12,9 @@ from .strings import GenericStringValue
 class CopyrightOwner:
     """Who or which organization holds the copyright.
     """
-    name: Union[List[GenericStringValue], GenericStringValue]
+    name: Union[List[str], str]
     url: Optional[str] = None
-    abbreviation: Optional[GenericStringValue] = None
+    abbreviation: Optional[str] = None
 
 
 # Pydantic dataclasses don’t actually support aliases, contrary to docs
