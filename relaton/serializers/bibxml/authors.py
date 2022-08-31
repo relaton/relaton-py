@@ -68,7 +68,7 @@ def create_author(contributor: Contributor) -> Element:
             org_el = E.organization(as_list(org.name)[0])
 
             if org.abbreviation:
-                org_el.set('abbrev', org.abbreviation)
+                org_el.set('abbrev', org.abbreviation.content)
 
         author_el.append(org_el)
 

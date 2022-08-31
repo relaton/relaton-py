@@ -46,6 +46,7 @@ class SerializerTestCase(TestCase):
         contributor_organization_data = {
             "organization": {
                 "name": "Internet Engineering Task Force",
+                "abbreviation": {"content": "abbr", "language": "en"},
             },
             "role": "publisher",
         }
