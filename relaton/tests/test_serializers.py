@@ -356,7 +356,7 @@ class SerializerTestCase(TestCase):
         contributor_organization_data = {
             "organization": {
                 "name": "Internet Assigned Numbers Authority",
-                "abbreviation": "IANA",
+                "abbreviation": {"content": "IANA", "language": "en"},
             },
             "role": "publisher",
         }
@@ -373,6 +373,7 @@ class SerializerTestCase(TestCase):
         contributor_organization_data = {
             "organization": {
                 "name": organization_name,
+                "abbreviation": {"content": "NONIANA", "language": "en"},
             },
             "role": "publisher",
         }
