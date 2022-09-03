@@ -120,14 +120,10 @@ def create_reference(item: BibliographicItem) -> Element:
     except ValueError:
         pass
     else:
-        doctype = item.doctype
-        if (doctype and doctype.casefold() == 'internet-draft') or any(docid.type == "IETF" for docid in item.docid):
-            ref.append(E.format(
-                type="TXT",
-                target=target,
-            ))
-        else:
-            ref.set('target', target)
+        ref.append(E.format(
+            type="TXT",
+            target=target,
+        ))
 
     # Anchor, may be overwritten by callers
     try:
