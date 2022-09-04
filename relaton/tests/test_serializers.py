@@ -5,7 +5,6 @@ from io import StringIO
 from typing import List
 from unittest import TestCase
 
-import yaml
 from lxml import etree
 
 from relaton.models import (
@@ -45,7 +44,7 @@ class SerializerTestCase(TestCase):
         # Data for a Contributor (AKA Author) of type Organization
         contributor_organization_data = {
             "organization": {
-                "name": "Internet Engineering Task Force",
+                "name": {"content": "Internet Engineering Task Force", "language": "en"},
                 "abbreviation": {"content": "abbr", "language": "en"},
             },
             "role": "publisher",
@@ -355,7 +354,7 @@ class SerializerTestCase(TestCase):
         """
         contributor_organization_data = {
             "organization": {
-                "name": "Internet Assigned Numbers Authority",
+                "name": {"content": "Internet Assigned Numbers Authority", "language": "en"},
                 "abbreviation": {"content": "IANA", "language": "en"},
             },
             "role": "publisher",
@@ -372,7 +371,7 @@ class SerializerTestCase(TestCase):
         organization_name = "Any Organization"
         contributor_organization_data = {
             "organization": {
-                "name": organization_name,
+                "name": {"content": organization_name, "language": "en"},
                 "abbreviation": {"content": "NONIANA", "language": "en"},
             },
             "role": "publisher",
