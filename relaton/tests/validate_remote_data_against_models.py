@@ -1,3 +1,4 @@
+# type: ignore
 import os
 from unittest import TestCase
 
@@ -7,7 +8,8 @@ from lxml import etree
 from relaton.models import BibliographicItem
 from relaton.serializers.bibxml import serialize
 
-class SerializerTestCase(TestCase):
+
+class DataSourceValidationTestCase(TestCase):
 
     def setUp(self):
         module_dir = os.path.dirname(__file__)
