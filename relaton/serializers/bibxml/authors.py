@@ -62,13 +62,14 @@ def create_author(contributor: Contributor) -> Element:
 
     if org is not None:
         # Organization
-        if org.abbreviation == 'IANA' or org.name == 'Internet Assigned Numbers Authority':
+        if (org.abbreviation is not None and org.abbreviation.content == 'IANA') or \
+                (org.name and any(name for name in as_list(org.name) if name.content == 'Internet Assigned Numbers Authority')):
             org_el = E.organization('IANA')
         else:
-            org_el = E.organization(as_list(org.name)[0])
+            org_el = E.organization(as_list(org.name)[0].content)
 
-            if org.abbreviation:
-                org_el.set('abbrev', org.abbreviation)
+            if org.abbreviation is not None:
+                org_el.set('abbrev', org.abbreviation.content)
 
         author_el.append(org_el)
 
@@ -100,12 +101,14 @@ def create_author(contributor: Contributor) -> Element:
 
         # Simplify initials
         # from a list of formatted strings to a list of plain strings
-        initials: List[str] = [
-            # We don’t expect trailing full stops in initials
-            # Workaround for bad source data, in effect
-            i.content.strip()
-            for i in cast(List[GenericStringValue], as_list(name.initial or []))
-        ]
+        initials: List[str] = []
+        if name.given:
+            initials = [
+                # We don’t expect trailing full stops in initials
+                # Workaround for bad source data, in effect
+                i.content.strip()
+                for i in cast(List[GenericStringValue], as_list(name.given.formatted_initials or []))
+            ]
 
         if name.completename:
             author_el.set('fullname', name.completename.content)
@@ -116,9 +119,9 @@ def create_author(contributor: Contributor) -> Element:
             # in absence of ``completename``,
             # and ``completename`` is optional in Relaton.
             author_el.set('fullname', ('%s%s%s%s%s' % (
-                f"{name.prefix.content} " if name.prefix else '',
-                f"{' '.join(f.content for f in as_list(name.forename))} "
-                    if name.forename
+                f"{name.given.prefix.content} " if name.prefix else '',
+                f"{' '.join(f.content for f in as_list(name.given.forename))} "
+                    if name.given.forename
                     else '',
                 ' '.join(initials) if len(initials) > 0 else '',
                 f"{name.surname.content} " if name.surname else '',

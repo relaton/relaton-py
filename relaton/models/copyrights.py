@@ -5,6 +5,8 @@ from pydantic.dataclasses import dataclass
 
 __all__ = ('CopyrightOwner', 'Copyright', )
 
+from .strings import GenericStringValue
+
 
 @dataclass
 class CopyrightOwner:
