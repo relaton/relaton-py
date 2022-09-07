@@ -269,7 +269,7 @@ class SerializerTestCase(TestCase):
             date.get(date.keys()[0]), data["date"][0]["value"].split("-")[0]
         )
 
-    def test_create_reference_for_IETF_datasets(self):
+    def test_create_reference_target_should_be_placed_within_format_tag(self):
         """
         'Internet-Drafts', 'RFC' and 'RFC subseries'
         entries require the reference target attribute
