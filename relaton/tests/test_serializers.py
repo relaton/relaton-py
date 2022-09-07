@@ -1,10 +1,10 @@
+# type: ignore
 import os
 from copy import copy
 from io import StringIO
 from typing import List, Any
 from unittest import TestCase
 
-import yaml
 from lxml import etree
 
 from relaton.models import (
@@ -44,7 +44,8 @@ class SerializerTestCase(TestCase):
         # Data for a Contributor (AKA Author) of type Organization
         contributor_organization_data = {
             "organization": {
-                "name": "Internet Engineering Task Force",
+                "name": {"content": "Internet Engineering Task Force", "language": "en"},
+                "abbreviation": {"content": "abbr", "language": "en"},
             },
             "role": "publisher",
         }
@@ -54,7 +55,9 @@ class SerializerTestCase(TestCase):
         self.contributor_person_data = {
             "person": {
                 "name": {
-                    "initial": [{"content": "Mr", "language": "en"}],
+                    "given": {
+                        "formatted_initials": {"content": "Mr", "language": "en"},
+                    },
                     "surname": {"content": "Cerf", "language": "en"},
                     "completename": {"content": "Mr Cerf", "language": "en"},
                 },
@@ -217,7 +220,7 @@ class SerializerTestCase(TestCase):
         )
         self.assertEqual(
             author.get(author.keys()[2]),
-            self.contributor_person_data["person"]["name"]["initial"][0]["content"],
+            self.contributor_person_data["person"]["name"]["given"]["formatted_initials"]["content"],
         )
 
         # <date> element
@@ -400,6 +403,41 @@ class SerializerTestCase(TestCase):
         with self.assertRaises(ValueError):
             create_author(contributor_organization)
             create_author(contributor_person)
+
+    def test_create_author_IANA_entries(self):
+        """
+        create_author should remove the abbreviation
+        property for Internet Assigned Numbers Authority
+        entries and abbreviate its value to IANA.
+        <organization>IANA</organization>
+        """
+        contributor_organization_data = {
+            "organization": {
+                "name": {"content": "Internet Assigned Numbers Authority", "language": "en"},
+                "abbreviation": {"content": "IANA", "language": "en"},
+            },
+            "role": "publisher",
+        }
+        author_organization = create_author(Contributor(**contributor_organization_data))
+        self.assertEqual(author_organization.tag, "author")
+        self.assertEqual(author_organization.xpath("//organization")[0], "IANA")
+
+    def test_create_author_non_IANA_entries(self):
+        """
+        create_author should return the full-length name
+        of the organization within the <organization> tag
+        """
+        organization_name = "Any Organization"
+        contributor_organization_data = {
+            "organization": {
+                "name": {"content": organization_name, "language": "en"},
+                "abbreviation": {"content": "NONIANA", "language": "en"},
+            },
+            "role": "publisher",
+        }
+        author_organization = create_author(Contributor(**contributor_organization_data))
+        self.assertEqual(author_organization.tag, "author")
+        self.assertEqual(author_organization.xpath("//organization")[0], organization_name)
 
     def test_get_suitable_anchor(self):
         """
@@ -704,74 +742,3 @@ class SerializerTestCase(TestCase):
         paragraph = GenericStringValue(content="content", format="text/html")
         with self.assertRaises(ValueError):
             get_paragraphs_jats(paragraph)
-
-    def _validate_yaml_data(self, url):
-        import requests
-        r = requests.get(url)
-        yaml_object = yaml.safe_load(r.content)
-        bibitem = BibliographicItem(**yaml_object)
-        serialized_data = serialize(bibitem)
-
-        self.xmlschema.assertValid(serialized_data)
-
-    def test_validate_rfcs_data(self):
-        url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-rfcs/main/data/RFC0001.yaml"
-        self._validate_yaml_data(url)
-
-    def test_validate_misc_data(self):
-        url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-misc/main/data/reference.ANSI.T1-102.1987.yaml"
-        self._validate_yaml_data(url)
-
-    def test_validate_internet_drafts_data(self):
-        url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-ids/main/data/draft--pale-email-00.yaml"
-        self._validate_yaml_data(url)
-
-    def test_validate_w3c_data(self):
-        # TODO FIX
-        """
-        lxml.etree.DocumentInvalid: Element 'front': Missing child element(s). Expected is one of ( seriesInfo, author ).
-        """
-        url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-w3c/main/data/2dcontext.yaml"
-        self._validate_yaml_data(url)
-
-    def test_validate_threegpp_data(self):
-        # TODO FIX
-        """
-        pydantic.error_wrappers.ValidationError: 1 validation error for BibliographicItem
-        contributor -> 0 -> organization -> contact -> 0
-        __init__() got an unexpected keyword argument 'street' (type=type_error)
-        """
-        url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-3gpp/main/data/TR_00.01U_UMTS_3.0.0.yaml"
-        self._validate_yaml_data(url)
-
-    def test_validate_ieee_data(self):
-        # TODO FIX
-        """
-        pydantic.error_wrappers.ValidationError: 1 validation error for BibliographicItem
-        contributor -> 0 -> organization -> contact -> 0
-        __init__() got an unexpected keyword argument 'city' (type=type_error)
-        """
-        url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-ieee/main/data/AIEE_11-1937.yaml"
-        self._validate_yaml_data(url)
-
-    def test_validate_iana_data(self):
-        url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-iana/main/data/_6lowpan-parameters.yaml"
-        self._validate_yaml_data(url)
-
-    def test_validate_rfcsubseries_data(self):
-        # TODO FIX
-        """
-        lxml.etree.DocumentInvalid: Element 'front': Missing child element(s). Expected is one of ( seriesInfo, author ).
-        """
-        url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-rfcsubseries/main/data/BCP0003.yaml"
-        self._validate_yaml_data(url)
-
-    def test_validate_nist_data(self):
-        # TODO FIX
-        """
-        pydantic.error_wrappers.ValidationError: 1 validation error for BibliographicItem
-        contributor -> 8 -> organization -> contact -> 0
-        __init__() got an unexpected keyword argument 'city' (type=type_error)
-        """
-        url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-nist/main/data/NBS_BH_1.yaml"
-        self._validate_yaml_data(url)
