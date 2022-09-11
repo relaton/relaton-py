@@ -3,6 +3,11 @@ Changelog
 =========
 
 
+v0.2.21
+=======
+
+Replace <target ..> tag with <format ..> for all BibItems
+
 v0.2.20
 =======
 
