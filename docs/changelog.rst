@@ -2,11 +2,11 @@
 Changelog
 =========
 
-
 v0.2.20
 =======
 
-Update models structure to reflect changes in source data format.
+- Update models structure to reflect changes in source data format.
+- Fix: get fullname prefix from name and not name.given
 
 v0.2.19
 =======

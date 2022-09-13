@@ -119,7 +119,7 @@ def create_author(contributor: Contributor) -> Element:
             # in absence of ``completename``,
             # and ``completename`` is optional in Relaton.
             author_el.set('fullname', ('%s%s%s%s%s' % (
-                f"{name.given.prefix.content} " if name.prefix else '',
+                f"{name.prefix.content} " if name.prefix else '',
                 f"{' '.join(f.content for f in as_list(name.given.forename))} "
                     if name.given.forename
                     else '',
