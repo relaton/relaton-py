@@ -2,11 +2,16 @@
 Changelog
 =========
 
+v0.2.21
+=======
+
+- XML serializer now outputs <format> for all bibliographic items instead of target attribute
+- Fix: get fullname prefix from name and not name.given
+
 v0.2.20
 =======
 
-- Update models structure to reflect changes in source data format.
-- Fix: get fullname prefix from name and not name.given
+Update models structure to reflect changes in source data format.
 
 v0.2.19
 =======
