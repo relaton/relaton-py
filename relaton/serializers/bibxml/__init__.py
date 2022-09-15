@@ -61,14 +61,6 @@ def serialize(item: BibliographicItem, anchor: str = None) -> Element:
     if anchor:
         root.set('anchor', anchor)
 
-    # Fill in appropriate target
-    try:
-        target = get_suitable_target(as_list(item.link or []))
-    except ValueError:
-        pass
-    else:
-        root.set('target', target)
-
     objectify.deannotate(root)
     etree.cleanup_namespaces(root)
 
