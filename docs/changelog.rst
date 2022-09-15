@@ -2,6 +2,11 @@
 Changelog
 =========
 
+v0.2.22
+=======
+
+Remove "target" attribute setter from XML root element
+
 v0.2.21
 =======
 
