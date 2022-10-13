@@ -101,6 +101,14 @@ class Series(BaseModel):
 
 
 @dataclass
+class Role:
+    type: Optional[str] = None
+    """See ``ContributorRoleType``."""
+
+    description: Optional[List[GenericStringValue]] = None
+
+
+@dataclass
 class Contributor:
     """Anyone who helped create or publish the document.
 
@@ -109,7 +117,7 @@ class Contributor:
                    ``Person`` or ``Organization`` in LutaML.
     """
 
-    role: Union[List[str], str]
+    role: List[Role]
     person: Optional[Person] = None
     organization: Optional[Organization] = None
 
