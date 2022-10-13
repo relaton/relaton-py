@@ -102,7 +102,12 @@ class Series(BaseModel):
 
 @dataclass
 class Contributor:
-    """Anyone who helped create or publish the document."""
+    """Anyone who helped create or publish the document.
+
+    .. important:: This is equivalent of ``ContributionInfo`` model in LutaML;
+                   ``Contributor`` itself is defined as a union of
+                   ``Person`` or ``Organization`` in LutaML.
+    """
 
     role: Union[List[str], str]
     person: Optional[Person] = None
