@@ -3,22 +3,14 @@ from typing import TypedDict, Optional, Union, List
 from pydantic.dataclasses import dataclass
 
 
-__all__ = ('CopyrightOwner', 'Copyright', )
+__all__ = ('Copyright', )
 
-from .strings import GenericStringValue
-
-
-@dataclass
-class CopyrightOwner:
-    """Who or which organization holds the copyright.
-    """
-    name: Union[List[str], str]
-    url: Optional[str] = None
-    abbreviation: Optional[str] = None
+from .orgs import Organization
+from .people import Person
 
 
 # Pydantic dataclasses don’t actually support aliases, contrary to docs
 Copyright = TypedDict('Copyright', {
     'from': int,
-    'owner': Union[List[CopyrightOwner]],
+    'owner': List[Union[Organization, Person]],
 })
