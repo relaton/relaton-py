@@ -26,7 +26,7 @@ AUTHOR_ROLES = set(('author', 'editor', 'publisher'))
 
 is_author = (
     lambda contrib:
-    len(set(as_list(contrib.role or [])) & AUTHOR_ROLES) > 0
+    len(set([con.type for con in contrib.role] or []) & AUTHOR_ROLES) > 0 if contrib.role else False
 )
 """Returns ``True`` if given Relaton contributor instance
 represents an author in xml2rfc domain."""
@@ -44,7 +44,7 @@ def create_author(contributor: Contributor) -> Element:
 
     author_el = E.author()
 
-    roles = as_list(contributor.role)
+    roles = contributor.role
 
     if 'editor' in roles:
         author_el.set('role', 'editor')
