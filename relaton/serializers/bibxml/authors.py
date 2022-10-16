@@ -65,8 +65,16 @@ def create_author(contributor: Contributor) -> Element:
 
     if org is not None:
         # Organization
-        if (org.abbreviation is not None and org.abbreviation.content == 'IANA') or \
-                (org.name and any(name for name in as_list(org.name) if name.content == 'Internet Assigned Numbers Authority')):
+        if (
+            org.abbreviation is not None
+            and org.abbreviation.content == 'IANA'
+        ) or (
+            org.name
+            and any(
+                name
+                for name in as_list(org.name)
+                if name.content == 'Internet Assigned Numbers Authority')
+        ):
             org_el = E.organization('IANA')
         else:
             org_el = E.organization(as_list(org.name)[0].content)
@@ -110,7 +118,10 @@ def create_author(contributor: Contributor) -> Element:
                 # We don’t expect trailing full stops in initials
                 # Workaround for bad source data, in effect
                 i.content.strip()
-                for i in cast(List[GenericStringValue], as_list(name.given.formatted_initials or []))
+                for i in cast(
+                    List[GenericStringValue],
+                    as_list(name.given.formatted_initials or []),
+                )
             ]
 
         if name.completename:
