@@ -1,7 +1,7 @@
 import os
 from copy import copy
 from io import StringIO
-from typing import List, Any
+from typing import Dict, List, Any, cast
 from unittest import TestCase
 
 from lxml import etree
@@ -41,7 +41,7 @@ from relaton.serializers.bibxml.series import (
 class SerializerTestCase(TestCase):
     def setUp(self):
         # Data for a Contributor (AKA Author) of type Organization
-        contributor_organization_data = {
+        contributor_organization_data: Dict[str, Any] = {
             "organization": {
                 "name": {
                     "content": "Internet Engineering Task Force",
@@ -57,7 +57,7 @@ class SerializerTestCase(TestCase):
             Contributor(**contributor_organization_data)
 
         # Data for a Contributor (AKA Author) of type Person
-        self.contributor_person_data = {
+        self.contributor_person_data: Dict[str, Any] = {
             "person": {
                 "name": {
                     "given": {
@@ -78,7 +78,7 @@ class SerializerTestCase(TestCase):
 
         # Data for a BibliographicItem which will be converted
         # to a <reference> root tag in the XML output
-        self.bibitem_reference_data = {
+        self.bibitem_reference_data: Dict[str, Any] = {
             "id": "ref_01",
             "title": [
                 {
@@ -109,7 +109,7 @@ class SerializerTestCase(TestCase):
 
         # Data for a BibliographicItem which will be converted
         # to a <referencegroup> root tag in the XML output
-        self.bibitem_referencegroup_data = {
+        self.bibitem_referencegroup_data: Dict[str, Any] = {
             "id": "ref_02",
             "docid": [{"id": "ref_02", "type": "test_dataset_02"}],
             "relation": [
@@ -431,7 +431,7 @@ class SerializerTestCase(TestCase):
         entries and abbreviate its value to IANA.
         <organization>IANA</organization>
         """
-        contributor_organization_data = {
+        contributor_organization_data: Dict[str, Any] = {
             "organization": {
                 "name": {
                     "content": "Internet Assigned Numbers Authority",
@@ -446,7 +446,11 @@ class SerializerTestCase(TestCase):
         author_organization = \
             create_author(Contributor(**contributor_organization_data))
         self.assertEqual(author_organization.tag, "author")
-        self.assertEqual(author_organization.xpath("//organization")[0], "IANA")
+        if els := author_organization.xpath("//organization"):
+            # TODO: Are we sure xpath() returns a list of strings not elements?
+            self.assertEqual(cast(List[str], els)[0], "IANA")
+        else:
+            raise AssertionError("xpath returned no organization")
 
     def test_create_author_non_IANA_entries(self):
         """
@@ -454,7 +458,7 @@ class SerializerTestCase(TestCase):
         of the organization within the <organization> tag
         """
         organization_name = "Any Organization"
-        contributor_organization_data = {
+        contributor_organization_data: Dict[str, Any] = {
             "organization": {
                 "name": {"content": organization_name, "language": "en"},
                 "abbreviation": {"content": "NONIANA", "language": "en"},
@@ -466,7 +470,11 @@ class SerializerTestCase(TestCase):
         author_organization = \
             create_author(Contributor(**contributor_organization_data))
         self.assertEqual(author_organization.tag, "author")
-        self.assertEqual(author_organization.xpath("//organization")[0], organization_name)
+        if els := author_organization.xpath("//organization"):
+            # TODO: Are we sure xpath() returns a list of strings not elements?
+            self.assertEqual(cast(List[str], els)[0], organization_name)
+        else:
+            raise AssertionError("xpath returned no organization")
 
     def test_get_suitable_anchor(self):
         """
@@ -553,7 +561,7 @@ class SerializerTestCase(TestCase):
         get_suitable_target should fail if called with
         a list of empty links
         """
-        links = []
+        links: List[Any] = []
         with self.assertRaises(ValueError):
             get_suitable_target(links)
 
