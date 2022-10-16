@@ -1,4 +1,4 @@
-.PHONY: docs
+.PHONY: docs docker-tests
 
 clean: clean-build clean-pyc clean-test clean-docs ## remove all build, test, coverage and Python artifacts
 
@@ -34,3 +34,10 @@ dist: clean ## builds source and wheel package
 	python setup.py sdist
 	python setup.py bdist_wheel
 	ls -l dist
+
+docker-tests:
+	docker run -t \
+	--interactive --network=none \
+	--workdir="/code" --volume="$$(pwd):/code" \
+	$$(docker build -q .) \
+	python -m coverage run -m unittest

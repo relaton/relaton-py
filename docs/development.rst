@@ -5,8 +5,29 @@ Development
 Setup
 =====
 
-Create a virtual Python environment
-and ``pip install -r requirements_dev.txt`` within it.
+Docker
+------
+
+You can use the provided Dockerfile for running tests
+and static typing & linting hints via containerized LSP service.
+
+Shortcut to run tests::
+
+    make docker-tests
+
+Running PyLSP server::
+
+    docker build -t relaton-py-lsp . && \
+    docker container run \
+      --interactive --rm --network=none \
+      --workdir="$(pwd)" --volume="$(pwd):$(pwd):z" \
+      relaton-py-lsp
+
+Virtual environment
+-------------------
+
+Create a virtual Python 3.10 environment
+and ``pip install -r requirements_dev.txt -r requirements.txt`` within it.
 
 Expanding Relaton model coverage
 ================================
