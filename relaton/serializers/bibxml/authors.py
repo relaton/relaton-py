@@ -21,12 +21,12 @@ E = objectify.E
 
 
 AUTHOR_ROLES = set(('author', 'editor', 'publisher'))
-"""Relaton contributor roles that represent xml2rfc authors."""
+"""Relaton contributor role types that represent xml2rfc authors."""
 
 
 is_author = (
     lambda contrib:
-    len(set(as_list(contrib.role or [])) & AUTHOR_ROLES) > 0
+    len(set([r.type for r in as_list(contrib.role or [])]) & AUTHOR_ROLES) > 0
 )
 """Returns ``True`` if given Relaton contributor instance
 represents an author in xml2rfc domain."""
