@@ -1,4 +1,3 @@
-# type: ignore
 import os
 from copy import copy
 from io import StringIO
@@ -15,7 +14,7 @@ from relaton.models import (
     GenericStringValue,
 )
 from relaton.models.bibitemlocality import LocalityStack, Locality
-from relaton.serializers.bibxml import (
+from relaton.serializers.bibxml import (  # type: ignore[attr-defined]
     create_reference,
     get_suitable_anchor,
     get_suitable_target,
@@ -773,7 +772,7 @@ class SerializerTestCase(TestCase):
             content="content", format="application/x-jats+xml"
         )
         with self.assertRaises(ValueError):
-            get_paragraphs_html(paragraph)
+            get_paragraphs_html(paragraph)  # type: ignore
 
     def test_fail_get_jats_paragraph(self):
         """
@@ -782,4 +781,4 @@ class SerializerTestCase(TestCase):
         """
         paragraph = GenericStringValue(content="content", format="text/html")
         with self.assertRaises(ValueError):
-            get_paragraphs_jats(paragraph)
+            get_paragraphs_jats(paragraph)  # type: ignore
