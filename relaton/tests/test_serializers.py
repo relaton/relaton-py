@@ -572,9 +572,12 @@ class SerializerTestCase(TestCase):
         """
         id_value = "10.17487/RFC4036"
         docid = DocID(id=id_value, type="DOI")
-        type, id = extract_doi_series(docid)
-        self.assertEqual(type, "DOI")
-        self.assertEqual(id, id_value)
+        if result := extract_doi_series(docid):
+            type, id = result
+            self.assertEqual(type, "DOI")
+            self.assertEqual(id, id_value)
+        else:
+            raise AssertionError("Failed to extract DOI series")
 
     def test_fail_extract_doi_series(self):
         """
@@ -592,9 +595,12 @@ class SerializerTestCase(TestCase):
         """
         id_value = "RFC 4036"
         docid = DocID(id=id_value, type="IETF")
-        serie, id = extract_rfc_series(docid)
-        self.assertEqual(serie, "RFC")
-        self.assertEqual(id, id_value.split(" ")[-1])
+        if result := extract_rfc_series(docid):
+            series, id = result
+            self.assertEqual(series, "RFC")
+            self.assertEqual(id, id_value.split(" ")[-1])
+        else:
+            raise AssertionError("Failed to extract RFC series")
 
     def test_fail_extract_rfc_series(self):
         """
@@ -613,9 +619,12 @@ class SerializerTestCase(TestCase):
         id_value = "draft-ietf-hip-rfc5201-bis-13"
         type_value = "Internet-Draft"
         docid = DocID(id=id_value, type=type_value)
-        serie, id = extract_id_series(docid)
-        self.assertEqual(serie, type_value)
-        self.assertEqual(id, id_value)
+        if result := extract_id_series(docid):
+            series, id = result
+            self.assertEqual(series, type_value)
+            self.assertEqual(id, id_value)
+        else:
+            raise AssertionError("Failed to extract ID series")
 
     def test_fail_extract_id_series(self):
         """
@@ -634,9 +643,12 @@ class SerializerTestCase(TestCase):
         id_value = "W3C.REC-owl2-syntax-20121211"
         type_value = "W3C"
         docid = DocID(id=id_value, type=type_value)
-        serie, id = extract_w3c_series(docid)
-        self.assertEqual(serie, type_value)
-        self.assertEqual(id, id_value.replace(".", " ").split("W3C ")[-1])
+        if result := extract_w3c_series(docid):
+            series, id = result
+            self.assertEqual(series, type_value)
+            self.assertEqual(id, id_value.replace(".", " ").split("W3C ")[-1])
+        else:
+            raise AssertionError("Failed to extract W3C series")
 
     def test_fail_extract_w3c_series(self):
         """
@@ -655,12 +667,16 @@ class SerializerTestCase(TestCase):
         id_value = "3GPP TR 25.321:Rel-8/8.3.0"
         type_value = "3GPP"
         docid = DocID(id=id_value, type=type_value)
-        serie, id = extract_3gpp_tr_series(docid)
-        self.assertEqual(serie, f"{type_value} TR")
-        self.assertEqual(
-            id,
-            f"{id_value.split('3GPP TR ')[1].split(':')[0]} {id_value.split('/')[-1]}",
-        )
+        if result := extract_3gpp_tr_series(docid):
+            series, id = result
+            self.assertEqual(series, f"{type_value} TR")
+            self.assertEqual(
+                id,
+                f"{id_value.split('3GPP TR ')[1].split(':')[0]} "
+                f"{id_value.split('/')[-1]}",
+            )
+        else:
+            raise AssertionError("Failed to extract 3GPP series")
 
     def test_fail_extract_3gpp_tr_series(self):
         """
@@ -679,12 +695,18 @@ class SerializerTestCase(TestCase):
         id_value = "IEEE P2740/D-6.5.2020-08"
         type_value = "IEEE"
         docid = DocID(id=id_value, type=type_value)
-        serie, id = extract_ieee_series(docid)
-        id_value_alternative, year, *_ = (
-            docid.id.split(" ")[-1].lower().strip().split(".")
-        )
-        self.assertEqual(serie, type_value)
-        self.assertTrue(id == "%s-%s" % (id_value_alternative.replace("-", "."), year))
+        if result := extract_ieee_series(docid):
+            series, id = result
+            id_value_alternative, year, *_ = (
+                docid.id.split(" ")[-1].lower().strip().split(".")
+            )
+            self.assertEqual(series, type_value)
+            self.assertTrue(id == "%s-%s" % (
+                id_value_alternative.replace("-", "."),
+                year,
+            ))
+        else:
+            raise AssertionError("Failed to extract IEEE series")
 
     def test_extract_ieee_series_with_malformed_id(self):
         """
@@ -694,9 +716,13 @@ class SerializerTestCase(TestCase):
         id_value = "IEEE P2740/D-6.5 2020-08"
         type_value = "IEEE"
         docid = DocID(id=id_value, type=type_value)
-        serie, id = extract_ieee_series(docid)
-        self.assertEqual(serie, type_value)
-        self.assertEqual(id, id_value)
+        if result := extract_ieee_series(docid):
+            series, id = result
+            self.assertEqual(series, type_value)
+            self.assertEqual(id, id_value)
+        else:
+            raise AssertionError(
+                "Failed to extract IEEE series with malformed ID")
 
     def test_fail_extract_ieee_series(self):
         """
