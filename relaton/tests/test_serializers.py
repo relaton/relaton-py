@@ -719,7 +719,7 @@ class SerializerTestCase(TestCase):
 
         abstract = create_abstract(abstracts)
         self.assertEqual(
-            abstract.getchildren()[0],
+            list(abstract.iterchildren())[0],
             next(
                 abstract.content
                 for abstract in abstracts
