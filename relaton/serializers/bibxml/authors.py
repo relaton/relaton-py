@@ -11,9 +11,9 @@ from ...models.strings import GenericStringValue
 
 
 __all__ = (
-  'create_author',
-  'is_author',
-  'AUTHOR_ROLES',
+    'create_author',
+    'is_author',
+    'AUTHOR_ROLES',
 )
 
 
