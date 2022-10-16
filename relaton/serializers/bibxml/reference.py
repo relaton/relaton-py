@@ -5,7 +5,7 @@ from lxml import objectify
 
 from ...models.bibitemlocality import LocalityStack, Locality
 from ...util import as_list
-from ...models.bibdata import BibliographicItem, DocID, Contributor, Series
+from ...models.bibdata import BibliographicItem, Contributor, Series
 from ...models.dates import Date, parse_relaxed_date
 from ...models.strings import Title, GenericStringValue
 
