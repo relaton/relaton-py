@@ -1,5 +1,5 @@
 from typing import cast, List, Optional
-from xml.etree.ElementTree import Element
+from lxml.etree import _Element
 from lxml import objectify
 
 from ...util import as_list
@@ -32,7 +32,7 @@ is_author = (
 represents an author in xml2rfc domain."""
 
 
-def create_author(contributor: Contributor) -> Element:
+def create_author(contributor: Contributor) -> _Element:
     if not is_author(contributor):
         raise ValueError(
             "Unable to construct <author>: incompatible roles")

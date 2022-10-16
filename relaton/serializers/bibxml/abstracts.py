@@ -1,5 +1,5 @@
 from typing import List, cast
-from xml.etree.ElementTree import Element
+from lxml.etree import _Element
 from lxml import etree, objectify
 
 from ...models.strings import GenericStringValue
@@ -16,7 +16,7 @@ E = objectify.E
 JATS_XMLNS = "http://www.ncbi.nlm.nih.gov/JATS1"
 
 
-def create_abstract(abstracts: List[GenericStringValue]) -> Element:
+def create_abstract(abstracts: List[GenericStringValue]) -> _Element:
     """
     Formats an ``<abstract>`` element.
     """

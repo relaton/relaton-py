@@ -8,7 +8,7 @@ Primary API is :func:`.serialize()`.
 """
 
 from typing import List
-from xml.etree.ElementTree import Element
+from lxml.etree import _Element
 from lxml import objectify, etree
 
 from ...util import as_list
@@ -24,7 +24,7 @@ __all__ = (
 )
 
 
-def serialize(item: BibliographicItem, anchor: str = None) -> Element:
+def serialize(item: BibliographicItem, anchor: str = None) -> _Element:
     """Converts a BibliographicItem to XML,
     trying to follow RFC 7991.
 

@@ -1,6 +1,6 @@
 from typing import List, Tuple, Optional, Union, cast
 import datetime
-from xml.etree.ElementTree import Element
+from lxml.etree import _Element
 from lxml import objectify
 
 from ...models.bibitemlocality import LocalityStack, Locality
@@ -28,14 +28,14 @@ E = objectify.E
 default_title = "[title unavailable]"
 
 
-def create_referencegroup(items: List[BibliographicItem]) -> Element:
+def create_referencegroup(items: List[BibliographicItem]) -> _Element:
     return E.referencegroup(*(
         create_reference(item)
         for item in items
     ))
 
 
-def create_reference(item: BibliographicItem) -> Element:
+def create_reference(item: BibliographicItem) -> _Element:
     main_title: str
     if item.title:
         main_title = as_list(item.title)[0].content or default_title
