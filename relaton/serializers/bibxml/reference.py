@@ -51,7 +51,9 @@ def create_reference(item: BibliographicItem) -> Element:
 
     front = E.front(
         E.title(main_title),
-        *(create_author(contrib) for contrib in author_contributors) if author_contributors else E.author(),
+        *(create_author(contrib) for contrib in author_contributors)
+        if author_contributors
+        else E.author(),
     )
 
     # Publication date… Or at least any date

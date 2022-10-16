@@ -44,21 +44,28 @@ class SerializerTestCase(TestCase):
         # Data for a Contributor (AKA Author) of type Organization
         contributor_organization_data = {
             "organization": {
-                "name": {"content": "Internet Engineering Task Force", "language": "en"},
+                "name": {
+                    "content": "Internet Engineering Task Force",
+                    "language": "en",
+                },
                 "abbreviation": {"content": "abbr", "language": "en"},
             },
             "role": [{
                 "type": "publisher",
             }],
         }
-        self.contributor_organization = Contributor(**contributor_organization_data)
+        self.contributor_organization = \
+            Contributor(**contributor_organization_data)
 
         # Data for a Contributor (AKA Author) of type Person
         self.contributor_person_data = {
             "person": {
                 "name": {
                     "given": {
-                        "formatted_initials": {"content": "Mr", "language": "en"},
+                        "formatted_initials": {
+                            "content": "Mr",
+                            "language": "en",
+                        },
                     },
                     "surname": {"content": "Cerf", "language": "en"},
                     "completename": {"content": "Mr Cerf", "language": "en"},
@@ -98,7 +105,8 @@ class SerializerTestCase(TestCase):
                 {"type": "page", "reference_from": "3"}
             ]}
         }
-        self.bibitem_reference = BibliographicItem(**self.bibitem_reference_data)
+        self.bibitem_reference = \
+            BibliographicItem(**self.bibitem_reference_data)
 
         # Data for a BibliographicItem which will be converted
         # to a <referencegroup> root tag in the XML output
@@ -290,9 +298,11 @@ class SerializerTestCase(TestCase):
         data: dict[str, Any] = {
             "id": "I-D.ietf-bfd-mpls-mib",
             "doctype": "internet-draft",
-            "docid": [
-                {"id": "draft-ietf-bfd-mpls-mib-07", "type": "Internet-Draft", "primary": True},
-            ],
+            "docid": [{
+                "id": "draft-ietf-bfd-mpls-mib-07",
+                "type": "Internet-Draft",
+                "primary": True
+            }],
             "link": {
                 "content": "https://www.ietf.org/archive/id/draft-ietf-bfd-mpls-mib-07.txt",
                 "type": "TXT"
@@ -306,7 +316,11 @@ class SerializerTestCase(TestCase):
         self.assertEqual(target, data["link"]["content"])
 
         # RFC and RFC subseries entries have docid.type == "IETF" and do not have a doctype
-        data["docid"][0] = {"id": "I-D.ietf-bfd-mpls-mib", "type": "IETF", "scope": "anchor"}
+        data["docid"][0] = {
+            "id": "I-D.ietf-bfd-mpls-mib",
+            "type": "IETF",
+            "scope": "anchor",
+        }
         del data["doctype"]
         new_bibitem = BibliographicItem(**data)
         reference = create_reference(new_bibitem)
@@ -345,7 +359,9 @@ class SerializerTestCase(TestCase):
 
         ])
         refcontent = build_refcontent_string(extent)
-        self.assertEqual(refcontent, f"{title}, vol. {volume}, no. {issue}, pp. {page}")
+        self.assertEqual(
+            refcontent,
+            f"{title}, vol. {volume}, no. {issue}, pp. {page}")
 
     def test_build_refcontent_string_with_locality(self):
         title = "Container Title"
@@ -362,7 +378,8 @@ class SerializerTestCase(TestCase):
         """
         author_xsd = StringIO(
             """
-            <xsd:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+            <xsd:schema attributeFormDefault="unqualified"
+            elementFormDefault="qualified"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema">
                 <xsd:element name="author" type="authorType"/>
                 <xsd:complexType name="authorType">
@@ -417,14 +434,18 @@ class SerializerTestCase(TestCase):
         """
         contributor_organization_data = {
             "organization": {
-                "name": {"content": "Internet Assigned Numbers Authority", "language": "en"},
+                "name": {
+                    "content": "Internet Assigned Numbers Authority",
+                    "language": "en",
+                },
                 "abbreviation": {"content": "IANA", "language": "en"},
             },
             "role": [{
                 "type": "publisher",
             }],
         }
-        author_organization = create_author(Contributor(**contributor_organization_data))
+        author_organization = \
+            create_author(Contributor(**contributor_organization_data))
         self.assertEqual(author_organization.tag, "author")
         self.assertEqual(author_organization.xpath("//organization")[0], "IANA")
 
@@ -443,7 +464,8 @@ class SerializerTestCase(TestCase):
                 "type": "publisher",
             }],
         }
-        author_organization = create_author(Contributor(**contributor_organization_data))
+        author_organization = \
+            create_author(Contributor(**contributor_organization_data))
         self.assertEqual(author_organization.tag, "author")
         self.assertEqual(author_organization.xpath("//organization")[0], organization_name)
 
@@ -476,7 +498,9 @@ class SerializerTestCase(TestCase):
         self.assertEqual(
             anchor,
             next(
-                docid.id for docid in bibitem_with_primary_docid.docid if docid.primary
+                docid.id
+                for docid in bibitem_with_primary_docid.docid
+                if docid.primary
             ),
         )
 
@@ -683,15 +707,23 @@ class SerializerTestCase(TestCase):
         of the list)
         """
         abstracts: List[GenericStringValue] = [
-            GenericStringValue(content="content", format="text/html", language="en"),
-            GenericStringValue(content="contenuto", format="text/html", language="it"),
+            GenericStringValue(
+                content="content",
+                format="text/html",
+                language="en"),
+            GenericStringValue(
+                content="contenuto",
+                format="text/html",
+                language="it"),
         ]
 
         abstract = create_abstract(abstracts)
         self.assertEqual(
             abstract.getchildren()[0],
             next(
-                abstract.content for abstract in abstracts if abstract.language == "en"
+                abstract.content
+                for abstract in abstracts
+                if abstract.language == "en"
             ),
         )
         self.assertEqual(abstract.tag, "abstract")
@@ -719,7 +751,8 @@ class SerializerTestCase(TestCase):
 
         jats_content = "JATS"
         jats_paragraph = GenericStringValue(
-            content=f"<jats:p>{jats_content}</jats:p>", format="application/x-jats+xml"
+            content=f"<jats:p>{jats_content}</jats:p>",
+            format="application/x-jats+xml"
         )
         paragraph = get_paragraphs(jats_paragraph)
         self.assertEqual(paragraph[0], jats_content)
