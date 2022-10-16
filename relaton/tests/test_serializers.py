@@ -406,8 +406,8 @@ class SerializerTestCase(TestCase):
         """
         contributor_organization = copy(self.contributor_organization)
         contributor_person = copy(self.contributor_person)
-        contributor_organization.role = None
-        contributor_person.role = None
+        contributor_organization.role = []
+        contributor_person.role = []
         with self.assertRaises(ValueError):
             create_author(contributor_organization)
             create_author(contributor_person)
