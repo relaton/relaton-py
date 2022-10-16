@@ -410,6 +410,7 @@ class SerializerTestCase(TestCase):
         contributor_person.role = []
         with self.assertRaises(ValueError):
             create_author(contributor_organization)
+        with self.assertRaises(ValueError):
             create_author(contributor_person)
 
     def test_fail_create_author_if_missing_person_or_organization(self):
@@ -422,6 +423,7 @@ class SerializerTestCase(TestCase):
         contributor_person.person = None
         with self.assertRaises(ValueError):
             create_author(contributor_organization)
+        with self.assertRaises(ValueError):
             create_author(contributor_person)
 
     def test_create_author_IANA_entries(self):
