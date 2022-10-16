@@ -44,8 +44,11 @@ def create_author(contributor: Contributor) -> Element:
 
     author_el = E.author()
 
-    roles = as_list(contributor.role)
-
+    roles: List[str] = [
+        r.type
+        for r in (contributor.role or [])
+        if r.type
+    ]
     if 'editor' in roles:
         author_el.set('role', 'editor')
 
