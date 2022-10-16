@@ -47,7 +47,9 @@ class SerializerTestCase(TestCase):
                 "name": {"content": "Internet Engineering Task Force", "language": "en"},
                 "abbreviation": {"content": "abbr", "language": "en"},
             },
-            "role": "publisher",
+            "role": [{
+                "type": "publisher",
+            }],
         }
         self.contributor_organization = Contributor(**contributor_organization_data)
 
@@ -62,7 +64,9 @@ class SerializerTestCase(TestCase):
                     "completename": {"content": "Mr Cerf", "language": "en"},
                 },
             },
-            "role": "author",
+            "role": [{
+                "type": "author",
+            }],
         }
         self.contributor_person = Contributor(**self.contributor_person_data)
 
@@ -416,7 +420,9 @@ class SerializerTestCase(TestCase):
                 "name": {"content": "Internet Assigned Numbers Authority", "language": "en"},
                 "abbreviation": {"content": "IANA", "language": "en"},
             },
-            "role": "publisher",
+            "role": [{
+                "type": "publisher",
+            }],
         }
         author_organization = create_author(Contributor(**contributor_organization_data))
         self.assertEqual(author_organization.tag, "author")
@@ -433,7 +439,9 @@ class SerializerTestCase(TestCase):
                 "name": {"content": organization_name, "language": "en"},
                 "abbreviation": {"content": "NONIANA", "language": "en"},
             },
-            "role": "publisher",
+            "role": [{
+                "type": "publisher",
+            }],
         }
         author_organization = create_author(Contributor(**contributor_organization_data))
         self.assertEqual(author_organization.tag, "author")
