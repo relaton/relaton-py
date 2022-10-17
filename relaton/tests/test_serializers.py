@@ -478,6 +478,41 @@ class SerializerTestCase(TestCase):
         else:
             raise AssertionError("xpath returned no organization")
 
+    def test_create_author_with_editor_role(self):
+        """
+        create_author should return an Author element with attribute
+        role == editor if Contributor.role is set to editor
+        """
+        contributor_editor: Dict[str, Any] = {
+            "organization": {
+                "name": {"content": "name", "language": "en"},
+            },
+            "role": [{
+                "type": "editor",
+            }],
+        }
+        author_organization = create_author(Contributor(**contributor_editor))
+        self.assertEqual(author_organization.tag, "author")
+        self.assertEqual(author_organization.get("role"), "editor")
+
+    def test_create_author_with_non_editor_role(self):
+        """
+        create_author should return an Author element with attribute
+        role != editor if Contributor.role is set to something else
+        then editor
+        """
+        contributor_editor: Dict[str, Any] = {
+            "organization": {
+                "name": {"content": "name", "language": "en"},
+            },
+            "role": [{
+                "type": "publisher",
+            }],
+        }
+        author_organization = create_author(Contributor(**contributor_editor))
+        self.assertEqual(author_organization.tag, "author")
+        self.assertNotEqual(author_organization.get("role"), "editor")
+
     def test_get_suitable_anchor(self):
         """
         get_suitable_anchor should return the correct anchor value
