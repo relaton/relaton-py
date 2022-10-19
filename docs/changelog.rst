@@ -2,6 +2,14 @@
 Changelog
 =========
 
+v0.2.22
+=======
+
+- Update Contributor model structure
+- Update Role model structure
+- Update Copyright.owner to accept either Organization(s) or Person(s)
+- Minor fixes (including styling)
+
 v0.2.21
 =======
 
