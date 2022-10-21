@@ -19,8 +19,9 @@ class Forename(GenericStringValue):
     An individual initial of the person, corresponding to the given forename.
     Does not include final punctuation, but can include hyphens.
     Can be used instead of forenames,
-    if formatted-initials are not provided (in which case each initial will be punctuated
-    following local practice.).
+    if ``formatted_initials`` are not provided
+    (in which case each initial will be punctuated
+    following local practice).
     """
 
 
