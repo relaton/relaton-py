@@ -5,7 +5,9 @@ Glossary
 .. glossary::
 
    bibliographic item
-       Describes an information resource for purposes of referencing or citing.
+       Describes an information resource for bibliography purposes
+       (referencing or citing).
+
        Corresponds to :class:`~relaton.models.bibdata.BibliographicItem` instance.
 
    citation
