@@ -200,6 +200,7 @@ class BibliographicItem(BaseModel, extra=Extra.allow):
     def validate_revdate(cls, v, **kwargs):
         """Validates ``revdate``, allowing it to be unspecific."""
         if isinstance(v, list):
+            # TODO: Could this be handled with ``each_item`` keyword instead?
             return [
                 validate_relaxed_date(i)
                 for i in v
