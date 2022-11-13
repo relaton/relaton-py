@@ -33,6 +33,7 @@ contributor:
         - language:
           - en
           initial: P
+          content: P # Current format does not include content
         formatted_initials:
           content: P.
           language:
@@ -57,6 +58,7 @@ contributor:
         - language:
           - en
           initial: K
+          content: K # Current format does not include content
         formatted_initials:
           content: K.
           language:

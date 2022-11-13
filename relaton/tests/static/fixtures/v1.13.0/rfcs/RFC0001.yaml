@@ -28,6 +28,7 @@ contributor:
           script:
           - Latn
           initial: S
+          content: S # Current format does not include content
         formatted_initials:
           content: S.
           language:
