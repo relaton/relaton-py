@@ -4,7 +4,6 @@ from unittest import TestCase
 
 import yaml
 from lxml import etree
-from pydantic import ValidationError
 
 from relaton.models import BibliographicItem
 from relaton.serializers.bibxml import serialize
