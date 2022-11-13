@@ -77,17 +77,17 @@ copyright:
   from: '1943'
 keyword:
 # Current format, does not validate. Normalized in Bibxml-service
-- content: AIEE Standards
-- content: Propulsion
-- content: Electric machines
-- content: Machinery
-- content: Velocity control
-- content: Rotation measurement
-- content: Rail transportation
-#- AIEE Standards
-#- Propulsion
-#- Electric machines
-#- Machinery
-#- Velocity control
-#- Rotation measurement
-#- Rail transportation
+#- content: AIEE Standards
+#- content: Propulsion
+#- content: Electric machines
+#- content: Machinery
+#- content: Velocity control
+#- content: Rotation measurement
+#- content: Rail transportation
+- AIEE Standards
+- Propulsion
+- Electric machines
+- Machinery
+- Velocity control
+- Rotation measurement
+- Rail transportation
