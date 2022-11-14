@@ -1,0 +1,181 @@
+---
+id: W3Csoap12-part2
+title:
+- content: 'SOAP Version 1.2 Part 2: Adjuncts'
+  language:
+  - en
+  script:
+  - Latn
+  format: text/plain
+link:
+- content: http://www.w3.org/TR/soap12-part2
+  type: src
+type: standard
+docid:
+- id: W3C soap12-part2
+  type: W3C
+  primary: true
+- id: W3C.soap12-part2
+  type: W3C
+  scope: anchor
+docnumber: soap12-part2
+date:
+- type: published
+  value: '2002-06-26'
+contributor:
+- person:
+    name:
+      given:
+        forename:
+        - language:
+          - en
+          initial: M
+          content: M
+        formatted_initials:
+          content: M.
+          language:
+          - en
+      surname:
+        content: Gudgin
+        language:
+        - en
+      completename:
+        content: Martin Gudgin
+        language:
+        - en
+    affiliation:
+    - organization:
+        name:
+        - content: Developmentor
+    contact:
+    - email: marting@develop.com
+  role:
+  - type: author
+- person:
+    name:
+      given:
+        forename:
+        - language:
+          - en
+          initial: M
+          content: M
+        formatted_initials:
+          content: M.
+          language:
+          - en
+      surname:
+        content: Hadley
+        language:
+        - en
+      completename:
+        content: Marc Hadley
+        language:
+        - en
+    affiliation:
+    - organization:
+        name:
+        - content: Sun Microsystems
+    contact:
+    - email: marc.hadley@sun.com
+  role:
+  - type: author
+- person:
+    name:
+      given:
+        forename:
+        - language:
+          - en
+          initial: N
+          content: N
+        formatted_initials:
+          content: N.
+          language:
+          - en
+      surname:
+        content: Mendelsohn
+        language:
+        - en
+      completename:
+        content: Noah Mendelsohn
+        language:
+        - en
+    affiliation:
+    - organization:
+        name:
+        - content: IBM
+    contact:
+    - email: Noah_Mendelsohn@us.ibm.com
+  role:
+  - type: author
+- person:
+    name:
+      given:
+        forename:
+        - language:
+          - en
+          initial: J
+          content: J
+        formatted_initials:
+          content: J.
+          language:
+          - en
+      surname:
+        content: Moreau
+        language:
+        - en
+      completename:
+        content: Jean-Jacques Moreau
+        language:
+        - en
+    affiliation:
+    - organization:
+        name:
+        - content: Canon
+    contact:
+    - email: moreau@crf.canon.fr
+  role:
+  - type: author
+- person:
+    name:
+      given:
+        forename:
+        - language:
+          - en
+          initial: H
+          content: H
+        formatted_initials:
+          content: H.
+          language:
+          - en
+      surname:
+        content: Nielsen
+        language:
+        - en
+      completename:
+        content: Henrik Frystyk Nielsen
+        language:
+        - en
+    affiliation:
+    - organization:
+        name:
+        - content: Microsoft
+    contact:
+    - email: henrikn@microsoft.com
+  role:
+  - type: author
+revdate: '2002-06-26'
+language:
+- en
+script:
+- Latn
+series:
+- type: main
+  title:
+    content: W3C Working Draft
+    language:
+    - en
+    script:
+    - Latn
+    format: text/plain
+  number: soap12-part2
+doctype: rfc

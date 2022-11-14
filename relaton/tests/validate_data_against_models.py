@@ -10,16 +10,18 @@ from relaton.serializers.bibxml import serialize
 
 
 class DataValidationTestCase(TestCase):
+    """
+    Asserts that XML output conforms to the authoritative schema.
+    """
     schema_version = "1.13.0"
 
     def setUp(self):
-        module_dir = os.path.dirname(__file__)
-        file_path = os.path.join(module_dir, "static/schemas/v3.xsd")
+        self.module_dir = os.path.dirname(__file__)
+        file_path = os.path.join(self.module_dir, "static/schemas/v3.xsd")
         self.xmlschema = etree.XMLSchema(file=file_path)
 
     def _validate_yaml_data(self, dataset):
-        module_dir = os.path.dirname(__file__)
-        dataset_dir = os.path.join(module_dir, f"static/fixtures/v{self.schema_version}/{dataset}")
+        dataset_dir = os.path.join(self.module_dir, f"static/fixtures/v{self.schema_version}/{dataset}")
         for file in os.listdir(dataset_dir):
             file_path = os.path.join(f"{dataset_dir}/{file}")
             with open(file_path) as stream:
