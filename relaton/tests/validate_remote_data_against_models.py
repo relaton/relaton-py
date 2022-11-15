@@ -22,7 +22,6 @@ class DataSourceValidationTestCase(TestCase):
         yaml_object = yaml.safe_load(r.content)
         bibitem = BibliographicItem(**yaml_object)
         serialized_data = serialize(bibitem)
-
         self.xmlschema.assertValid(serialized_data)
 
     def test_validate_rfcs_data(self):
