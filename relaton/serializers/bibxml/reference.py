@@ -56,6 +56,7 @@ def create_reference(item: BibliographicItem) -> _Element:
         else E.author(),
     )
 
+    # IANA entries should not include any date element
     if not any(docid.type == "IANA" for docid in item.docid):
         # Publication date… Or at least any date
         published_date: Optional[datetime.date] = None

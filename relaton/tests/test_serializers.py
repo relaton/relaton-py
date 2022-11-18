@@ -93,7 +93,7 @@ class SerializerTestCase(TestCase):
                 {"id": "IEEE P2740/D-6.5 2020-08", "type": "IEEE"},
             ],
             "contributor": [self.contributor_person_data],
-            "date": [{"type": "published", "value": "1996-02"}],
+            "date": [{"type": "published", "value": "1996-02-11"}],
             "abstract": [{"content": "abstract_content"}],
             "series": [{"title": ["IEEE P2740/D-6.5 2020-08"], "type": "IEEE"}],
             "version": [{"draft": True}],
@@ -140,7 +140,7 @@ class SerializerTestCase(TestCase):
                         "type": "standard",
                         "docid": [{"id": "RFC1918", "type": "RFC"}],
                         "docnumber": "RFC1918",
-                        "date": [{"type": "published", "value": "1998-02"}],
+                        "date": [{"type": "published", "value": "1998-02-11"}],
                         "extent": {"locality": [
                             {"type": "container-title", "reference_from": "Container Title"},
                             {"type": "volume", "reference_from": "1"},
