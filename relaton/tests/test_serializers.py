@@ -275,7 +275,7 @@ class SerializerTestCase(TestCase):
         reference = create_reference(new_bibitem)
         date = reference.getchildren()[0].getchildren()[2]
         self.assertTrue(any(
-            element != ["year", "month", "day"]
+            element in ["year", "month", "day"]
             for element in reference.getchildren()[0].getchildren()[2].keys()
         ))
         self.assertEqual(
@@ -288,7 +288,7 @@ class SerializerTestCase(TestCase):
         new_bibitem = BibliographicItem(**data)
         reference = create_reference(new_bibitem)
         self.assertFalse(any(
-            element != ["year", "month", "day"]
+            element not in ["year", "month", "day"]
             for element in reference.getchildren()[0].getchildren()[2].keys()
         ))
 
