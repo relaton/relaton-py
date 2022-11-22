@@ -2,6 +2,14 @@
 Changelog
 =========
 
+
+v0.2.23
+=======
+
+- Upgrade GHA actions versions
+- Remove dates from XML output for IANA entries
+- Update docs
+
 v0.2.22
 =======
 
