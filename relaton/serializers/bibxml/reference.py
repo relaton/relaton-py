@@ -57,7 +57,7 @@ def create_reference(item: BibliographicItem) -> _Element:
     )
 
     # IANA entries should not include any date element
-    if not any(docid.type == "IANA" for docid in item.docid):
+    if not any(link_type.content.startswith("http://www.iana.org") for link_type in as_list(item.link or [])):
         # Publication date… Or at least any date
         published_date: Optional[datetime.date] = None
         published_date_raw: Optional[Union[str, datetime.date]] = None
