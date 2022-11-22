@@ -93,7 +93,7 @@ class SerializerTestCase(TestCase):
                 {"id": "IEEE P2740/D-6.5 2020-08", "type": "IEEE"},
             ],
             "contributor": [self.contributor_person_data],
-            "date": [{"type": "published", "value": "1996-02"}],
+            "date": [{"type": "published", "value": "1996-02-11"}],
             "abstract": [{"content": "abstract_content"}],
             "series": [{"title": ["IEEE P2740/D-6.5 2020-08"], "type": "IEEE"}],
             "version": [{"draft": True}],
@@ -140,7 +140,7 @@ class SerializerTestCase(TestCase):
                         "type": "standard",
                         "docid": [{"id": "RFC1918", "type": "RFC"}],
                         "docnumber": "RFC1918",
-                        "date": [{"type": "published", "value": "1998-02"}],
+                        "date": [{"type": "published", "value": "1998-02-11"}],
                         "extent": {"locality": [
                             {"type": "container-title", "reference_from": "Container Title"},
                             {"type": "volume", "reference_from": "1"},
@@ -269,16 +269,28 @@ class SerializerTestCase(TestCase):
         type == 'published'. If no date is of this type, it should choose
         a random date between the ones provided.
         """
-        # TODO: Indirectly testing build_refcontent_string without calling it,
-        # not sure if a good idea
         data = copy(self.bibitem_reference_data)
         data["date"][0]["type"] = "random_type"
         new_bibitem = BibliographicItem(**data)
         reference = create_reference(new_bibitem)
         date = reference.getchildren()[0].getchildren()[2]
+        self.assertTrue(any(
+            element in ["year", "month", "day"]
+            for element in reference.getchildren()[0].getchildren()[2].keys()
+        ))
         self.assertEqual(
             date.get(date.keys()[0]), data["date"][0]["value"].split("-")[0]
         )
+
+    def test_create_reference_for_IANA_entries_should_not_include_dates(self):
+        data = copy(self.bibitem_reference_data)
+        data["docid"][0]["type"] = "IANA"
+        new_bibitem = BibliographicItem(**data)
+        reference = create_reference(new_bibitem)
+        self.assertFalse(any(
+            element not in ["year", "month", "day"]
+            for element in reference.getchildren()[0].getchildren()[2].keys()
+        ))
 
     def test_create_reference_target_should_be_placed_within_format_tag(self):
         """

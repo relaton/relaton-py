@@ -56,35 +56,37 @@ def create_reference(item: BibliographicItem) -> _Element:
         else E.author(),
     )
 
-    # Publication date… Or at least any date
-    published_date: Optional[datetime.date] = None
-    published_date_raw: Optional[Union[str, datetime.date]] = None
-    all_dates: List[Date] = as_list(item.date or [])
-    specificity: Optional[str] = None
-    for date in all_dates:
-        if date.type == 'published':
-            published_date_raw = date.value
-            break
-    if not published_date_raw and all_dates:
-        published_date_raw = all_dates[0].value
+    # IANA entries should not include any date element
+    if not any(link_type.content.startswith("http://www.iana.org") for link_type in as_list(item.link or [])):
+        # Publication date… Or at least any date
+        published_date: Optional[datetime.date] = None
+        published_date_raw: Optional[Union[str, datetime.date]] = None
+        all_dates: List[Date] = as_list(item.date or [])
+        specificity: Optional[str] = None
+        for date in all_dates:
+            if date.type == 'published':
+                published_date_raw = date.value
+                break
+        if not published_date_raw and all_dates:
+            published_date_raw = all_dates[0].value
 
-    if published_date_raw:
-        if isinstance(published_date_raw, str):
-            relaxed = parse_relaxed_date(published_date_raw)
-            if relaxed:
-                published_date = relaxed[0]
-                specificity = relaxed[2]
-        else:
-            published_date = published_date_raw
-            specificity = 'day'
+        if published_date_raw:
+            if isinstance(published_date_raw, str):
+                relaxed = parse_relaxed_date(published_date_raw)
+                if relaxed:
+                    published_date = relaxed[0]
+                    specificity = relaxed[2]
+            else:
+                published_date = published_date_raw
+                specificity = 'day'
 
-    if published_date and specificity:
-        date_el = E.date(year=published_date.strftime('%Y'))
-        if specificity in ['month', 'day']:
-            date_el.set('month', published_date.strftime('%B'))
-        if specificity == 'day':
-            date_el.set('day', str(published_date.day))
-        front.append(date_el)
+        if published_date and specificity:
+            date_el = E.date(year=published_date.strftime('%Y'))
+            if specificity in ['month', 'day']:
+                date_el.set('month', published_date.strftime('%B'))
+            if specificity == 'day':
+                date_el.set('day', str(published_date.day))
+            front.append(date_el)
 
     # Abstract
     abstracts: List[GenericStringValue] = as_list(item.abstract or [])
