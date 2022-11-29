@@ -1,4 +1,3 @@
-import os
 from copy import copy
 from io import StringIO
 from typing import Dict, List, Any, cast
@@ -14,13 +13,13 @@ from relaton.models import (
     GenericStringValue,
 )
 from relaton.models.bibitemlocality import LocalityStack, Locality
-from relaton.serializers.bibxml.anchor import get_suitable_anchor
 from relaton.serializers.bibxml.abstracts import (
     create_abstract,
     get_paragraphs,
     get_paragraphs_html,
     get_paragraphs_jats,
 )
+from relaton.serializers.bibxml.anchor import get_suitable_anchor
 from relaton.serializers.bibxml.authors import create_author
 from relaton.serializers.bibxml.reference import build_refcontent_string, create_reference
 from relaton.serializers.bibxml.series import (
@@ -150,10 +149,6 @@ class SerializerTestCase(TestCase):
         self.bibitem_referencegroup = BibliographicItem(
             **self.bibitem_referencegroup_data
         )
-
-        module_dir = os.path.dirname(__file__)
-        file_path = os.path.join(module_dir, "static/schemas/v3.xsd")
-        self.xmlschema = etree.XMLSchema(file=file_path)
 
     def test_build_refcontent_string(self):
         """
