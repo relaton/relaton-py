@@ -14,11 +14,7 @@ from relaton.models import (
     GenericStringValue,
 )
 from relaton.models.bibitemlocality import LocalityStack, Locality
-from relaton.serializers.bibxml import (  # type: ignore[attr-defined]
-    create_reference,
-    get_suitable_anchor,
-    get_suitable_target,
-)
+from relaton.serializers.bibxml.anchor import get_suitable_anchor
 from relaton.serializers.bibxml.abstracts import (
     create_abstract,
     get_paragraphs,
@@ -35,6 +31,7 @@ from relaton.serializers.bibxml.series import (
     extract_3gpp_tr_series,
     extract_ieee_series,
 )
+from relaton.serializers.bibxml.target import get_suitable_target
 
 
 class SerializerTestCase(TestCase):
