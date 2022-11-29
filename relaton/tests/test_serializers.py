@@ -18,7 +18,6 @@ from relaton.serializers.bibxml import (  # type: ignore[attr-defined]
     create_reference,
     get_suitable_anchor,
     get_suitable_target,
-    serialize,
 )
 from relaton.serializers.bibxml.abstracts import (
     create_abstract,
@@ -158,25 +157,6 @@ class SerializerTestCase(TestCase):
         module_dir = os.path.dirname(__file__)
         file_path = os.path.join(module_dir, "static/schemas/v3.xsd")
         self.xmlschema = etree.XMLSchema(file=file_path)
-
-    def test_bibliographicitem_to_xml(self):
-        """
-        Test that a BibliographicItem is properly converted to XML,
-        and that its format validates against a converted authoritative
-        schema (xml2rfc_compat/tests/static/v3.xsd).
-        More info about the schema here
-        https://github.com/ietf-ribose/bibxml-service/issues/155
-        """
-
-        xml_reference = serialize(self.bibitem_reference)
-        xml_referencegroup = serialize(self.bibitem_referencegroup)
-
-        module_dir = os.path.dirname(__file__)
-        file_path = os.path.join(module_dir, "static/schemas/v3.xsd")
-        xmlschema = etree.XMLSchema(file=file_path)
-
-        xmlschema.assertValid(xml_reference)
-        xmlschema.assertValid(xml_referencegroup)
 
     def test_build_refcontent_string(self):
         """
