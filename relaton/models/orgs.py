@@ -5,7 +5,6 @@ from pydantic.dataclasses import dataclass
 from .contacts import ContactMethod
 from .strings import GenericStringValue
 
-
 __all__ = ('Organization', )
 
 

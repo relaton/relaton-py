@@ -1,10 +1,9 @@
-from typing import List, Tuple, Union, Optional
 import datetime
+from typing import List, Tuple, Union, Optional
 
 from pydantic import validator
 from pydantic.dataclasses import dataclass
 from pydantic.datetime_parse import parse_date
-
 
 __all__ = (
   'Date',

@@ -1,7 +1,4 @@
-from typing import TypedDict, Optional, Union, List
-
-from pydantic.dataclasses import dataclass
-
+from typing import TypedDict, Union, List
 
 __all__ = ('Copyright', )
 
