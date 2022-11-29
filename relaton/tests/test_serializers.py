@@ -22,7 +22,7 @@ from relaton.serializers.bibxml.abstracts import (
     get_paragraphs_jats,
 )
 from relaton.serializers.bibxml.authors import create_author
-from relaton.serializers.bibxml.reference import build_refcontent_string
+from relaton.serializers.bibxml.reference import build_refcontent_string, create_reference
 from relaton.serializers.bibxml.series import (
     extract_doi_series,
     extract_rfc_series,
