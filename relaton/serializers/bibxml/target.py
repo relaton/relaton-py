@@ -2,7 +2,6 @@ from typing import List
 
 from ...models.links import Link
 
-
 __all__ = (
   'get_suitable_target',
 )

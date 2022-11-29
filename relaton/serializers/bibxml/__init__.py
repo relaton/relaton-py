@@ -8,16 +8,15 @@ Primary API is :func:`.serialize()`.
 """
 
 from typing import List
-from lxml.etree import _Element
+
 from lxml import objectify, etree
+from lxml.etree import _Element
 
-from ...util import as_list
-from ...models.bibdata import BibliographicItem, Relation
-
-from .reference import create_reference, create_referencegroup
 from .anchor import get_suitable_anchor
+from .reference import create_reference, create_referencegroup
 from .target import get_suitable_target
-
+from ...models.bibdata import BibliographicItem, Relation
+from ...util import as_list
 
 __all__ = (
     'serialize',

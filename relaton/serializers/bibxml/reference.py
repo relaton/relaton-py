@@ -1,20 +1,19 @@
-from typing import List, Tuple, Optional, Union, cast
 import datetime
-from lxml.etree import _Element
-from lxml import objectify
+from typing import List, Tuple, Optional, Union, cast
 
-from ...models.bibitemlocality import LocalityStack, Locality
-from ...util import as_list
+from lxml import objectify
+from lxml.etree import _Element
+
+from .abstracts import create_abstract
+from .anchor import get_suitable_anchor
+from .authors import create_author, is_author
+from .series import DOCID_SERIES_EXTRACTORS
+from .target import get_suitable_target
 from ...models.bibdata import BibliographicItem, Contributor, Series
+from ...models.bibitemlocality import LocalityStack, Locality
 from ...models.dates import Date, parse_relaxed_date
 from ...models.strings import Title, GenericStringValue
-
-from .series import DOCID_SERIES_EXTRACTORS
-from .authors import create_author, is_author
-from .abstracts import create_abstract
-from .target import get_suitable_target
-from .anchor import get_suitable_anchor
-
+from ...util import as_list
 
 __all__ = (
     'create_reference',

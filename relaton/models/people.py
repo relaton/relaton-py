@@ -2,10 +2,9 @@ from typing import Optional, Union, List
 
 from pydantic.dataclasses import dataclass
 
-from .strings import GenericStringValue
-from .orgs import Organization
 from .contacts import ContactMethod
-
+from .orgs import Organization
+from .strings import GenericStringValue
 
 __all__ = ('Forename', 'Person', 'FullName', 'GivenName', 'PersonAffiliation', )
 

@@ -1,14 +1,14 @@
 from typing import cast, List, Optional
-from lxml.etree import _Element
-from lxml import objectify
 
-from ...util import as_list
+from lxml import objectify
+from lxml.etree import _Element
+
 from ...models.bibdata import Contributor
+from ...models.contacts import ContactMethod, Address
 from ...models.orgs import Organization
 from ...models.people import PersonAffiliation
-from ...models.contacts import ContactMethod, Address
 from ...models.strings import GenericStringValue
-
+from ...util import as_list
 
 __all__ = (
     'create_author',

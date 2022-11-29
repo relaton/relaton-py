@@ -2,7 +2,6 @@ from typing import Optional, List
 
 from pydantic.dataclasses import dataclass
 
-
 __all__ = (
     'Address',
     'ContactMethod',

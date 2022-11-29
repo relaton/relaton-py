@@ -2,7 +2,6 @@ from typing import Optional, Union, List
 
 from pydantic.dataclasses import dataclass
 
-
 __all__ = ('FormattedContent', 'GenericStringValue', 'Title', )
 
 

@@ -1,10 +1,8 @@
-from typing import List, Tuple, Callable, Optional
-from string import ascii_letters, digits
 import re
+from typing import List, Tuple, Callable, Optional
 
 from ...models.bibdata import BibliographicItem, DocID
 from ...util import as_list
-
 
 __all__ = (
     'get_suitable_anchor',

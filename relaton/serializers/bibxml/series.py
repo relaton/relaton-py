@@ -2,7 +2,6 @@ from typing import Union, Tuple, Callable, List
 
 from ...models.bibdata import DocID
 
-
 __all__ = (
     'DOCID_SERIES_EXTRACTORS',
 )

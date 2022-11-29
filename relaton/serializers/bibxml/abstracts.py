@@ -1,9 +1,9 @@
 from typing import List, cast
-from lxml.etree import _Element
+
 from lxml import etree, objectify
+from lxml.etree import _Element
 
 from ...models.strings import GenericStringValue
-
 
 __all__ = (
     'create_abstract',
