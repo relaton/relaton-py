@@ -12,19 +12,19 @@ from __future__ import annotations
 # Required for circular dependency
 # between BibliographicItem and Relation.
 
-from typing import List, Union, Optional
 import datetime
+from typing import List, Union, Optional
 
 from pydantic import BaseModel, Extra, validator
 from pydantic.dataclasses import dataclass
 
 from .bibitemlocality import LocalityStack, Locality
 from .copyrights import Copyright
-from .strings import Title, GenericStringValue
-from .people import Person
-from .orgs import Organization
-from .links import Link
 from .dates import Date, validate_relaxed_date
+from .links import Link
+from .orgs import Organization
+from .people import Person
+from .strings import Title, GenericStringValue
 
 
 __all__ = (

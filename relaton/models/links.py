@@ -1,6 +1,6 @@
 from typing import Optional
-from pydantic.dataclasses import dataclass
 
+from pydantic.dataclasses import dataclass
 
 __all__ = ('Link', )
 

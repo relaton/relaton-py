@@ -22,15 +22,14 @@ They are mixed for a few reasons:
 """
 
 from .bibdata import *
-from .copyrights import *
-from .people import *
-from .orgs import *
 from .contacts import *
-from .links import *
+from .copyrights import *
 from .dates import *
+from .links import *
+from .orgs import *
+from .people import *
 from .people import FullName
 from .strings import *
-
 
 __all__ = (
   'BibliographicItem',
