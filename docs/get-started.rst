@@ -27,8 +27,7 @@ Using serializers
 
 ::
 
-    from relaton.serializers.bibxml_string import serialize
+    from relaton.serializers.abstract import create_abstract
 
-    with open('some_file.xml', 'w', encoding='utf-8') as f:
-        data = serialize(item)
-        f.write(data)
+    abstracts: List[GenericStringValue] = as_list(item.abstract or [])
+    abstract = create_abstract(abstracts)

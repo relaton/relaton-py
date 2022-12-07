@@ -67,12 +67,3 @@ Targets
    :members:
    :undoc-members:
    :show-inheritance:
-
-
-``bibxml_string``: BibXML string
-================================
-
-.. automodule:: relaton.serializers.bibxml_string
-   :members:
-   :undoc-members:
-   :show-inheritance:
