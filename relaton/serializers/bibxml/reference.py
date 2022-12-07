@@ -150,14 +150,15 @@ def build_refcontent_string(extent: LocalityStack | Locality) -> str:
 
     if isinstance(extent, LocalityStack):
         for locality in extent.locality:
-            if locality.type == 'container-title':
-                parts.append(locality.reference_from)
-            if locality.type == 'volume':
-                parts.append('vol. %s' % locality.reference_from)
-            elif locality.type == 'issue':
-                parts.append('no. %s' % locality.reference_from)
-            elif locality.type == 'page':
-                parts.append('pp. %s' % locality.reference_from)
+            match locality.type:
+                case "container-title":
+                    parts.append(locality.reference_from)
+                case 'volume':
+                    parts.append('vol. %s' % locality.reference_from)
+                case 'issue':
+                    parts.append('no. %s' % locality.reference_from)
+                case 'page':
+                    parts.append('pp. %s' % locality.reference_from)
     else:
         parts.append(extent.reference_from)
 
