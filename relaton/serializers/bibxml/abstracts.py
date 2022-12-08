@@ -40,12 +40,13 @@ def get_paragraphs(val: GenericStringValue) -> List[str]:
     paragraphs.
     """
     try:
-        if val.format == 'text/html':
-            return get_paragraphs_html(val.content)
-        elif val.format == 'application/x-jats+xml':
-            return get_paragraphs_jats(val.content)
-        else:
-            raise ValueError("Unknown format for paragraph extraction")
+        match val.format:
+            case 'text/html':
+                return get_paragraphs_html(val.content)
+            case 'application/x-jats+xml':
+                return get_paragraphs_jats(val.content)
+            case _:
+                raise ValueError("Unknown format for paragraph extraction")
 
     except (etree.XMLSyntaxError, ValueError):
         return get_paragraphs_plain(val.content)
