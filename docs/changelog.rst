@@ -3,6 +3,11 @@ Changelog
 =========
 
 
+v0.2.24
+=======
+
+- Remove ``RFC Publisher`` organization from serialized output
+
 v0.2.23
 =======
 
