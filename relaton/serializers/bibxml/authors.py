@@ -32,6 +32,27 @@ is_author = (
 represents an author in xml2rfc domain."""
 
 
+def is_rfc_publisher(contrib):
+    """Returns ``True`` if contributor belongs
+    to ``RFC Publisher`` organization"""
+    if org := contrib.organization:
+        if org.name.content == "RFC Publisher":
+            return True
+    return False
+
+
+def filter_contributors(contribs):
+    """Filter contributors by checking that they
+    are authors and that they do not belong to
+    ``RFC Publisher`` organization.
+    """
+    return [
+        contrib
+        for contrib in contribs
+        if is_author(contrib) and not is_rfc_publisher(contrib)
+    ]
+
+
 def create_author(contributor: Contributor) -> _Element:
     if not is_author(contributor):
         raise ValueError(

@@ -26,7 +26,7 @@ from relaton.serializers.bibxml.abstracts import (
     get_paragraphs_html,
     get_paragraphs_jats,
 )
-from relaton.serializers.bibxml.authors import create_author
+from relaton.serializers.bibxml.authors import create_author, is_rfc_publisher, filter_contributors
 from relaton.serializers.bibxml.reference import build_refcontent_string
 from relaton.serializers.bibxml.series import (
     extract_doi_series,
@@ -338,25 +338,6 @@ class SerializerTestCase(TestCase):
         target = reference.xpath("//reference/format/@target")[0]
         self.assertEqual(target, data["link"]["content"])
 
-    # def test_create_reference_for_non_IETF_datasets(self):
-    #     data: dict[str, Any] = {
-    #         "id": "I-D.ietf-bfd-mpls-mib",
-    #         "doctype": "misc",
-    #         "docid": [
-    #             {"id": "draft-ietf-bfd-mpls-mib-07", "type": "FIPS", "primary": True},
-    #         ],
-    #         "link": {
-    #             "content": "https://www.ietf.org/archive/id/draft-ietf-bfd-mpls-mib-07.txt",
-    #             "type": "TXT"
-    #         }
-    #     }
-    #
-    #     new_bibitem = BibliographicItem(**data)
-    #     reference = create_reference(new_bibitem)
-    #     # import ipdb; ipdb.set_trace()
-    #     target = reference.xpath("//reference/target")[0]
-    #     self.assertEqual(target, data["link"]["content"])
-
     def test_build_refcontent_string_with_localitystack(self):
         title = "Container Title"
         volume = "1"
@@ -380,6 +361,21 @@ class SerializerTestCase(TestCase):
 
         refcontent = build_refcontent_string(extent)
         self.assertEqual(refcontent, f"{title}")
+
+    def test_filter_contributors(self):
+        contribs_data: Dict[str, Any] = {
+            "organization": {
+                "name": {"content": "RFC Publisher", "language": "en"},
+            },
+            "role": [{
+                "type": "publisher",
+            }],
+        }
+        contribs = [Contributor(**contribs_data)]
+        self.assertEqual(filter_contributors(contribs), [])
+        contribs_data["organization"]["name"]["content"] = "Not RFC Publisher"
+        contribs = [Contributor(**contribs_data)]
+        self.assertEqual(len(filter_contributors(contribs)), 1)
 
     def test_create_author(self):
         """
@@ -524,6 +520,19 @@ class SerializerTestCase(TestCase):
         author_organization = create_author(Contributor(**contributor_editor))
         self.assertEqual(author_organization.tag, "author")
         self.assertNotEqual(author_organization.get("role"), "editor")
+
+    def test_is_rfc_publisher(self):
+        contributor_editor: Dict[str, Any] = {
+            "organization": {
+                "name": {"content": "RFC Publisher", "language": "en"},
+            },
+            "role": [{
+                "type": "publisher",
+            }],
+        }
+        self.assertTrue(is_rfc_publisher(Contributor(**contributor_editor)))
+        contributor_editor["organization"]["name"]["content"] = "Not RFC Publisher"
+        self.assertFalse(is_rfc_publisher(Contributor(**contributor_editor)))
 
     def test_get_suitable_anchor(self):
         """
