@@ -6,7 +6,7 @@ from lxml.etree import _Element
 
 from .abstracts import create_abstract
 from .anchor import get_suitable_anchor
-from .authors import create_author, is_author
+from .authors import create_author, is_author, is_rfc_publisher, filter_contributors
 from .series import DOCID_SERIES_EXTRACTORS
 from .target import get_suitable_target
 from ...models.bibdata import BibliographicItem, Contributor, Series
@@ -42,11 +42,7 @@ def create_reference(item: BibliographicItem) -> _Element:
         main_title = default_title
 
     contributors: List[Contributor] = as_list(item.contributor or [])
-    author_contributors: List[Contributor] = [
-        contrib
-        for contrib in contributors
-        if is_author(contrib)
-    ]
+    author_contributors: List[Contributor] = filter_contributors(contributors)
 
     front = E.front(
         E.title(main_title),
