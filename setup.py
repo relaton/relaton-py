@@ -30,7 +30,7 @@ with open('requirements_dev.txt') as reqs:
 desc = (
     "Library for working with Relaton bibliographic data models in Python. "
     "Provides Pydantic models and dataclasses, "
-    "as well as parsers and serializers.")
+    "as well as parsers.")
 
 version = relaton.__version__
 

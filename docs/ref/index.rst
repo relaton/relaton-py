@@ -6,4 +6,3 @@ Module reference
    :maxdepth: 2
 
    models
-   serializers
