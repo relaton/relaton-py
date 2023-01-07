@@ -8,12 +8,8 @@ Setup
 Docker
 ------
 
-You can use the provided Dockerfile for running tests
-and static typing & linting hints via containerized LSP service.
-
-Shortcut to run tests::
-
-    make docker-tests
+You can use the provided Dockerfile for running static
+typing & linting hints via containerized LSP service.
 
 Running PyLSP server::
 

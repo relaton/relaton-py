@@ -7,6 +7,7 @@ v0.2.25
 =======
 
 - Remove serializers
+- Remove testing suite
 - Optimize project imports
 
 v0.2.24

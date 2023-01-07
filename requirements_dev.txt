@@ -1,5 +1,4 @@
 Sphinx
-coverage
 mypy
 types-setuptools
 lxml-stubs>=0.4,<0.5
