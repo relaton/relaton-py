@@ -3,11 +3,16 @@ Changelog
 =========
 
 
+v0.2.25
+=======
+
+- Remove serializers
+- Optimize project imports
+
 v0.2.24
 =======
 
-- Remove ``bibxml`` serializer in order to ease data manipulation/tuning by the consumers
-- Optimize project imports
+- Remove ``RFC Publisher`` organization from serialized output
 
 v0.2.23
 =======

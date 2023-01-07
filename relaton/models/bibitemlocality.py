@@ -4,6 +4,8 @@ from pydantic.dataclasses import dataclass
 
 __all__ = (
     'BibItemLocality',
+    'Locality',
+    'LocalityStack',
 )
 
 
