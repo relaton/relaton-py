@@ -3,6 +3,11 @@ Changelog
 =========
 
 
+v0.2.25
+=======
+
+- Fix author serializer
+
 v0.2.24
 =======
 
