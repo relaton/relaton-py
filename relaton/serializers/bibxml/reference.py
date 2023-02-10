@@ -6,10 +6,9 @@ from lxml.etree import _Element
 
 from .abstracts import create_abstract
 from .anchor import get_suitable_anchor
-from .authors import create_author, is_author, is_rfc_publisher, filter_contributors
+from .authors import create_author, filter_contributors
 from .series import DOCID_SERIES_EXTRACTORS
-from .target import get_suitable_target
-from ...models.bibdata import BibliographicItem, Contributor, Series
+from ...models.bibdata import BibliographicItem, Contributor, Series, DocID
 from ...models.bibitemlocality import LocalityStack, Locality
 from ...models.dates import Date, parse_relaxed_date
 from ...models.strings import Title, GenericStringValue
@@ -101,11 +100,11 @@ def create_reference(item: BibliographicItem) -> _Element:
         for s in actual_series
         if s.number and s.title
     ])
-    for docid in (item.docid or []):
-        series.extend([
-            func(docid)
-            for func in DOCID_SERIES_EXTRACTORS
-        ])
+    for docid in filter_docids(item.docid):
+            series.extend([
+                func(docid)
+                for func in DOCID_SERIES_EXTRACTORS
+            ])
     for series_info in list(dict.fromkeys(series)):
         if series_info is not None:
             ref.append(E.seriesInfo(
@@ -149,3 +148,11 @@ def build_refcontent_string(extent: LocalityStack | Locality) -> str:
         parts.append(extent.reference_from)
 
     return ", ".join(parts)
+
+
+def filter_docids(docids: List[DocID]) -> List[Optional[DocID]]:
+    """
+    docids whose scope == "trademark" should be ignored
+    when rendering BibXML output.
+    """
+    return [docid for docid in docids if docid.scope != "trademark"]
