@@ -27,7 +27,7 @@ from relaton.serializers.bibxml.abstracts import (
     get_paragraphs_jats,
 )
 from relaton.serializers.bibxml.authors import create_author, is_rfc_publisher, filter_contributors
-from relaton.serializers.bibxml.reference import build_refcontent_string
+from relaton.serializers.bibxml.reference import build_refcontent_string, filter_docids
 from relaton.serializers.bibxml.series import (
     extract_doi_series,
     extract_rfc_series,
@@ -292,51 +292,16 @@ class SerializerTestCase(TestCase):
             for element in reference.getchildren()[0].getchildren()[2].keys()
         ))
 
-    def test_create_reference_target_should_be_placed_within_format_tag(self):
-        """
-        'Internet-Drafts', 'RFC' and 'RFC subseries'
-        entries require the reference target attribute
-        to be removed and placed within the <format>
-        tag instead.
-
-        Format:
-
-        <reference anchor="...">
-          <front>...</front>
-          <format type="TXT" target="https://www.ietf.org/archive/id/draft-ietf-bfd-mpls-mib-07.txt"/>
-        </reference>
-        """
-        data: dict[str, Any] = {
-            "id": "I-D.ietf-bfd-mpls-mib",
-            "doctype": "internet-draft",
-            "docid": [{
-                "id": "draft-ietf-bfd-mpls-mib-07",
-                "type": "Internet-Draft",
-                "primary": True
-            }],
-            "link": {
-                "content": "https://www.ietf.org/archive/id/draft-ietf-bfd-mpls-mib-07.txt",
-                "type": "TXT"
-            }
-        }
-
-        # Internet-Draft
-        new_bibitem = BibliographicItem(**data)
-        reference = create_reference(new_bibitem)
-        target = reference.xpath("//reference/format/@target")[0]
-        self.assertEqual(target, data["link"]["content"])
-
-        # RFC and RFC subseries entries have docid.type == "IETF" and do not have a doctype
-        data["docid"][0] = {
-            "id": "I-D.ietf-bfd-mpls-mib",
-            "type": "IETF",
-            "scope": "anchor",
-        }
-        del data["doctype"]
-        new_bibitem = BibliographicItem(**data)
-        reference = create_reference(new_bibitem)
-        target = reference.xpath("//reference/format/@target")[0]
-        self.assertEqual(target, data["link"]["content"])
+    def test_docids_with_scope_trademark_should_be_ignored(self):
+        docids: List[DocID] = [
+            DocID(id="I-D.ietf-bfd-mpls-mib", type="IETF", scope="anchor"),
+            DocID(id="trademark", type="type", scope="trademark")
+        ]
+        docids = filter_docids(docids)  # type: ignore
+        self.assertFalse(any(
+            docid.scope == "trademark"
+            for docid in docids
+        ))
 
     def test_build_refcontent_string_with_localitystack(self):
         title = "Container Title"
