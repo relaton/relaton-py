@@ -101,10 +101,10 @@ def create_reference(item: BibliographicItem) -> _Element:
         if s.number and s.title
     ])
     for docid in filter_docids(item.docid):
-            series.extend([
-                func(docid)
-                for func in DOCID_SERIES_EXTRACTORS
-            ])
+        series.extend([
+            func(docid)
+            for func in DOCID_SERIES_EXTRACTORS
+        ])
     for series_info in list(dict.fromkeys(series)):
         if series_info is not None:
             ref.append(E.seriesInfo(
