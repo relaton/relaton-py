@@ -129,6 +129,17 @@ class Edition:
 
 
 @dataclass
+class KeywordType:
+    """
+    Keyword for a bibliographic item.
+    Is represented in one of three ways: as a string (uncontrolled vocabulary);
+    as a string with associated identifiers (controlled vocabulary);
+    or as a hierarchical sequence of strings with associated identifiers (taxonomy).
+    """
+    content: Optional[str] = None
+
+
+@dataclass
 class VersionInfo:
     """Describes a version. Could be used for drafts."""
 
@@ -190,7 +201,7 @@ class BibliographicItem(BaseModel, extra=Extra.allow):
 
     series: Optional[List[Series]] = None
 
-    keyword: Optional[Union[List[str], str]] = None
+    keyword: Optional[Union[List[KeywordType], KeywordType]] = None
 
     copyright: Optional[Union[List[Copyright], Copyright]] = None
 

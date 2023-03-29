@@ -13,6 +13,7 @@ __all__ = ('Forename', 'Person', 'FullName', 'GivenName', 'PersonAffiliation', )
 class Forename(GenericStringValue):
     """A forename of a person"""
 
+    content: Optional[str] = None
     initial: Optional[str] = None
     """
     An individual initial of the person, corresponding to the given forename.
