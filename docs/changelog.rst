@@ -3,6 +3,11 @@ Changelog
 =========
 
 
+v0.2.26
+=======
+
+- Update models (Person and BibliographicItem) to reflect Schema changes.
+
 v0.2.25
 =======
 
