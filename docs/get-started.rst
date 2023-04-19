@@ -6,6 +6,9 @@ Getting started
 
     pip install relaton
 
+
+Note: Python version 3.10 or greater is required
+
 Using data models
 =================
 
