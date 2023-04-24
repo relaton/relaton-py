@@ -3,6 +3,11 @@ Changelog
 =========
 
 
+v0.2.27
+=======
+
+- Remove support for Python < 3.10
+
 v0.2.26
 =======
 

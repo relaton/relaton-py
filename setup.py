@@ -10,9 +10,9 @@ def empty_or_comment(x):
     return len(x) == 0 or x.strip().startswith("#")
 
 
-if sys.version_info < (3, 7):
+if sys.version_info < (3, 10):
     print(
-        'relaton requires Python 3 version >= 3.7',
+        'relaton requires Python 3 version >= 3.10',
         file=sys.stderr)
     sys.exit(1)
 
@@ -24,8 +24,6 @@ with open('requirements.txt') as reqs:
 
 with open('requirements_dev.txt') as reqs:
     dev_requirements = filter(empty_or_comment, reqs.read().splitlines())
-
-
 
 desc = (
     "Library for working with Relaton bibliographic data models in Python. "
@@ -57,10 +55,7 @@ setup(
         'dataclasses',
     ],
     classifiers=[
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
         'Natural Language :: English',
