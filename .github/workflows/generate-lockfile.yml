@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: test-relaton-updates
 
       - uses: ruby/setup-ruby@v1
         with:
@@ -21,8 +23,8 @@ jobs:
           bundle install
       - run: less Gemfile.lock
       - run: |
-          git pull origin test-relaton-updates
+          git pull origin
           git add Gemfile.lock
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git diff --quiet && git diff --staged --quiet || (git commit -m 'add lockfile' && git push origin test-relaton-updates)
+          git diff --quiet && git diff --staged --quiet || (git commit -m 'add lockfile' && git push)
