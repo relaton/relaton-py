@@ -2,7 +2,7 @@
 Changelog
 =========
 
-v0.2.28
+v0.2.29
 =======
 
 - Make `content` optional for forename, formatted_initials and title
