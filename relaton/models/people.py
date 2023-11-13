@@ -4,16 +4,15 @@ from pydantic.dataclasses import dataclass
 
 from .contacts import ContactMethod
 from .orgs import Organization
-from .strings import GenericStringValue
+from .strings import GenericStringValue, GenericStringValueWithOptionalContent
 
 __all__ = ('Forename', 'Person', 'FullName', 'GivenName', 'PersonAffiliation', )
 
 
 @dataclass
-class Forename(GenericStringValue):
+class Forename(GenericStringValueWithOptionalContent):
     """A forename of a person"""
 
-    content: Optional[str] = None
     initial: Optional[str] = None
     """
     An individual initial of the person, corresponding to the given forename.
@@ -33,7 +32,7 @@ class GivenName:
     ]] = None
     """Also known as given name or first name."""
 
-    formatted_initials: Optional[GenericStringValue] = None
+    formatted_initials: Optional[GenericStringValueWithOptionalContent] = None
     """The initials of the person, as a formatted string, including punctuation, dropping
        punctuation as desired, and including hyphens where necessary. For example,
        the initial set for Jean-Paul would be J, P; the formatted initials would be "J.-P."
