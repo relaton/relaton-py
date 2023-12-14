@@ -2,6 +2,11 @@
 Changelog
 =========
 
+v0.2.31
+=======
+
+- Merge and match versions (v0.2.28, v0.2.29 and v0.2.30)
+
 v0.2.29
 =======
 
