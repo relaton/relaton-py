@@ -26,37 +26,37 @@ class DataSourceValidationTestCase(TestCase):
         self.xmlschema.assertValid(serialized_data)
 
     def test_validate_rfcs_data(self):
-        url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-rfcs/main/data/RFC0001.yaml"
+        url = "https://raw.githubusercontent.com/relaton/relaton-data-rfcs/main/data/RFC0001.yaml"
         self._validate_yaml_data(url)
 
     def test_validate_misc_data(self):
-        url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-misc/main/data/reference.ANSI.T1-102.1987.yaml"
+        url = "https://raw.githubusercontent.com/relaton/relaton-data-misc/main/data/reference.ANSI.T1-102.1987.yaml"
         self._validate_yaml_data(url)
 
     def test_validate_internet_drafts_data(self):
-        url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-ids/main/data/draft--pale-email-00.yaml"
+        url = "https://raw.githubusercontent.com/relaton/relaton-data-ids/main/data/draft--pale-email-00.yaml"
         self._validate_yaml_data(url)
 
     def test_validate_w3c_data(self):
-        url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-w3c/main/data/2dcontext.yaml"
+        url = "https://raw.githubusercontent.com/relaton/relaton-data-w3c/main/data/2dcontext.yaml"
         self._validate_yaml_data(url)
 
     def test_validate_threegpp_data(self):
-        url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-3gpp/main/data/TR_00.01U_UMTS_3.0.0.yaml"
+        url = "https://raw.githubusercontent.com/relaton/relaton-data-3gpp/main/data/TR_00.01U_UMTS_3.0.0.yaml"
         self._validate_yaml_data(url)
 
     def test_validate_ieee_data(self):
-        url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-ieee/main/data/AIEE_11-1943.yaml"
+        url = "https://raw.githubusercontent.com/relaton/relaton-data-ieee/main/data/AIEE_11-1943.yaml"
         self._validate_yaml_data(url)
 
     def test_validate_iana_data(self):
-        url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-iana/main/data/_6lowpan-parameters.yaml"
+        url = "https://raw.githubusercontent.com/relaton/relaton-data-iana/main/data/_6lowpan-parameters.yaml"
         self._validate_yaml_data(url)
 
     def test_validate_rfcsubseries_data(self):
-        url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-rfcsubseries/main/data/BCP0003.yaml"
+        url = "https://raw.githubusercontent.com/relaton/relaton-data-rfcsubseries/main/data/BCP0003.yaml"
         self._validate_yaml_data(url)
 
     def test_validate_nist_data(self):
-        url = "https://raw.githubusercontent.com/ietf-tools/relaton-data-nist/main/data/NBS_BH_1.yaml"
+        url = "https://raw.githubusercontent.com/relaton/relaton-data-nist/main/data/NBS_BH_1.yaml"
         self._validate_yaml_data(url)

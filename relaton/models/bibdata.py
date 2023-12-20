@@ -123,6 +123,12 @@ class Contributor:
 
 
 @dataclass
+class Doctype:
+    type: str
+    abbreviation: Optional[str] = None
+
+
+@dataclass
 class Edition:
     content: str
     number: Optional[str] = None
@@ -176,7 +182,7 @@ class BibliographicItem(BaseModel, extra=Extra.allow):
     docnumber: Optional[str] = None
     language: Optional[Union[List[str], str]] = None
     type: Optional[str] = None
-    doctype: Optional[str] = None
+    doctype: Optional[Doctype] = None
     script: Optional[Union[List[str], str]] = None
     date: Optional[Union[List[Date], Date]] = None
     link: Optional[Union[List[Link], Link]] = None
