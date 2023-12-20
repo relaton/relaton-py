@@ -68,10 +68,11 @@ post-v1, increment major version in case of backwards-incompatible changes.
    to your chosen version.
 2. Ensure you updated the documentation,
    including describing the new version in :doc:`changelog`.
-3. Tag new release in Git as the same version and push tags::
+3. Push changes to main branch.
+4. Tag new release in Git as the same version and push tags::
 
        git tag -s "v0.0.0" -m "Short message"
        git push --follow-tags
 
-4. The repository is set up to build and publish to PyPI
+5. The repository is set up to build and publish to PyPI
    automatically on matching tag push.
