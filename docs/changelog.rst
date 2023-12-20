@@ -2,7 +2,12 @@
 Changelog
 =========
 
-v0.2.31
+v0.2.33
+=======
+
+- BibliographicItem.doctype becomes an object. Doctype = {type:str, abbreviation: Optional[str]}
+
+v0.2.32
 =======
 
 - Merge and match versions (v0.2.28, v0.2.29 and v0.2.30)
